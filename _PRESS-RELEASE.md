@@ -1,4 +1,4 @@
-# Project Name #
+# Pinpoint #
 
 <!-- 
 > This material was originally posted [here](http://www.quora.com/What-is-Amazons-approach-to-product-development-and-product-management). It is reproduced here for posterities sake.
@@ -18,27 +18,36 @@ Once the project moves into development, the press release can be used as a touc
  
 ## Heading ##
   > Name the product in a way the reader (i.e. your target customers) will understand.
+  Pinpoint
 
 ## Sub-Heading ##
   > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  Location recommendations for people new to a city or anyone looking for where their niche groups hang out.
 
 ## Summary ##
   > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  Users can identify popular hang-out places for people with the same interests. The app provides a real-time map of where people are now and where they tend to congregate, and it provides predictions for where they're likely to be in the future.
 
 ## Problem ##
   > Describe the problem your product solves.
+  People don't always know where to find others who have the same interests, especially when they're new to a city. Even with Yelp reviews and other sites, it doesn't show real popularity in terms of where people actually go on a Saturday night.
 
 ## Solution ##
   > Describe how your product elegantly solves the problem.
+  Users can get real-time and predictive locations for where people with the same interests actually go.
 
 ## Quote from You ##
   > A quote from a spokesperson in your company.
+  "Get in the know"
 
 ## How to Get Started ##
   > Describe how easy it is to get started.
+  "Download the app, enter a few interests, and start finding the local hotspots"
 
 ## Customer Quote ##
   > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  "When I moved to San Francisco, I knew nobody. But now, I get together with a group of buddies who all love juggling apples while riding unicycles, and I never would've found them without Pinpoint."
 
 ## Closing and Call to Action ##
   > Wrap it up and give pointers where the reader should go next.
+  Check out [our link] and download the mobile app today!
