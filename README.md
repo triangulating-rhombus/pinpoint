@@ -1,5 +1,6 @@
 # Pinpoint
-Displays and predicts where people like you tend to hang out. Use it to find the local hotspots in real-time.
+
+  Displays and predicts where people like you tend to hang out. Use it to find the local hotspots in real-time.
 
 ## Set-Up
 
@@ -13,8 +14,8 @@ Displays and predicts where people like you tend to hang out. Use it to find the
 
 ### Pre-Requisites
 
-  * You are familiar with Node.js's CommonJS module system, i.e. using `require` and `module.exports`, on the back-end.
-  * You are familiar with using <script> tags to include JavaScript in HTML pages.
+  * You are familiar with Node.js's CommonJS module system, i.e. using `require` and `module.exports`.
+  * You are familiar with using `<script>` tags to include JavaScript in HTML pages.
 
 ### Bundling
 
@@ -23,5 +24,5 @@ Displays and predicts where people like you tend to hang out. Use it to find the
 
 ### Webpack
 
-  * Webpack is one of the two common bundlers for React. (The other is Browserify, but it is not as powerful.)
+  * Webpack is one of the two common bundlers for React. (The other is Browserify, which is not as powerful.) This repo uses Webpack.
   * Webpack uses a configuration file in the root of your repo titled `webpack.config.js`. This file includes repo-specific information for the bundling process, such as the name of the bundle file you want it to output. When run, Webpack will automatically look for this file and use its settings.
