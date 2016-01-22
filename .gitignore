@@ -1,0 +1,6 @@
+# Cloned from Pete Hunt's React Webpack Template repo
+# https://github.com/petehunt/react-webpack-template
+*~
+node_modules
+browser-bundle.js
+browser-bundle.js.map
