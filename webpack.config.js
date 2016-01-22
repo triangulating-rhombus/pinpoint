@@ -1,3 +1,6 @@
+// Cloned from Pete Hunt's React Webpack Template repo
+// https://github.com/petehunt/react-webpack-template
+
 module.exports = {
   cache: true,
   entry: './index',
