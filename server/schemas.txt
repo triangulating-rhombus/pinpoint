@@ -4,7 +4,6 @@
   // longitude
   // startTime
   // endTime
-  // tag
 
 // users
   // id
@@ -16,3 +15,6 @@
   // tag_id
   // user_id
 
+// tags_visits
+  // tag_id
+  // visit_id
