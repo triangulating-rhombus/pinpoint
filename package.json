@@ -1,5 +1,4 @@
 {
-  "//": "Cloned from Pete Hunt's React Webpack Template repo",
   "//": "https://github.com/petehunt/react-webpack-template",
   "name": "pinpoint",
   "version": "0.0.0",
@@ -13,7 +12,8 @@
   "license": "BSD-2-Clause",
   "dependencies": {
     "react": "^0.14.5",
-    "react-dom": "^0.14.5"
+    "react-dom": "^0.14.5",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "babel-core": "^6.3.26",
