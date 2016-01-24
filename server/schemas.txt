@@ -1,0 +1,18 @@
+// visits
+  // id
+  // latitude
+  // longitude
+  // startTime
+  // endTime
+  // tag
+
+// users
+  // id
+
+// tags
+  // name
+
+// tags_users
+  // tag_id
+  // user_id
+
