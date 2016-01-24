@@ -9,28 +9,44 @@ var User = function() {
   this.currPos = null;
   this.tags = []; // join table
 };
+User.prototype.updatePosition = function(newPos) {
+  this.lastPos = this.currPos;
+  this.currPos = newPos;
+};
+// Called right after updating position to update curr visit
+User.prototype.updateCurrentVisit = function() {
+  //distance between current position and 5 minutes ago
+  var dist = Math.sqrt(
+    Math.pow(user.currPos[0] - user.lastPos[0], 2) +
+    Math.pow(user.currPos[1] - user.lastPos[1], 2)
+  );
 
-var Visit = function() {
-  this.pos = null;
+  if (dist < ALLOWED_DISTANCE) {
+    if (user.currVisit) {
+      this.currVisit.endTime = Date.now();
+    } else {
+    // create a new visit with data from 5 minutes ago
+    var newVisit = Visit();
+    newVisit.pos = user.lastPos;
+    newVisit.startTime = Date.now(); // TODO: subtract five minutes
+    
+    user.currVisit = newVisit;
+    visits.push(visit);    
+  } else {
+    if (this.currVisit) {
+      this.currVisit = null;
+    }
+  }
+};
+
+var Visit = function(pos, startTime, endTime) {
+  this.pos = pos;
+  this.startTime = startTime;
+  this.endTime = endTime || null;
 };
 
 var users = [];
 var visits = [];
-
-// Handler run every 5 minutes to create, update, and end visits
-var updateVisits = function() {
-  //for each user
-    //dist = distance between user.currPos and user.lastPos
-    //if dist is less than ALLOWED_DISTANCE
-      // if user.currVisit exists
-        // update visit's end time to now
-      // else
-        // set user.currVisit to a new visit with data from last time
-        // push the visit to visits
-    // else 
-      //if user.currVisit exists
-        // set user.currVisit to null
-};
 
 var getPositionsForTag = function(tag) {
   
