@@ -1,13 +1,16 @@
-var ALLOWED_DISTANCE = 100; // feet
+var ALLOWED_DISTANCE = 0.01; // in lat/long degrees
 
-//assume position is a 2-tuple: [latitude, longitude]
-//assume data is an array of objects
+//assume position is always a 2-tuple: [latitude, longitude]
 
+// Will be replaced by db tables
+var users = [];
+var visits = [];
+
+// Will be replaced by ORM schemas
 var User = function() {
   this.currVisit = null;
   this.lastPos = null;
   this.currPos = null;
-  this.tags = []; // join table
 };
 User.prototype.updatePosition = function(newPos) {
   this.lastPos = this.currPos;
@@ -40,22 +43,37 @@ User.prototype.updateCurrentVisit = function() {
 };
 
 var Visit = function(pos, startTime, endTime) {
-  this.pos = pos;
-  this.startTime = startTime;
+  this.pos = pos || null;
+  this.startTime = startTime || null;
   this.endTime = endTime || null;
 };
 
-var users = [];
-var visits = [];
-
 var getPositionsForTag = function(tag) {
-  
+  // return results of database query:
+    // SELECT tags.latitude, tags.longitude
+    // FROM tags JOIN tags_visits JOIN visits
+    // ON tags.id = tags_visits.tag_id AND
+    //    visits.id = tags_visits.visit_id
+    // WHERE tags.name = tag
 };
 
 var getTagsForPosition = function(position) {
+  var minLat = position[0] - ALLOWED_DISTANCE;
+  var maxLat = position[0] + ALLOWED_DISTANCE;
+  var minLong = position[1] - ALLOWED_DISTANCE;
+  var maxLong = position[1] + ALLOWED_DISTANCE;
 
+  // return results of database query:
+    // SELECT tags.name
+    // FROM tags JOIN tags_visits JOIN visits
+    // ON tags.id = tags_visits.tag_id AND
+    //    visits.id = tags_visits.visit_id
+    // WHERE visits.latitude > minLat AND
+    //       visits.latitude < maxLat AND
+    //       visits.longitude > minLong AND
+    //       visits.longitude < maxLong
 };
 
 var getWeekStatsForPositionAndTag = function(position, tag) {
-
+  //TO DO
 };
