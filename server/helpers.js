@@ -75,5 +75,21 @@ var getTagsForPosition = function(position) {
 };
 
 var getWeekStatsForPositionAndTag = function(position, tag) {
-  //TO DO
+  var minLat = position[0] - ALLOWED_DISTANCE;
+  var maxLat = position[0] + ALLOWED_DISTANCE;
+  var minLong = position[1] - ALLOWED_DISTANCE;
+  var maxLong = position[1] + ALLOWED_DISTANCE;
+
+  // var results = 
+    // SELECT visits.startTime
+    // FROM tags JOIN tags_visits JOIN visits
+    // ON tags.id = tags_visits.tag_id AND
+    //    visits.id = tags_visits.visit_id
+    // WHERE tags.name = tag AND
+    //       visits.latitude > minLat AND
+    //       visits.latitude < maxLat AND
+    //       visits.longitude > minLong AND
+    //       visits.longitude < maxLong
+
+  // return results sorted by week day
 };
