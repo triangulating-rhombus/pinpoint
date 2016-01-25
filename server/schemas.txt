@@ -4,6 +4,7 @@
   // longitude
   // startTime
   // endTime
+  // address // cache column on lat/long
 
 // users
   // id
