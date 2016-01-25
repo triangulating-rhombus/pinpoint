@@ -1,6 +1,16 @@
-var ALLOWED_DISTANCE = 0.01; // in lat/long degrees
+//positions: [latitude, longitude]
+var ALLOWED_DISTANCE = 10; // in meters
 
-//assume position is always a 2-tuple: [latitude, longitude]
+var geolib = require('geolib');
+
+//returns distance in meters between two positions
+var getDistance = function(pos1, pos2) {
+  return geolib.getDistance(
+    { latitude: pos1[0], longitude: pos1[1] },
+    { latitude: pos2[0], longitude: pos2[1] },
+    1 // get accuracy within this number of meters
+  );
+};
 
 // Will be replaced by db tables
 var users = [];
@@ -19,22 +29,20 @@ User.prototype.updatePosition = function(newPos) {
 // Called right after updating position to update curr visit
 User.prototype.updateCurrentVisit = function() {
   //distance between current position and 5 minutes ago
-  var dist = Math.sqrt(
-    Math.pow(user.currPos[0] - user.lastPos[0], 2) +
-    Math.pow(user.currPos[1] - user.lastPos[1], 2)
-  );
+  var dist = getDistance(user.currPos, user.lastPos);
 
   if (dist < ALLOWED_DISTANCE) {
     if (user.currVisit) {
       this.currVisit.endTime = Date.now();
     } else {
-    // create a new visit with data from 5 minutes ago
-    var newVisit = Visit();
-    newVisit.pos = user.lastPos;
-    newVisit.startTime = Date.now(); // TODO: subtract five minutes
-    
-    user.currVisit = newVisit;
-    visits.push(visit);    
+      // create a new visit with data from 5 minutes ago
+      var newVisit = Visit();
+      newVisit.pos = user.lastPos;
+      newVisit.startTime = Date.now(); // TODO: subtract five minutes
+      
+      user.currVisit = newVisit;
+      visits.push(visit);    
+    }
   } else {
     if (this.currVisit) {
       this.currVisit = null;
