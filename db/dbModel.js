@@ -1,32 +1,52 @@
 var Sequelize = require('sequelize');
 var sequelize = new Sequelize(process.env.ENV_DB || 'pinpointdb', 'postgres', '', { dialect: 'postgres', logging: false });
 
-var User = sequelize.define('User', {
+
+
+var Visits = sequelize.define('Visits', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: Sequelize.STRING, unique: true, notNull: true },
+  latitude: { type: Sequelize.FLOAT, unique: false, notNull: true },
+  longitude: { type: Sequelize.FLOAT, unique: false, notNull: true },
+  startTime: { type: Sequelize.DATE, unique: false, notNull: true },
+  endTime: { type: Sequelize.DATE, unique: false, notNull: true },
+  address: { type: Sequelize.STRING, unique: false, notNull: true }
 }, { timestamps: false });
 
-var HashtagUser = sequelize.define('hashtag_user', {
-  id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-  user_id: { type: Sequelize.INTEGER, notNull: true },
-  hashtag_id: { type: Sequelize.INTEGER, notNull: true },
+var Users = sequelize.define('Users', {
+  id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true }
 }, { timestamps: false });
 
-var Hashtag = sequelize.define('Hashtag', {
+var Tags = sequelize.define('Tags', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: Sequelize.STRING, unique: true , notNull: true}
+  name: { type: Sequelize.STRING, notNull: true }
 }, { timestamps: false });
+
+var tags_users = sequelize.define('tags_users', {
+  id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+  tag_id: { type: Sequelize.INTEGER, notNull: true},
+  user_id: { type: Sequelize.INTEGER, notNull: true}
+}, { timestamps: false });
+
+var tags_visits = sequelize.define('tags_visits', {
+  id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+  tag_id: { type: Sequelize.INTEGER, notNull: true},
+  visit_id: { type: Sequelize.INTEGER, notNull: true}
+}, { timestamps: false });
+
 
 var init = function() {
-  Hashtag.belongsToMany(User, { through: 'hashtag_user', foreignKey: 'hashtag_id' });
-  User.belongsToMany(Hashtag, { through: 'hashtag_user', foreignKey: 'user_id' });
+
+  Tags.belongsToMany(Users, { through: 'tags_users', foreignKey: 'tag_id' });
+  Users.belongsToMany(Tags, { through: 'tags_users', foreignKey: 'user_id' });
+
+  Tags.belongsToMany(Visits, { through: 'tags_visits', foreignKey: 'tag_id' });
+  Visits.belongsToMany(Tags, { through: 'tags_visits', foreignKey: 'visit_id' });
+
   sequelize.sync();
 };
 
 
+
 module.exports = {
-  User: User,
-  Hashtag: Hashtag,
-  HashtagUser: HashtagUser,
   init: init
 };

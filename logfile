@@ -11,3 +11,13 @@ FATAL:  role "postgres" does not exist
 FATAL:  database "Wayne" does not exist
 FATAL:  database "pinpoint" does not exist
 FATAL:  database "pinpointd" does not exist
+LOG:  database system was interrupted; last known up at 2016-01-25 15:44:11 PST
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/179CA18
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  syntax error at or near "/" at character 1
+STATEMENT:  /dt
+	;
