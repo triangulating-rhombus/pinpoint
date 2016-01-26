@@ -12,8 +12,12 @@
   "license": "BSD-2-Clause",
   "dependencies": {
     "geolib": "^2.0.18",
+    "express": "^4.13.4",
+    "pg": "^4.4.3",
+    "pg-hstore": "^2.3.2",
     "react": "^0.14.5",
     "react-dom": "^0.14.5",
+    "sequelize": "^3.18.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

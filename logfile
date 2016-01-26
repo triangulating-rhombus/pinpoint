@@ -1,0 +1,23 @@
+LOG:  database system was shut down at 2016-01-23 16:20:31 PST
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+FATAL:  database "Wayne" does not exist
+FATAL:  database "pinpointdb" does not exist
+LOG:  using stale statistics instead of current ones because stats collector is not responding
+FATAL:  lock file "postmaster.pid" already exists
+HINT:  Is another postmaster (PID 8499) running in data directory "/Users/Wayne/Desktop/pinpoint/pinpointdb"?
+FATAL:  role "postgres" does not exist
+FATAL:  database "Wayne" does not exist
+FATAL:  database "pinpoint" does not exist
+FATAL:  database "pinpointd" does not exist
+LOG:  database system was interrupted; last known up at 2016-01-25 15:44:11 PST
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/179CA18
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  syntax error at or near "/" at character 1
+STATEMENT:  /dt
+	;
