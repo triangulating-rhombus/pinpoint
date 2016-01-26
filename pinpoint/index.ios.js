@@ -11,20 +11,38 @@ import React, {
   View
 } from 'react-native';
 
+import Login from './src/components/login';
+// Uncomment above once nagivation logic logic for routes->mapview is set up 
+
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+
+// Uncomment this later on
+// import reducer from './reducer/index.js';
+
+// Apply a thunk middleware which makes an instaneous evaluation delayed (to be called later once something else finishes?)
+// const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+
+// Give the store access to ALL reducers (combined reducers from index.js) 
+// const store = createStoreWithMiddleware(reducer);
+
+
+
+
+
+
+
 class pinpoint extends Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          Log in to Pinpoint!
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+
+        <Login />
+
       </View>
     );
   }
