@@ -1,0 +1,29 @@
+<html>
+<head>
+	<title>Test file</title>
+</head>
+<body>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.4/socket.io.js"></script>
+
+<script>
+
+  var socket = io();
+
+  setTimeout(function(){
+    socket.emit('connected', { id: 1, longitude: 100.22, latitude: -10.22, time: new Date()});
+  }, 1000);
+
+  setTimeout(function(){
+    socket.emit('connected', { id: 2, longitude: 120.22, latitude: 11.22, time: new Date()});
+  }, 2000);
+
+  socket.on("refreshEvent", function(data){
+  	console.log(data);
+  });
+</script>
+
+</body>
+
+</html>

@@ -21,3 +21,18 @@ LOG:  autovacuum launcher started
 ERROR:  syntax error at or near "/" at character 1
 STATEMENT:  /dt
 	;
+LOG:  database system was interrupted; last known up at 2016-01-25 17:09:57 PST
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/17DC728
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  autovacuum launcher started
+LOG:  database system is ready to accept connections
+ERROR:  column Users.username does not exist at character 43
+STATEMENT:  SELECT "id" FROM "Users" AS "Users" WHERE "Users"."username" = 1 LIMIT 1;
+ERROR:  column Users.username does not exist at character 43
+STATEMENT:  SELECT "id" FROM "Users" AS "Users" WHERE "Users"."username" = 2 LIMIT 1;
+ERROR:  relation "users" does not exist at character 15
+STATEMENT:  select * from users;
+ERROR:  relation "users" does not exist at character 15
+STATEMENT:  select * from Users;

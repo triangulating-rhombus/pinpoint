@@ -8,8 +8,8 @@ var Visits = sequelize.define('Visits', {
   latitude: { type: Sequelize.FLOAT, unique: false, notNull: true },
   longitude: { type: Sequelize.FLOAT, unique: false, notNull: true },
   startTime: { type: Sequelize.DATE, unique: false, notNull: true },
-  endTime: { type: Sequelize.DATE, unique: false, notNull: true },
-  address: { type: Sequelize.STRING, unique: false, notNull: true }
+  endTime: { type: Sequelize.DATE, unique: false, notNull: false },
+  address: { type: Sequelize.STRING, unique: false, notNull: false }
 }, { timestamps: false });
 
 var Users = sequelize.define('Users', {
@@ -48,5 +48,7 @@ var init = function() {
 
 
 module.exports = {
+  Users:Users,
+  Visits:Visits,
   init: init
 };
