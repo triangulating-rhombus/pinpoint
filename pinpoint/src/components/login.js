@@ -8,17 +8,27 @@ import React, {
   StyleSheet
 } from 'react-native';
 
-class Login extends Component  {
-  constructor(){
-    super()
+export default class Login extends Component  {
+  constructor(props){
+    super(props)
     this.state = {
       username:'',
       password:''
     };
   }
-  onPress(){
-    // Alert.alert(this)
+  submitUser(){
+      
     Alert.alert(`Username: ${this.state.username} Password ${this.state.password}`);
+    this.props.checkUser(this.state);
+  }
+
+  test(){
+    console.log('testing login view',this.props);
+    if(!this.props.userProfile.username){
+      return "Please Sign In"
+    } else {
+      return `Hello ${this.props.userProfile.username}`
+    }
   }
 
   render(){
@@ -35,16 +45,18 @@ class Login extends Component  {
           placeholder="Enter your password"
           onChangeText={ (text) => this.setState({password:text}) }  
         />
-        <TouchableHighlight onPress={this.onPress.bind(this)} >
+        <TouchableHighlight onPress={this.submitUser.bind(this)} >
           <Text>Submit</Text>
-        </TouchableHighlight> 
+        </TouchableHighlight>
+
+
+        <Text>{this.test.call(this)}</Text> 
 
       </View>
     );
   }
 
 };
-
 
 const styles = StyleSheet.create({
   inputStyle:{
@@ -56,4 +68,3 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Login;

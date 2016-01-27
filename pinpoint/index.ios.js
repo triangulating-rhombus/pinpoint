@@ -11,60 +11,37 @@ import React, {
   View
 } from 'react-native';
 
-import Login from './src/components/login';
-// Uncomment above once nagivation logic logic for routes->mapview is set up 
+// import Login from './src/components/login';
+// Uncomment above once nagivation logic logic for routes->mapview is set up
+
+import App from './src/components/mainApp.js'; 
 
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
 // Uncomment this later on
-// import reducer from './reducer/index.js';
+import reducer from './src/reducers';
 
 // Apply a thunk middleware which makes an instaneous evaluation delayed (to be called later once something else finishes?)
-// const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 
 // Give the store access to ALL reducers (combined reducers from index.js) 
 // const store = createStoreWithMiddleware(reducer);
 
+// store.subscribe(() => {
+//   console.log('Username',store.getState());
+// });
 
-
-
-
-
-
-class pinpoint extends Component {
+class Pinpoint extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Log in to Pinpoint!
-        </Text>
-
-        <Login />
-
-      </View>
+      <Provider store={createStoreWithMiddleware(reducer)}>
+        <App />
+      </Provider>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
-AppRegistry.registerComponent('pinpoint', () => pinpoint);
+AppRegistry.registerComponent('pinpoint', () => Pinpoint);
