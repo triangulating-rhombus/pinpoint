@@ -15,7 +15,7 @@ var addUser = function (user) {
 
 var addVisit = function (visit) {
   return model.Visits
-    .findOrCreate({where: {id: visit.id, latitude: visit.latitude, longitude: visit.longitude, startTime: visit.time}})
+    .findOrCreate({where: {id: visit.id, latitude: visit.latitude, longitude: visit.longitude, startTime: visit.time, endTime: visit.endTime}})
 };
 
 module.exports = {

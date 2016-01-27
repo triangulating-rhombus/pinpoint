@@ -3,7 +3,7 @@
 	<title>Test file</title>
 </head>
 <body>
-
+<p> Welcome to the Pinpoint test page where you will be served sockets </p>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.4/socket.io.js"></script>
 
@@ -11,13 +11,34 @@
 
   var socket = io();
 
+
   setTimeout(function(){
-    socket.emit('connected', { id: 1, longitude: 100.22, latitude: -10.22, time: new Date()});
+    socket.emit('connected', { userID: 2, longitude: 120.22, latitude: 11.22, time: new Date(), tags: ["football", "badminton"]});
+    console.log("first connect")
   }, 1000);
 
   setTimeout(function(){
-    socket.emit('connected', { id: 2, longitude: 120.22, latitude: 11.22, time: new Date()});
-  }, 2000);
+    socket.emit('update', { userID: 2, longitude: 120.22, latitude: 11.2202, time: new Date(), tags: ["football", "badminton"]});
+    console.log("second connect")
+  }, 5000);
+
+
+    setTimeout(function(){
+    socket.emit('update', { userID: 2, longitude: 150.22, latitude: 11.2202, time: new Date(), tags: ["football", "badminton"]});
+    console.log("third connect")
+  }, 12000);
+
+    setTimeout(function(){
+    socket.emit('update', { userID: 2, longitude: 150.223, latitude: 13.2202, time: new Date(), tags: ["football", "badminton"]});
+    console.log("fourth connect")
+  }, 23000);
+
+     setTimeout(function(){
+    socket.emit('update', { userID: 2, longitude: 151.223, latitude: 13.2202, time: new Date(), tags: ["football", "badminton"]});
+    console.log("fifth connect")
+  }, 34000);
+
+
 
   socket.on("refreshEvent", function(data){
   	console.log(data);

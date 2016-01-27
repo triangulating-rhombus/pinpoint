@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var db = require('./db/dbModel');
 var controller = require('./controller');
+var visitHelper = require('./visit');
 
 app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.urlencoded({extended: true}));
@@ -20,34 +21,55 @@ db.init();
 //   res.send('hello world');
 
 var allUsers = {};
+var usersTracker = {};
 
 io.on('connection', function(client) {
 	console.log("Client connected!");
 
 	client.on("connected", function(data) {
-		console.log(data.id + " has connected!")
-		id = data.id;
+		console.log(data.userID + " has connected!")
+		var id = data.userID;
 		allUsers[id] = data;
+		usersTracker[id] = data;
 		//console.log(new Date(allUsers[1].time))
 
 		io.emit('refreshEvent', allUsers);
 
-		controller.addUser(data.id).then(function(){
-			controller.addVisit(data).then(function(){
-				console.log(data);
-			});
+		controller.addUser(data.userID).then(function(){
 		});
 
 	})
 
 	client.on("disconnected", function(data) {
-		delete allUsers[data.username];
+		delete usersTracker[data.userID];
+		delete allUsers[data.userID];
 		io.emit('refreshEvent', allUsers);
 	})
 
 	client.on("update", function(data) {
-		allUsers[data.username] = data;
-		io.emit('refreshEvent', allUsers);
+		usersTracker[data.userID] = data;
+		var previousData = allUsers[data.userID];
+		var distance = visitHelper.getDistance([previousData.latitude, previousData.longitude],[data.latitude, data.longitude]);
+		var timeDiff = visitHelper.timeDifference(previousData.time, data.time);
+
+		if (distance >= 10 && timeDiff >= 10){
+			previousData.endTime = new Date();
+			controller.addVisit(previousData).then(function(){
+				console.log("inserted visit");
+			});
+			controller.addVisit(previousData).then(function(){
+				console.log("inserted visit");
+			});
+			allUsers[data.userID] = data;
+		}else if (distance < 10 && timeDiff < 10){
+			allUsers[data.userID] = previousData;
+		}else if (distance > 10 && timeDiff < 10){
+			allUsers[data.userID] = data;
+		}
+
+
+
+		io.emit('refreshEvent', usersTracker);
 	})
 
 })

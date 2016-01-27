@@ -5,8 +5,8 @@ var sequelize = new Sequelize(process.env.ENV_DB || 'pinpointdb', 'postgres', ''
 
 var Visits = sequelize.define('Visits', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-  latitude: { type: Sequelize.FLOAT, unique: false, notNull: true },
-  longitude: { type: Sequelize.FLOAT, unique: false, notNull: true },
+  latitude: { type: Sequelize.DOUBLE, unique: false, notNull: true },
+  longitude: { type: Sequelize.DOUBLE, unique: false, notNull: true },
   startTime: { type: Sequelize.DATE, unique: false, notNull: true },
   endTime: { type: Sequelize.DATE, unique: false, notNull: false },
   address: { type: Sequelize.STRING, unique: false, notNull: false }
@@ -41,6 +41,9 @@ var init = function() {
 
   Tags.belongsToMany(Visits, { through: 'tags_visits', foreignKey: 'tag_id' });
   Visits.belongsToMany(Tags, { through: 'tags_visits', foreignKey: 'visit_id' });
+
+  Users.destroy({where: {}}).then(function () {});
+  Visits.destroy({where: {}}).then(function () {});
 
   sequelize.sync();
 };

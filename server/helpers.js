@@ -1,6 +1,5 @@
 //positions: [latitude, longitude]
 var ALLOWED_DISTANCE = 10; // in meters
-
 var geolib = require('geolib');
 
 //returns distance in meters between two positions
@@ -22,10 +21,12 @@ var User = function() {
   this.lastPos = null;
   this.currPos = null;
 };
+
 User.prototype.updatePosition = function(newPos) {
   this.lastPos = this.currPos;
   this.currPos = newPos;
 };
+
 // Called right after updating position to update curr visit
 User.prototype.updateCurrentVisit = function() {
   //distance between current position and 5 minutes ago

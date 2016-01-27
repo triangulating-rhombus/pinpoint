@@ -36,3 +36,9 @@ ERROR:  relation "users" does not exist at character 15
 STATEMENT:  select * from users;
 ERROR:  relation "users" does not exist at character 15
 STATEMENT:  select * from Users;
+ERROR:  syntax error at or near "select" at character 47
+STATEMENT:  ALTER SEQUENCE "Visits_id_seq" RESTART WITH 1
+	select * from "Visits";
+ERROR:  duplicate key value violates unique constraint "Users_pkey"
+DETAIL:  Key (id)=(2) already exists.
+STATEMENT:  INSERT INTO "Users" DEFAULT VALUES RETURNING *;
