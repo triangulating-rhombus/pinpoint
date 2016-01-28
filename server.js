@@ -23,38 +23,35 @@ db.init();
 var allUsers = {};
 var usersTracker = {};
 
+app.post('/test', function (req, res) {
+  res.send('POST recieved');
+});
+
 io.on('connection', function(client) {
 	console.log("Client connected!");
-
 	client.on("connected", function(data) {
-
-		controller.addTag(data.tags)
-
+		controller.addTag(data.tags).then(function(){
+			controller.addUser(data.userID).then(function(){
+				controller.addTagsUsers(data.tags, data.userID);
+			});
+		});
 		console.log(data.userID + " has connected!")
 		var id = data.userID;
 		allUsers[id] = data;
 		usersTracker[id] = data;
 		//console.log(new Date(allUsers[1].time))
-
 		io.emit('refreshEvent', allUsers);
-
-		controller.addUser(data.userID).then(function(){
-		});
-
 	})
-
 	client.on("disconnected", function(data) {
 		delete usersTracker[data.userID];
 		delete allUsers[data.userID];
 		io.emit('refreshEvent', allUsers);
 	})
-
 	client.on("update", function(data) {
 		usersTracker[data.userID] = data;
 		var previousData = allUsers[data.userID];
 		var distance = visitHelper.getDistance([previousData.latitude, previousData.longitude],[data.latitude, data.longitude]);
 		var timeDiff = visitHelper.timeDifference(previousData.time, data.time);
-
 		if (distance >= 10 && timeDiff >= 10){
 			previousData.endTime = new Date();
 			controller.addVisit(previousData).then(function(obj){
@@ -66,9 +63,6 @@ io.on('connection', function(client) {
 		}else if (distance > 10 && timeDiff < 10){
 			allUsers[data.userID] = data;
 		}
-
-
-
 		io.emit('refreshEvent', usersTracker);
 	})
 

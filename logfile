@@ -62,3 +62,5 @@ STATEMENT:  DELETE FROM "Visits"
 ERROR:  duplicate key value violates unique constraint "Tags_name_key"
 DETAIL:  Key (name)=(football) already exists.
 STATEMENT:  INSERT INTO "Tags" ("id","name") VALUES (DEFAULT,'football'),(DEFAULT,'badminton');
+FATAL:  lock file "postmaster.pid" already exists
+HINT:  Is another postmaster (PID 708) running in data directory "/Users/Wayne/Desktop/pinpoint/pinpointdb"?

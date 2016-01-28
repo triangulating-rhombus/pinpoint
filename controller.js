@@ -19,10 +19,13 @@ var addVisit = function (visit) {
 };
 
 var addTag = function (tags) {
-  for (var i = 0; i < tags.length; i++){
-    model.Tags
-    .findOrCreate({where: {name: tags[i]}})
-  }
+
+return Promise.map(tags, function(tag) {
+    // Promise.map awaits for returned promises as well.
+    return model.Tags.findOrCreate({where: {name: tag}})
+})
+
+
 };
 
 var addTagsVisits = function(visit, visitID){
@@ -32,14 +35,50 @@ var addTagsVisits = function(visit, visitID){
     model.Tags.findOne({ where: {name: tag} }).then(function(project) {
       var tagID = project.dataValues.id;
 
-      var visit_tag = model.tags_visits.build({
+      model.tags_visits.findOrCreate({where: {
         tag_id: tagID,
         visit_id: visitID
-      })
+      }})
 
-      visit_tag.save().then(function() {
-        console.log("saved: " + tagID);
-      })
+      // var visit_tag = model.tags_visits.build({
+      //   tag_id: tagID,
+      //   visit_id: visitID
+      // })
+
+      // visit_tag.save().then(function() {
+      //   console.log("saved: " + tagID);
+      // })
+
+    })
+  }
+}
+
+var addTagsUsers = function(tags, userID){
+
+  model.tags_users.destroy({
+      where: {
+        id: userID
+      }
+  })
+
+  for (var i = 0; i < tags.length; i++){
+    var tag = tags[i];
+    model.Tags.findOne({ where: {name: tag} }).then(function(project) {
+      var tagID = project.dataValues.id;
+
+      model.tags_users.findOrCreate({where: {
+        tag_id: tagID,
+        user_id: userID
+      }})
+
+      // var user_tag = model.tags_users.build({
+      //   tag_id: tagID,
+      //   user_id: userID
+      // })
+
+      // user_tag.save().then(function() {
+      //   console.log("saved: " + tagID);
+      // })
 
     })
   }
@@ -49,5 +88,6 @@ module.exports = {
   addUser: addUser,
   addVisit: addVisit,
   addTag: addTag,
-  addTagsVisits:addTagsVisits
+  addTagsVisits:addTagsVisits,
+  addTagsUsers:addTagsUsers
 };
