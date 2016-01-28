@@ -8,63 +8,74 @@ import React, {
   StyleSheet
 } from 'react-native';
 
-export default class Login extends Component  {
-  constructor(props){
-    super(props)
-    this.state = {
-      username:'',
-      password:''
-    };
-  }
-  submitUser(){
-      
-    Alert.alert(`Username: ${this.state.username} Password ${this.state.password}`);
-    this.props.checkUser(this.state);
+import Button from "./button.js";
+
+export const Login = (props) => {
+
+  // MVP: TODO:Create a store for this
+  var user = {
+    username: '',
+    password: ''    
   }
 
-  test(){
-    console.log('testing login view',this.props);
-    if(!this.props.userProfile.username){
+  const submitUser = () => {
+    Alert.alert(`Username: ${user.username} Password ${user.password}`);
+    props.checkUser(user);
+    props.navigator.push({id:'MapView'});
+  }
+
+  const test = () => {
+    if(!props.userProfile.username){
       return "Please Sign In"
     } else {
-      return `Hello ${this.props.userProfile.username}`
+      console.log("Login props:", props)
+      return `Hello ${props.userProfile.username}`
     }
   }
 
-  render(){
-    return (
-      <View>
-        <TextInput 
-          style={styles.inputStyle} 
-          onChangeText={ (text) => this.setState({username:text}) } 
-          placeholder="Enter your username" 
-        />
+  return (
+    <View style={styles.container}>
 
-        <TextInput 
-          style={styles.inputStyle} 
-          placeholder="Enter your password"
-          onChangeText={ (text) => this.setState({password:text}) }  
-        />
-        <TouchableHighlight onPress={this.submitUser.bind(this)} >
-          <Text>Submit</Text>
-        </TouchableHighlight>
+      <Text style={styles.formLabel}>Username</Text>
+      <TextInput 
+        style={styles.inputStyle} 
+        onChangeText={ (text) => user.username = text } 
+        placeholder="Enter your username" 
+      />
+
+      <Text style={styles.formLabel}>Password:</Text>
+      <TextInput 
+        style={styles.inputStyle} 
+        placeholder="Enter your password"
+        secureTextEntry={true}
+        onChangeText={ (text) => user.password = text }  
+      />
+      <Button text='Login' clickAction={submitUser} />
 
 
-        <Text>{this.test.call(this)}</Text> 
+      <Text>{test.call(this)}</Text> 
 
-      </View>
-    );
-  }
-
-};
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
+  container: {
+    flex:1,
+    justifyContent:'center',
+    alignItems: 'center'
+  },
   inputStyle:{
     height:40,
+    padding:5,
+    borderRadius:5,
     borderColor: 'gray',
     marginBottom:10,
     borderWidth:1,
     width:300
+  },
+  formLabel:{
+    fontSize:20
   }
 });
 
