@@ -1,0 +1,35 @@
+<html>
+<head>
+	<title>Test file</title>
+</head>
+<body>
+<p> Welcome to the Pinpoint test page where you will be served sockets </p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.4/socket.io.js"></script>
+
+<script>
+
+  var socket = io();
+
+
+  setTimeout(function(){
+    socket.emit('connected', { userID: 2, longitude: 120.22, latitude: 11.22, time: new Date(), tags: ["soccer", "badminton", "art"]});
+    console.log("first connect")
+  }, 1000);
+
+  setTimeout(function(){
+    socket.emit('update', { userID: 2, longitude: 120.22, latitude: 11.21, time: new Date(), tags: ["soccer", "badminton", "art"]});
+    console.log("second connect")
+  }, 11000);
+
+
+
+
+  socket.on("refreshEvent", function(data){
+  	console.log(data);
+  });
+</script>
+
+</body>
+
+</html>

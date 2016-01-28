@@ -11,13 +11,15 @@
   "author": "",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "geolib": "^2.0.18",
+    "body-parser": "^1.14.2",
     "express": "^4.13.4",
+    "geolib": "^2.0.18",
     "pg": "^4.4.3",
     "pg-hstore": "^2.3.2",
     "react": "^0.14.5",
     "react-dom": "^0.14.5",
     "sequelize": "^3.18.0",
+    "socket.io": "^1.4.4",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
@@ -27,9 +29,8 @@
     "babel-preset-react": "^6.3.13",
     "webpack": "^1.12.9"
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/triangulating-rhombus/pinpoint.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/triangulating-rhombus/pinpoint.git"
   }
-
 }

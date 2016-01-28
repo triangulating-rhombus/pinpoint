@@ -5,11 +5,11 @@ var sequelize = new Sequelize(process.env.ENV_DB || 'pinpointdb', 'postgres', ''
 
 var Visits = sequelize.define('Visits', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-  latitude: { type: Sequelize.FLOAT, unique: false, notNull: true },
-  longitude: { type: Sequelize.FLOAT, unique: false, notNull: true },
+  latitude: { type: Sequelize.DOUBLE, unique: false, notNull: true },
+  longitude: { type: Sequelize.DOUBLE, unique: false, notNull: true },
   startTime: { type: Sequelize.DATE, unique: false, notNull: true },
-  endTime: { type: Sequelize.DATE, unique: false, notNull: true },
-  address: { type: Sequelize.STRING, unique: false, notNull: true }
+  endTime: { type: Sequelize.DATE, unique: false, notNull: false },
+  address: { type: Sequelize.STRING, unique: false, notNull: false }
 }, { timestamps: false });
 
 var Users = sequelize.define('Users', {
@@ -18,7 +18,7 @@ var Users = sequelize.define('Users', {
 
 var Tags = sequelize.define('Tags', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: Sequelize.STRING, notNull: true }
+  name: { type: Sequelize.STRING, notNull: true, unique: true }
 }, { timestamps: false });
 
 var tags_users = sequelize.define('tags_users', {
@@ -42,11 +42,19 @@ var init = function() {
   Tags.belongsToMany(Visits, { through: 'tags_visits', foreignKey: 'tag_id' });
   Visits.belongsToMany(Tags, { through: 'tags_visits', foreignKey: 'visit_id' });
 
+  Users.destroy({where: {}}).then(function () {});
+  Visits.destroy({where: {}}).then(function () {});
+  tags_visits.destroy({where: {}}).then(function () {});
+
   sequelize.sync();
 };
 
 
 
 module.exports = {
-  init: init
+  Users:Users,
+  Visits:Visits,
+  Tags:Tags,
+  init: init,
+  tags_visits: tags_visits
 };
