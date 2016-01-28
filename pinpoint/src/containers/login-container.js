@@ -5,18 +5,19 @@ import checkUser from '../actions/checkUserAction';
 import { Component } from 'react-native';
 
 
+// We're binding the checkuser action to login component 
 function mapDispatchToProps(dispatch){
   return bindActionCreators({ checkUser }, dispatch);
 }
 
+// We're getting the application state from the store (via connect below) and sending it via props to Login
 function mapStateToProps(state) {
-  // Whatever gets returned from here will show up as props from BookList
   return {
     userProfile: state.userProfile
   };
 }
 
-//How do you write this so it's not so 'efficient'? It makes it confusing 
+//This is just the React/Redux way of connecting this login container to the omniscient store.
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 
