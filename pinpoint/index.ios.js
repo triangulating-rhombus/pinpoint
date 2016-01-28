@@ -12,18 +12,17 @@ import React, {
   Navigator
 } from 'react-native';
 
-// import Login from './src/components/login';
-// Uncomment above once nagivation logic logic for routes->mapview is set up
+console.log("hello");
 
-import App from './src/components/mainApp.js'; 
+// import App from './src/components/mainApp.js'; 
 
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
-// Uncomment this later on
 import reducer from './src/reducers';
 
+//TODO: Make a mapView container 
 import MapView from './src/components/mapView';
 import Login from './src/containers/login-container';
 import Navigation from './src/routes/routes.js';
@@ -31,32 +30,19 @@ import Navigation from './src/routes/routes.js';
 // Apply a thunk middleware which makes an instaneous evaluation delayed (to be called later once something else finishes?)
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 
-// Give the store access to ALL reducers (combined reducers from index.js) 
-// const store = createStoreWithMiddleware(reducer);
+//Passing all the combined reducer into the store. If any one of those reducer's data changes, store will be alerted
+// and react will re-render all views 
+const store = createStoreWithMiddleware(reducer)
 
 // store.subscribe(() => {
 //   console.log('Username',store.getState());
 // });
 
-var ROUTES = {
-  Login: Login,
-  MapView: MapView
-}
-
-
 class Pinpoint extends Component {
-
-  // renderScene(route, navigator){
-  //   console.log("test", ROUTES.MapView);
-  //   var Component = ROUTES[route.name];
-  //   console.log("hello", Component);
-  //   return <Component navigator={navigator} name={route.name}/>
-  // }
-
-
+  // Provider will pass down the application state to all components that navigation requires.
   render() {
     return (
-      <Provider store={createStoreWithMiddleware(reducer)}>
+      <Provider store={store}>
         <Navigation />
       </Provider>
     );

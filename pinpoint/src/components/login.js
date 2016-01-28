@@ -17,13 +17,14 @@ export const Login = (props) => {
     username: '',
     password: ''    
   }
-
+  // Will pass the user object to checkUser 
   const submitUser = () => {
     Alert.alert(`Username: ${user.username} Password ${user.password}`);
     props.checkUser(user);
     props.navigator.push({id:'MapView'});
   }
 
+  //This is test to ensure that the data is coming full circle from the store 
   const test = () => {
     if(!props.userProfile.username){
       return "Please Sign In"
