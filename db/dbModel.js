@@ -18,7 +18,7 @@ var Users = sequelize.define('Users', {
 
 var Tags = sequelize.define('Tags', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: Sequelize.STRING, notNull: true }
+  name: { type: Sequelize.STRING, notNull: true, unique: true }
 }, { timestamps: false });
 
 var tags_users = sequelize.define('tags_users', {
@@ -44,6 +44,7 @@ var init = function() {
 
   Users.destroy({where: {}}).then(function () {});
   Visits.destroy({where: {}}).then(function () {});
+  tags_visits.destroy({where: {}}).then(function () {});
 
   sequelize.sync();
 };
@@ -53,5 +54,7 @@ var init = function() {
 module.exports = {
   Users:Users,
   Visits:Visits,
-  init: init
+  Tags:Tags,
+  init: init,
+  tags_visits: tags_visits
 };

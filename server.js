@@ -27,6 +27,9 @@ io.on('connection', function(client) {
 	console.log("Client connected!");
 
 	client.on("connected", function(data) {
+
+		controller.addTag(data.tags)
+
 		console.log(data.userID + " has connected!")
 		var id = data.userID;
 		allUsers[id] = data;
@@ -54,11 +57,8 @@ io.on('connection', function(client) {
 
 		if (distance >= 10 && timeDiff >= 10){
 			previousData.endTime = new Date();
-			controller.addVisit(previousData).then(function(){
-				console.log("inserted visit");
-			});
-			controller.addVisit(previousData).then(function(){
-				console.log("inserted visit");
+			controller.addVisit(previousData).then(function(obj){
+				controller.addTagsVisits(previousData, obj[0].dataValues.id);
 			});
 			allUsers[data.userID] = data;
 		}else if (distance < 10 && timeDiff < 10){

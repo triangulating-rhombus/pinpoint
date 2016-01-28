@@ -13,30 +13,15 @@
 
 
   setTimeout(function(){
-    socket.emit('connected', { userID: 2, longitude: 120.22, latitude: 11.22, time: new Date(), tags: ["football", "badminton"]});
+    socket.emit('connected', { userID: 2, longitude: 120.22, latitude: 11.22, time: new Date(), tags: ["soccer", "badminton", "art"]});
     console.log("first connect")
   }, 1000);
 
   setTimeout(function(){
-    socket.emit('update', { userID: 2, longitude: 120.22, latitude: 11.2202, time: new Date(), tags: ["football", "badminton"]});
+    socket.emit('update', { userID: 2, longitude: 120.22, latitude: 11.21, time: new Date(), tags: ["soccer", "badminton", "art"]});
     console.log("second connect")
-  }, 5000);
+  }, 11000);
 
-
-    setTimeout(function(){
-    socket.emit('update', { userID: 2, longitude: 150.22, latitude: 11.2202, time: new Date(), tags: ["football", "badminton"]});
-    console.log("third connect")
-  }, 12000);
-
-    setTimeout(function(){
-    socket.emit('update', { userID: 2, longitude: 150.223, latitude: 13.2202, time: new Date(), tags: ["football", "badminton"]});
-    console.log("fourth connect")
-  }, 23000);
-
-     setTimeout(function(){
-    socket.emit('update', { userID: 2, longitude: 151.223, latitude: 13.2202, time: new Date(), tags: ["football", "badminton"]});
-    console.log("fifth connect")
-  }, 34000);
 
 
 

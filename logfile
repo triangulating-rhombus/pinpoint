@@ -42,3 +42,23 @@ STATEMENT:  ALTER SEQUENCE "Visits_id_seq" RESTART WITH 1
 ERROR:  duplicate key value violates unique constraint "Users_pkey"
 DETAIL:  Key (id)=(2) already exists.
 STATEMENT:  INSERT INTO "Users" DEFAULT VALUES RETURNING *;
+LOG:  database system was interrupted; last known up at 2016-01-27 12:00:44 PST
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/19328F8
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+FATAL:  lock file "postmaster.pid" already exists
+HINT:  Is another postmaster (PID 708) running in data directory "/Users/Wayne/Desktop/pinpoint/pinpointdb"?
+FATAL:  database "pinpoint" does not exist
+FATAL:  database "pinpointd" does not exist
+ERROR:  schema "pinpointdb" does not exist
+STATEMENT:  drop schema pinpointdb cascade;
+ERROR:  relation "Users" does not exist at character 13
+STATEMENT:  DELETE FROM "Users"
+ERROR:  relation "Visits" does not exist at character 13
+STATEMENT:  DELETE FROM "Visits"
+ERROR:  duplicate key value violates unique constraint "Tags_name_key"
+DETAIL:  Key (name)=(football) already exists.
+STATEMENT:  INSERT INTO "Tags" ("id","name") VALUES (DEFAULT,'football'),(DEFAULT,'badminton');
