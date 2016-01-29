@@ -2,7 +2,7 @@ import { Component } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import checkUser from '../actions/checkUserAction';
-import { Login } from '../components/login.js';
+import Login from '../components/login.js';
 
 // Makes userProfile state available to login component
 function mapStateToProps(state) {

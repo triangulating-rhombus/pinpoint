@@ -9,55 +9,6 @@ import React, {
 
 import Button from "./button.js";
 
-export const Login = (props) => {
-
-  // MVP: TODO:Create a store for this
-  var user = {
-    username: '',
-    password: '',
-  }
-
-  // Will pass the user object to checkUser 
-  const submitUser = () => {
-    props.checkUser(user, props.navigator );
-  }
-
-  //This is test to ensure that the data is coming full circle from the store 
-  const test = () => {
-    if(!props.userProfile.username){
-      return "Please Sign In"
-    } else {
-      console.log("Login props:", props)
-      return `Hello ${props.userProfile.username}`
-    }
-  }
-
-  return (
-    <View style={styles.container}>
-
-      <Text style={styles.formLabel}>Username</Text>
-      <TextInput 
-        style={styles.inputStyle} 
-        onChangeText={ (text) => user.username = text } 
-        placeholder="Enter your username" 
-      />
-
-      <Text style={styles.formLabel}>Password:</Text>
-      <TextInput 
-        style={styles.inputStyle} 
-        placeholder="Enter your password"
-        secureTextEntry={true}
-        onChangeText={ (text) => user.password = text }  
-      />
-      <Button text='Login' clickAction={submitUser} />
-
-
-      <Text>{test.call(this)}</Text> 
-
-    </View>
-  )
-}
-
 const styles = StyleSheet.create({
   container: {
     flex:1,
@@ -77,4 +28,62 @@ const styles = StyleSheet.create({
     fontSize:20
   }
 });
+
+export default class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { username: '', password: '' };
+  }
+
+  // Passes username and password to checkUser 
+  submitUser() {
+    this.props.checkUser(
+      {
+        username: this.state.username,
+        password: this.state.password
+      },
+      this.props.navigator
+    );
+  }
+
+  //This is test to ensure that the data is coming full circle from the store 
+  test() {
+    if(!this.props.userProfile.username){
+      return "Please Sign In"
+    } else {
+      console.log("Login props:", this.props)
+      return `Hello ${this.props.userProfile.username}`
+    }
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+
+        <Text style={styles.formLabel}>Username</Text>
+        <TextInput 
+          style={styles.inputStyle} 
+          value={this.state.username}
+          onChangeText={ username => this.setState({ username }) }
+          placeholder="Enter your username" 
+        />
+
+        <Text style={styles.formLabel}>Password:</Text>
+        <TextInput 
+          style={styles.inputStyle} 
+          value={this.state.password}
+          secureTextEntry={true}
+          onChangeText={ password => this.setState({ password }) }  
+          placeholder="Enter your password"
+        />
+
+        <Button text="Login" clickAction={this.submitUser.bind(this)} />
+
+
+        <Text>{this.test.call(this)}</Text> 
+
+      </View>
+    );
+  }
+}
 
