@@ -7,6 +7,11 @@ import Login from '../containers/login-container.js';
 import MapView from '../containers/map-container.js';
 
 class Navigation extends Component {
+
+  constructor(props){
+    super(props)
+  }
+
   render() {
     return (
       <Navigator

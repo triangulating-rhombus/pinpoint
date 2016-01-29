@@ -3,9 +3,10 @@ import checkUser from '../actions/checkUserAction';
 
 
 export default function (state = {}, action) {
+
   switch(action.type) {
     case CHECK_USER:
-      return {...state, username:action.payload.username };
+      return {...state, username: action.payload.username };
     default:
       return state;
   }
