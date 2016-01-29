@@ -6,7 +6,7 @@ import React, {
 
 const Map = (props) => {
   
-  console.log("Receiving props in MapView component:", props);
+  console.log("Receiving props in MapView component:", props );
   return (
     <MapView style={styles.container}> 
     </MapView>

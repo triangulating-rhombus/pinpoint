@@ -17,7 +17,6 @@ class Navigation extends Component {
   }
 
   navigatorRenderScene(route, navigator) {
-    _navigator = navigator;
     switch (route.id) {
       case 'Login':
         return (<Login navigator={navigator} />);

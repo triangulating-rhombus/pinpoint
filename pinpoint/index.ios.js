@@ -14,8 +14,6 @@ import React, {
 
 console.log("hello");
 
-// import App from './src/components/mainApp.js'; 
-
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
@@ -37,7 +35,7 @@ const store = createStoreWithMiddleware(reducer)
 
 // This should actually be called after login
 // But we put it here for now for testing
-socket(store);
+// socket(store);
 
 // store.subscribe(() => {
 //   console.log('Username',store.getState());

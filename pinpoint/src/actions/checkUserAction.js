@@ -3,7 +3,7 @@ import { CHECK_USER } from '../constants/actionType';
 // Make an ajax request to the database to authenticate the user
 // Possibly we may initiliaze the socket.
 
-const server = 'http://localhost:3000';
+const server = 'http://localhost:3000/test';
 
 
 // We will want to modularize this out to a utils later, import the utils folder and use it in checkuser
@@ -30,7 +30,7 @@ const checkUser = (user) => {
  	return (dispatch) => {
  		fetchUserData(user)
  			.then( (response) => {
- 				return { type: CHECK_USER, payload: user }
+ 				return dispatch({ type: CHECK_USER, payload: user });
  			})
  			.catch( (error) => console.log(error));
  	}
