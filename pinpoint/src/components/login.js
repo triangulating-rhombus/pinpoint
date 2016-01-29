@@ -1,5 +1,4 @@
 import React, {
-  Alert,
   TouchableHighlight,
   TextInput,
   View,
@@ -15,13 +14,12 @@ export const Login = (props) => {
   // MVP: TODO:Create a store for this
   var user = {
     username: '',
-    password: ''    
+    password: '',
   }
+
   // Will pass the user object to checkUser 
   const submitUser = () => {
-    Alert.alert(`Username: ${user.username} Password ${user.password}`);
-    props.checkUser(user);
-    props.navigator.push({id:'MapView'});
+    props.checkUser(user, props.navigator );
   }
 
   //This is test to ensure that the data is coming full circle from the store 

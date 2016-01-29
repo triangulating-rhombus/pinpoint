@@ -7,6 +7,11 @@ import Login from '../containers/login-container.js';
 import MapView from '../containers/map-container.js';
 
 class Navigation extends Component {
+
+  constructor(props){
+    super(props)
+  }
+
   render() {
     return (
       <Navigator
@@ -17,7 +22,6 @@ class Navigation extends Component {
   }
 
   navigatorRenderScene(route, navigator) {
-    _navigator = navigator;
     switch (route.id) {
       case 'Login':
         return (<Login navigator={navigator} />);

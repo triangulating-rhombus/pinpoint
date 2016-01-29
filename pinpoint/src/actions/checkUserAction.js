@@ -1,9 +1,12 @@
 import { CHECK_USER } from '../constants/actionType';
 
+import Socket from '../socket/socket.js';
+import Store from '../../index.ios';
+
 // Make an ajax request to the database to authenticate the user
 // Possibly we may initiliaze the socket.
 
-const server = 'http://localhost:3000';
+const server = 'http://localhost:3000/test';
 
 
 // We will want to modularize this out to a utils later, import the utils folder and use it in checkuser
@@ -26,11 +29,18 @@ The login container has checkUser action function bound and send it to the reduc
 where it will listen to an action type of CHECK USER. 
  */
 
-const checkUser = (user) => {
+const checkUser = (user, navigator) => {
  	return (dispatch) => {
  		fetchUserData(user)
  			.then( (response) => {
- 				return { type: CHECK_USER, payload: user }
+
+        navigator.push({id:'MapView'});
+        // After the user is authenticated create a connection to the store
+        // We are now listening for socket events
+        Socket(Store);
+
+
+ 				return dispatch({ type: CHECK_USER, payload: user });
  			})
  			.catch( (error) => console.log(error));
  	}

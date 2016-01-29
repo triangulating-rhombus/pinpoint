@@ -64,3 +64,8 @@ DETAIL:  Key (name)=(football) already exists.
 STATEMENT:  INSERT INTO "Tags" ("id","name") VALUES (DEFAULT,'football'),(DEFAULT,'badminton');
 FATAL:  lock file "postmaster.pid" already exists
 HINT:  Is another postmaster (PID 708) running in data directory "/Users/Wayne/Desktop/pinpoint/pinpointdb"?
+LOG:  database system was shut down at 2016-01-28 19:59:05 PST
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+LOG:  incomplete startup packet
