@@ -35,9 +35,9 @@ export default class Login extends Component {
     this.state = { username: '', password: '' };
   }
 
-  // Passes username and password to checkUser 
+  // Passes username and password to loginUser 
   submitUser() {
-    this.props.checkUser(
+    this.props.loginUser(
       {
         username: this.state.username,
         password: this.state.password
@@ -48,11 +48,11 @@ export default class Login extends Component {
 
   //This is test to ensure that the data is coming full circle from the store 
   test() {
-    if(!this.props.userProfile.username){
+    if(!this.props.user.username){
       return "Please Sign In"
     } else {
       console.log("Login props:", this.props)
-      return `Hello ${this.props.userProfile.username}`
+      return `Hello ${this.props.user.username}`
     }
   }
 
