@@ -63,6 +63,10 @@ io.on('connection', function(client) {
 		}else if (distance > 10 && timeDiff < 10){
 			allUsers[data.userID] = data;
 		}
+		controller.getHotSpots("soccer").then(function(data){
+			console.log(data);
+		});
+		
 		io.emit('refreshEvent', usersTracker);
 	})
 
