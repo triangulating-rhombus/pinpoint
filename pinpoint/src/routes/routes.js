@@ -17,6 +17,7 @@ class Navigation extends Component {
       <Navigator
         initialRoute={{id: 'Login'}}
         renderScene={this.navigatorRenderScene}
+        configureScene = { () => Navigator.SceneConfigs.FloatFromRight }
       />
     );
   }
@@ -25,10 +26,12 @@ class Navigation extends Component {
     switch (route.id) {
       case 'Login':
         return (<Login navigator={navigator} />);
+      case 'Signup':
+        return (<Login navigator={navigator} />);
       case 'MapView':
         return (<MapView navigator={navigator} />);
       default:
-        return (<Login navigator={navigator}/>);
+        return (<Login navigator={navigator} />);
     }
   }
 }
