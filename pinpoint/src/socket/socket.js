@@ -1,4 +1,3 @@
-import checkUser from '../actions/checkUserAction';
 import io from '../../node_modules/socket.io-client/socket.io';
 
 export default function (store) {

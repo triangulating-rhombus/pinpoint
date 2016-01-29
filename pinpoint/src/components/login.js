@@ -7,56 +7,10 @@ import React, {
   StyleSheet
 } from 'react-native';
 
+import Socket from '../socket/socket.js';
+import Store from '../../index.ios';
+
 import Button from "./button.js";
-
-export const Login = (props) => {
-
-  // MVP: TODO:Create a store for this
-  var user = {
-    username: '',
-    password: '',
-  }
-
-  // Will pass the user object to checkUser 
-  const submitUser = () => {
-    props.checkUser(user, props.navigator );
-  }
-
-  //This is test to ensure that the data is coming full circle from the store 
-  const test = () => {
-    if(!props.userProfile.username){
-      return "Please Sign In"
-    } else {
-      console.log("Login props:", props)
-      return `Hello ${props.userProfile.username}`
-    }
-  }
-
-  return (
-    <View style={styles.container}>
-
-      <Text style={styles.formLabel}>Username</Text>
-      <TextInput 
-        style={styles.inputStyle} 
-        onChangeText={ (text) => user.username = text } 
-        placeholder="Enter your username" 
-      />
-
-      <Text style={styles.formLabel}>Password:</Text>
-      <TextInput 
-        style={styles.inputStyle} 
-        placeholder="Enter your password"
-        secureTextEntry={true}
-        onChangeText={ (text) => user.password = text }  
-      />
-      <Button text='Login' clickAction={submitUser} />
-
-
-      <Text>{test.call(this)}</Text> 
-
-    </View>
-  )
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -77,4 +31,75 @@ const styles = StyleSheet.create({
     fontSize:20
   }
 });
+
+export default class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { username: '', password: '' };
+  }
+
+  componentDidUpdate() {
+    const { user } = this.props;
+    console.log("component received new props:", user);
+
+    if (user.loggedIn) {
+      Socket(Store); // initialize socket connection to server
+    }
+
+    if (user.shouldRedirect) {
+      this.props.navigator.push({ id: 'MapView' });
+    }
+  }
+
+  // Passes username and password to loginUser 
+  onSubmit() {
+    this.props.loginUser(
+      {
+        username: this.state.username,
+        password: this.state.password
+      },
+    );
+  }
+
+  //This is test to ensure that the data is coming full circle from the store 
+  test() {
+    const { user } = this.props;
+    if (user.username) {
+      console.log("Login props:", this.props);
+      return `Hello ${user.username}`;
+    } else {
+      return "Please Sign In"
+    }
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+
+        <Text style={styles.formLabel}>Username</Text>
+        <TextInput 
+          style={styles.inputStyle} 
+          value={this.state.username}
+          onChangeText={ username => this.setState({ username }) }
+          placeholder="Enter your username" 
+        />
+
+        <Text style={styles.formLabel}>Password:</Text>
+        <TextInput 
+          style={styles.inputStyle} 
+          value={this.state.password}
+          secureTextEntry={true}
+          onChangeText={ password => this.setState({ password }) }  
+          placeholder="Enter your password"
+        />
+
+        <Button text="Login" clickAction={this.onSubmit.bind(this)} />
+
+
+        <Text>{this.test.call(this)}</Text> 
+
+      </View>
+    );
+  }
+}
 

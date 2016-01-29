@@ -1,23 +1,19 @@
-import { Login } from '../components/login.js';
+import { Component } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import checkUser from '../actions/checkUserAction';
-import { Component } from 'react-native';
+import loginUser from '../actions/action_login_user';
+import Login from '../components/login.js';
 
+// Makes user state available to component
+function mapStateToProps({ user }) {
+  return { user };
+}
 
-// We're binding the checkuser action to login component 
+// Makes loginUser action available to component 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({ checkUser }, dispatch);
+  return bindActionCreators({ loginUser }, dispatch);
 }
 
-// We're getting the application state from the store (via connect below) and sending it via props to Login
-function mapStateToProps(state) {
-  return {
-    userProfile: state.userProfile
-  };
-}
-
-//This is just the React/Redux way of connecting this login container to the omniscient store.
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 
