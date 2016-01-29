@@ -39,11 +39,15 @@ export default class Login extends Component {
   }
 
   componentDidUpdate() {
-    const { user } = this.props;
-    console.log("component received new props:", user);
+    const { user, socket } = this.props;
 
-    if (user.loggedIn) {
-      Socket(Store); // initialize socket connection to server
+    if(user.loggedIn && !socket) {
+      // send this socket variable to a store
+      // create an action
+      // send it to a reducer
+      this.props.addSocket();
+
+      console.log('socket found in store',this.props.socket);
     }
 
     if (user.shouldRedirect) {
@@ -73,6 +77,7 @@ export default class Login extends Component {
   }
 
   render() {
+
     return (
       <View style={styles.container}>
 

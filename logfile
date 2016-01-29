@@ -69,3 +69,5 @@ LOG:  MultiXact member wraparound protections are now enabled
 LOG:  database system is ready to accept connections
 LOG:  autovacuum launcher started
 LOG:  incomplete startup packet
+LOG:  incomplete startup packet
+LOG:  incomplete startup packet

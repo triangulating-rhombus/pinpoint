@@ -12,17 +12,30 @@ class Map extends Component {
   }
 
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-          var initialPosition = JSON.stringify(position);
-          console.log(initialPosition);
-        },
-        (error) => alert(error.message),
-        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
-      this.watchID = navigator.geolocation.watchPosition((position) => {
-        var lastPosition = JSON.stringify(position);
-      });
+
+    let success = (position) => {
+      // console.log('POSITION', position);
+    }
+
+    let error = (error) => {
+      console.log('ERROR', error);
+    }
+
+    let watchCallback = (position) => {
+      // console.log('Updating Position',position);
+    };
+
+    let options = {
+      enableHighAccuracy: false,
+      timeout: 5000,
+      maximumAge: 0
+    };
+
+    navigator.geolocation.getCurrentPosition(success, error);
+
+    // Dispatch an action here
+    navigator.geolocation.watchPosition(watchCallback, error, options)
+
   }
 
   render(){
@@ -30,9 +43,9 @@ class Map extends Component {
       <MapView 
         style={styles.container}
         showsUserLocation={true}
-        followUserLocation={true}
-      >
-      </MapView>
+        followUserLocation={false}
+      />
+
     );   
   }
 
