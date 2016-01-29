@@ -1,6 +1,25 @@
 var model = require('./db/dbModel');
 var Promise = require('bluebird');
 
+var getHotSpots = function (tag) {
+  return model.Tags.findAll({ 
+    where: {
+      name: tag
+    },
+    include: [ model.Visits ]
+  }).then(function(locations) {
+
+    var visits = locations[0].dataValues.Visits;
+    visits = visits.map(function(visit){
+      //return visit.dataValues;
+      var latitude = visit.dataValues.latitude;
+      var longitude = visit.dataValues.longitude;
+      return {latitude:latitude, longitude:longitude};
+    });
+    return visits;
+  })
+};
+
 var addUser = function (user) {
   return model.Users
     .findOrCreate({where: {id: user}})
@@ -89,5 +108,6 @@ module.exports = {
   addVisit: addVisit,
   addTag: addTag,
   addTagsVisits:addTagsVisits,
-  addTagsUsers:addTagsUsers
+  addTagsUsers:addTagsUsers,
+  getHotSpots:getHotSpots
 };
