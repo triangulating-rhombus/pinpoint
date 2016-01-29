@@ -7,6 +7,9 @@ import React, {
   StyleSheet
 } from 'react-native';
 
+import Socket from '../socket/socket.js';
+import Store from '../../index.ios';
+
 import Button from "./button.js";
 
 const styles = StyleSheet.create({
@@ -35,24 +38,37 @@ export default class Login extends Component {
     this.state = { username: '', password: '' };
   }
 
+  componentDidUpdate() {
+    const { user } = this.props;
+    console.log("component received new props:", user);
+
+    if (user.loggedIn) {
+      Socket(Store); // initialize socket connection to server
+    }
+
+    if (user.shouldRedirect) {
+      this.props.navigator.push({ id: 'MapView' });
+    }
+  }
+
   // Passes username and password to loginUser 
-  submitUser() {
+  onSubmit() {
     this.props.loginUser(
       {
         username: this.state.username,
         password: this.state.password
       },
-      this.props.navigator
     );
   }
 
   //This is test to ensure that the data is coming full circle from the store 
   test() {
-    if(!this.props.user.username){
-      return "Please Sign In"
+    const { user } = this.props;
+    if (user.username) {
+      console.log("Login props:", this.props);
+      return `Hello ${user.username}`;
     } else {
-      console.log("Login props:", this.props)
-      return `Hello ${this.props.user.username}`
+      return "Please Sign In"
     }
   }
 
@@ -77,7 +93,7 @@ export default class Login extends Component {
           placeholder="Enter your password"
         />
 
-        <Button text="Login" clickAction={this.submitUser.bind(this)} />
+        <Button text="Login" clickAction={this.onSubmit.bind(this)} />
 
 
         <Text>{this.test.call(this)}</Text> 

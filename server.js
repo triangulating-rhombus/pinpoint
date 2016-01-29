@@ -23,8 +23,9 @@ db.init();
 var allUsers = {};
 var usersTracker = {};
 
-app.post('/test', function (req, res) {
-  res.send('POST recieved');
+// Endpoint for dummy login - will simply respond to all POSTs
+app.post('/dummyAuthentication', function (req, res) {
+  res.send('POST received');
 });
 
 io.on('connection', function(client) {

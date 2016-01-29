@@ -1,42 +1,43 @@
-import { CHECK_USER } from '../constants/actionTypes';
+import { LOGIN_SUCCEEDED, LOGIN_FAILED } from '../constants/actionTypes';
 
-import Socket from '../socket/socket.js';
-import Store from '../../index.ios';
+const SERVER_URL = 'http://localhost:3000/dummyAuthentication';
 
-// Make an ajax request to the database to authenticate the user
-// Possibly we may initialize the socket.
-
-const server = 'http://localhost:3000/test';
+// POST username/password to server to request authentication
+// On response, initialize socket connection to server
 
 // Move this function to utils later
-const fetchUserData = (user) => {
+function fetchUserData(user) {
   // fetch is React Native's built-in function to make AJAX requests
-  return fetch(server, { 
+  return fetch(SERVER_URL, { 
   	method: 'POST',
   	headers: { 'Content-Type': 'application/json' },
   	body: JSON.stringify(user)
   });
 }
 
-// This function will be triggered by login.js dumb component
-// Unlike normal action creators, checkUser returns a FUNCTION instead of an action
-// This function will be called by thunk middleware to handle the promise
-// It will return the parameters from login (as user)
-// The login container has checkUser action function bound and send it to the reducer, 
-// where it will listen to an action type of CHECK USER.
+// Vanilla action creators
+function loginSucceeded(user) {
+  return {
+    type: LOGIN_SUCCEEDED,
+    payload: user
+  }
+}
+function loginFailed(error) {
+  return {
+    type: LOGIN_FAILED,
+    payload: error
+  }
+}
 
-export default function checkUser(user, navigator) {
+// Async action creator, which uses thunk to handle the promise
+// This returns a FUNCTION, which thunk will automatically intercept
+// Thunk will run the function and then dispatch the appropriate vanilla action creator
+export default function loginUser(user) {
  	return (dispatch) => {
- 		fetchUserData(user)
-		.then((response) => {
-      navigator.push({ id: 'MapView' });
-      // After the user is authenticated, create a connection to the store
-      // We are now listening for socket events
-      Socket(Store);
-
-			return dispatch({ type: CHECK_USER, payload: user });
-		})
-		.catch(error => console.log(error));
+ 		fetchUserData(user).then(
+      response => dispatch(loginSucceeded(user)),
+      error => dispatch(loginFailed(error))
+    );
  	}
 }
 
