@@ -3,13 +3,13 @@ import { CHECK_USER } from '../constants/actionType';
 // Make an ajax request to the database to authenticate the user
 // Possibly we may initiliaze the socket.
 
-const WAYNE_IP_TEST = 'http://10.8.32.166:3000/test';
+const server = 'http://localhost:3000';
 
 
 // We will want to modularize this out to a utils later, import the utils folder and use it in checkuser
 // fetch is react native's built in function of an ajax call (don't let the word FETCH fool you, it can make posts)
 const fetchUserData =  (user) => {
-  return fetch(WAYNE_IP_TEST, {
+  return fetch(server, {
   	method: 'POST',
   	headers: {
   		'Content-Type': 'application/json',
