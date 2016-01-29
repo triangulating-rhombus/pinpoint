@@ -9,7 +9,8 @@
     "react-native": "^0.18.1",
     "react-redux": "^4.0.6",
     "redux": "^3.0.6",
-    "redux-thunk": "^1.0.3"
+    "redux-thunk": "^1.0.3",
+    "socket.io-client": "^1.4.5"
   },
   "devDependencies": {
     "redux-devtools": "^3.0.1",

@@ -26,6 +26,7 @@ import reducer from './src/reducers';
 import MapView from './src/components/mapView';
 import Login from './src/containers/login-container';
 import Navigation from './src/routes/routes.js';
+import socket from './src/socket/socket';
 
 // Apply a thunk middleware which makes an instaneous evaluation delayed (to be called later once something else finishes?)
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
@@ -33,6 +34,10 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 //Passing all the combined reducer into the store. If any one of those reducer's data changes, store will be alerted
 // and react will re-render all views 
 const store = createStoreWithMiddleware(reducer)
+
+// This should actually be called after login
+// But we put it here for now for testing
+socket(store);
 
 // store.subscribe(() => {
 //   console.log('Username',store.getState());
