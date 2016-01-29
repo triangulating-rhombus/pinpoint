@@ -3,6 +3,8 @@
   Displays and predicts where people like you tend to hang out. Use it to find the local hotspots in real-time.
 
 ## Set-Up
+
+### Front-End
   
   1. If you don't already have it, download and install [XCode 7.2](https://itunes.apple.com/us/app/xcode/id497799835). This is a large (4GB+) program available free from the App Store, used to run the simulator for React Native.
     * Make sure you have Mac OSX 10.10.5 or later.
@@ -20,3 +22,21 @@
     * When the server is ready, another "Build Succeeded" notification should appear in the main window.
     * XCode will then automatically open a simulator window. The simulator may take a minute or two to render fully.
     * Assuming all went well, the simulator should show a page that says "Welcome to React Native!" and some other instructions.
+
+### Back-End
+  
+  1. If you don't already have Postgres, install it: `brew install postgres`
+  2. In the terminal, run:
+```
+> initdb pinpoint db 
+> pg_ctl -D pinpointdb -l logfile start
+> createdb pinpointdb
+```
+  3. Run the psql command line tool to create a role:
+```
+> psql pinpoint db
+$ CREATE ROLE postgres WITH superuser;
+$ ALTER ROLE postgres WITH login;
+$ \q
+```
+  4. Make sure you are in the root directory of the repo and then start the server: `nodemon server.js`
