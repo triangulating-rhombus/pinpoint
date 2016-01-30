@@ -1,6 +1,8 @@
 var model = require('./db/dbModel');
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
+var geocoder = require('node-geocoder');
+var http = require('http');
 
 var getHotSpots = function (tag) {
   return model.Tags.findAll({ 
@@ -67,9 +69,29 @@ var findUser = function(user){
     // })
 };
 
+var geocoderProvider = 'google';
+var httpAdapter = 'https';
+
+var extra = {
+    apiKey: 'AIzaSyCtsxXD-6Dl-dCzmvSDneXFvCknDYJ3GGA',
+    formatter: null
+};
+
+geocoder = geocoder(geocoderProvider, httpAdapter, extra);
+
+const geoCodeThis = () => {
+  geocoder.reverse({lat:37.782377, lon:-122.410168}, function(err, res) {
+      console.log(res[0].formattedAddress);
+  })
+}
+
 var addVisit = function (visit) {
+  return geocoder.reverse({lat:visit.latitude, lon:visit.longitude})
+    .then(function(loc){
   return model.Visits
-    .findOrCreate({where: {latitude: visit.latitude, longitude: visit.longitude, startTime: visit.time, endTime: visit.endTime}})
+    .findOrCreate({where: {latitude: visit.latitude, longitude: visit.longitude, address: loc[0].formattedAddress, 
+      startTime: visit.time, endTime: visit.endTime}})
+  })
 };
 
 var addTag = function (tags) {
@@ -146,5 +168,6 @@ module.exports = {
   addTagsUsers:addTagsUsers,
   getHotSpots:getHotSpots,
   authenticateUser:authenticateUser,
-  findUser:findUser
+  findUser:findUser,
+  geoCodeThis:geoCodeThis
 };
