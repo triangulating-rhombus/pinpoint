@@ -6,8 +6,6 @@ import React, {
   Component,
 } from 'react-native';
 
-import Socket from '../socket/socket.js';
-import Store from '../../index.ios';
 import styles from '../styles/styles';
 
 import Button from "./button.js";
@@ -64,6 +62,10 @@ export default class Signup extends Component {
     }
   }
 
+  backToLogin() {
+    this.props.navigator.pop();
+  }
+
   render() {
 
     return (
@@ -88,9 +90,10 @@ export default class Signup extends Component {
 
         <Button text="Signup" clickAction={this.onSubmit.bind(this)} />
 
-
-        <Text>{this.test.call(this)}</Text> 
+        {/*<Text style={styles.buttonLabel}>{this.test.call(this)}</Text> */}
+        
         <Text>{this.showError.call(this)}</Text>
+        <Button text="Back to Login" clickAction={this.backToLogin.bind(this)} />
       </View>
     );
   }

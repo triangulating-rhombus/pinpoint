@@ -6,8 +6,6 @@ import React, {
   Component,
 } from 'react-native';
 
-import Socket from '../socket/socket.js';
-import Store from '../../index.ios';
 import styles from '../styles/styles';
 
 import Button from "./button.js";
