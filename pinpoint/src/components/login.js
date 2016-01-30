@@ -4,11 +4,11 @@ import React, {
   View,
   Text,
   Component,
-  StyleSheet
 } from 'react-native';
 
 import Socket from '../socket/socket.js';
 import Store from '../../index.ios';
+import styles from '../styles/styles';
 
 import Button from "./button.js";
 
@@ -101,28 +101,3 @@ export default class Login extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex:1,
-    justifyContent: 'center', // vertical align
-    alignItems: 'center' // horizontal align
-  },
-  inputStyle: {
-    height:40,
-    padding:5,
-    borderRadius:5,
-    borderColor: 'gray',
-    marginLeft: 60, // hacky temporary fix, will not scale
-    marginBottom:10,
-    borderWidth:1,
-    width:300
-  },
-  formLabel: {
-    fontSize: 20
-  },
-  buttonLabel: {
-    marginTop: 40,
-    fontSize: 25
-  }
-});

@@ -4,33 +4,13 @@ import React, {
   View,
   Text,
   Component,
-  StyleSheet
 } from 'react-native';
 
 import Socket from '../socket/socket.js';
 import Store from '../../index.ios';
+import styles from '../styles/styles';
 
 import Button from "./button.js";
-
-const styles = StyleSheet.create({
-  container: {
-    flex:1,
-    justifyContent:'center',
-    alignItems: 'center'
-  },
-  inputStyle:{
-    height:40,
-    padding:5,
-    borderRadius:5,
-    borderColor: 'gray',
-    marginBottom:10,
-    borderWidth:1,
-    width:300
-  },
-  formLabel:{
-    fontSize:20
-  }
-});
 
 export default class Signup extends Component {
   constructor(props) {

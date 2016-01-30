@@ -5,8 +5,9 @@ import React, {
   View,
   Text,
   Component,
-  StyleSheet
 } from 'react-native';
+
+import styles from '../styles/styles';
 
 const Button = (props)=> {
     return (
@@ -15,18 +16,5 @@ const Button = (props)=> {
       </TouchableHighlight>
     );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    borderColor: '#222',
-    borderRadius: 10,
-    borderWidth: 1,
-    padding: 5,
-    backgroundColor: '#ccc'
-  },
-  buttonText: {
-    fontSize: 20
-  }
-})
 
 export default Button;
