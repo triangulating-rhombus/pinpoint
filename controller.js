@@ -46,7 +46,6 @@ var hashPassword = function(password){
 
 var addUser = function (user) {
   return hashPassword(user.password).then(function(hashed){
-    console.log(hashed);
     return model.Users
         .findOrCreate({where: {id: user.userID, username: user.username, password: hashed}})
 
