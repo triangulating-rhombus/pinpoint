@@ -16,10 +16,10 @@
     console.log("first connect")
   }, 1000);
 
-  // setTimeout(function(){
-  //   socket.emit('update', {longitude: 120.22, latitude: 11.21, time: new Date(), socketID: socket.io.engine.id});
-  //   console.log("second connect")
-  // }, 11000);
+  setTimeout(function(){
+    socket.emit('update', {longitude: 120.22, latitude: 11.21, time: new Date(), socketID: socket.io.engine.id});
+    console.log("second connect")
+  }, 11000);
 
   socket.on("error", function(data){
     console.log(data);

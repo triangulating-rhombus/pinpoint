@@ -84,29 +84,22 @@ io.on('connection', function(client) {
 	controller.findUser({username:username}).then(function(user){
 		if(user){
 			data.userID = user.id;
-			allUsers[socketID] = data; 
+			allUsers[data.socketID] = data; 
+			usersTracker[data.socketID] = data;
+			io.emit('refreshEvent', allUsers);
 
 		}else {
 			io.emit('error', 'username not found');
 		}
 	});
 
-
-		// assign the socketID from data to userID
-
-		// console.log(data.userID + " has connected!")
-		// console.log(data);
-		// var id = data.userID;
-
-		// usersTracker[id] = data;
-		// //console.log(new Date(allUsers[1].time))
-		// io.emit('refreshEvent', allUsers);
+		
 	})
-	client.on("disconnected", function(data) {
-		delete usersTracker[data.userID];
-		delete allUsers[data.userID];
-		io.emit('refreshEvent', allUsers);
-	})
+	// client.on("disconnected", function(data) {
+	// 	delete usersTracker[data.userID];
+	// 	delete allUsers[data.userID];
+	// 	io.emit('refreshEvent', allUsers);
+	// })
 	client.on("update", function(data) {
 		usersTracker[data.userID] = data;
 		var previousData = allUsers[data.userID];
