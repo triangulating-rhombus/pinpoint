@@ -24,8 +24,14 @@ var getHotSpots = function (tag) {
 };
 
 var authenticateUser = function(username, attemptedPassword, callback){
+  console.log('username and password from client:', username, attemptedPassword);
+
   model.Users.findOne({where: {username: username}}).then(function(user){
-    // Wayne, help me promisify this because it's too verbose right now 
+    if (!user) {
+      callback('User not found', null);
+      return;
+    }
+
     bcrypt.compare(attemptedPassword, user.password, function(err, isMatch){
         // if(err){
         //   callback(err, null);
