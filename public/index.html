@@ -11,24 +11,23 @@
   var socket = io();
 
   setTimeout(function(){
-    socket.emit('connected', { userID: 2, username: "Wayne", password:"hello", longitude: 120.22, latitude: 11.22, time: new Date(), tags: ["soccer", "badminton", "art"]});
+    socket.emit('connected', { userID: 2, username: "Wayne", password:"hello", latitude:37.782377, longitude:-122.410168, time: new Date(), tags: ["soccer", "badminton", "art"]});
     console.log("first connect")
   }, 1000);
 
+ setTimeout(function(){
+    socket.emit('connected', { userID: 1, longitude: 120.22, latitude: 11.22, time: new Date(), tags: ["coding", "books", "eat"]});
+    console.log("first connect")
+  }, 1000);
 
- // setTimeout(function(){
- //    socket.emit('connected', { userID: 1, longitude: 120.22, latitude: 11.22, time: new Date(), tags: ["coding", "books", "eat"]});
- //    console.log("first connect")
- //  }, 1000);
+  setTimeout(function(){
+    socket.emit('update', { userID: 2, longitude: 120.22, latitude: 11.21, time: new Date(), tags: ["soccer", "badminton", "art"]});
+    console.log("second connect")
+  }, 11000);
 
- //  setTimeout(function(){
- //    socket.emit('update', { userID: 2, longitude: 120.22, latitude: 11.21, time: new Date(), tags: ["soccer", "badminton", "art"]});
- //    console.log("second connect")
- //  }, 11000);
-
- //  socket.on("refreshEvent", function(data){
- //  	console.log(data);
- //  });
+  socket.on("refreshEvent", function(data){
+  	console.log(data);
+  });
 </script>
 
 </body>
