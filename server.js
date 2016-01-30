@@ -6,15 +6,10 @@ var controller = require('./controller');
 var visitHelper = require('./visit');
 var jwt = require('jwt-simple');
 
-
-
 app.set('port', process.env.PORT || 3000);
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static('./public'));
-
 
 var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);

@@ -69,7 +69,6 @@ export default class Login extends Component {
   }
 
   render() {
-
     return (
       <View style={styles.container}>
 
@@ -93,7 +92,6 @@ export default class Login extends Component {
         <Button text="Login" clickAction={this.onSubmit.bind(this)} />
         <Text style={styles.buttonLabel}>Don't have an account?</Text>
         <Button text="Signup" clickAction={this.redirectToSignup.bind(this)} />
-
 
         {/*<Text>{this.test.call(this)}</Text> */}
         <Text>{this.showError.call(this)}</Text>
