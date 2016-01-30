@@ -1,5 +1,6 @@
 var model = require('./db/dbModel');
 var Promise = require('bluebird');
+var bcrypt = require('bcrypt-nodejs');
 
 var getHotSpots = function (tag) {
   return model.Tags.findAll({ 
@@ -20,9 +21,39 @@ var getHotSpots = function (tag) {
   })
 };
 
+var authenticateUser = function(username, attemptedPassword, callback){
+  model.Users.findOne({where: {username: username}}).then(function(user){
+    // Wayne, help me promisify this because it's too verbose right now 
+    bcrypt.compare(attemptedPassword, user.password, function(err, isMatch){
+        if(err){
+          callback(err, null);
+        } else{
+          callback(null, isMatch);
+        }
+    });
+  });
+};
+
+var hashPassword = function(password){
+  var cipher = Promise.promisify(bcrypt.hash);
+  return cipher(password, null, null);
+}
+
 var addUser = function (user) {
-  return model.Users
-    .findOrCreate({where: {id: user}})
+  return hashPassword(user.password).then(function(hashed){
+    console.log(hashed);
+    return model.Users
+        .findOrCreate({where: {id: user.userID, username: user.username, password: hashed}})
+
+  });
+
+// finduser to find if a user already exists 
+var findUser = function(user){
+  return model.Users.findOne({where: username: user.username})
+}
+
+  // return model.Users
+  //   .findOrCreate({where: {id: user.userID, username: user.username, password: }})
     // .spread(function(user, created) {
     //   console.log(user.get({
     //     plain: true
@@ -109,5 +140,6 @@ module.exports = {
   addTag: addTag,
   addTagsVisits:addTagsVisits,
   addTagsUsers:addTagsUsers,
-  getHotSpots:getHotSpots
+  getHotSpots:getHotSpots,
+  authenticateUser:authenticateUser
 };

@@ -13,7 +13,9 @@ var Visits = sequelize.define('Visits', {
 }, { timestamps: false });
 
 var Users = sequelize.define('Users', {
-  id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true }
+  id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+  username: {type: Sequelize.STRING, unique: true, notNull: true},
+  password: {type: Sequelize.STRING, notNull: true}
 }, { timestamps: false });
 
 var Tags = sequelize.define('Tags', {
@@ -42,11 +44,12 @@ var init = function() {
   Tags.belongsToMany(Visits, { through: 'tags_visits', foreignKey: 'tag_id' });
   Visits.belongsToMany(Tags, { through: 'tags_visits', foreignKey: 'visit_id' });
 
-  // Users.destroy({where: {}}).then(function () {});
-  // Visits.destroy({where: {}}).then(function () {});
-  // Tags.destroy({where: {}}).then(function () {});
-  // tags_visits.destroy({where: {}}).then(function () {});
-  // tags_users.destroy({where: {}}).then(function () {});
+
+  Users.destroy({where: {}}).then(function () {});
+  Visits.destroy({where: {}}).then(function () {});
+  Tags.destroy({where: {}}).then(function () {});
+  tags_visits.destroy({where: {}}).then(function () {});
+  tags_users.destroy({where: {}}).then(function () {});
 
 
   sequelize.sync();

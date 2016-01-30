@@ -1,6 +1,6 @@
 import { LOGIN_SUCCEEDED, LOGIN_FAILED } from '../constants/actionTypes';
 
-const SERVER_URL = 'http://localhost:3000/dummyAuthentication';
+const SERVER_URL = 'http://localhost:3000/signup';
 
 // POST username/password to server to request authentication
 // On response, initialize socket connection to server
@@ -12,6 +12,8 @@ function fetchUserData(user) {
   	method: 'POST',
   	headers: { 'Content-Type': 'application/json' },
   	body: JSON.stringify(user)
+  }).then(function(res){
+    console.log("Server response",res)
   });
 }
 

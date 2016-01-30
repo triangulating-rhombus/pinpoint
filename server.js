@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var db = require('./db/dbModel');
 var controller = require('./controller');
 var visitHelper = require('./visit');
+var jwt = require('jwt-simple');
+
 
 app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.urlencoded({extended: true}));
@@ -23,17 +25,51 @@ db.init();
 var allUsers = {};
 var usersTracker = {};
 
-// Endpoint for dummy login - will simply respond to all POSTs
-app.post('/dummyAuthentication', function (req, res) {
-  res.send('POST received');
+app.post('/login', function (req, res) {
+	var username = req.body.username;
+	var password = req.body.password;
+
+	// Get this promisified so it's not so messy 
+  controller.authenticateUser(username, password, function(err, match){
+  	if(match){
+  		//send back some sort of identifier
+  		var token = jwt.encode(username, 'secret')
+  		res.json({token:token})
+  	} else {
+  		res.json("Invalid user credentials!")
+  		}
+  });
 });
 
+app.post('/signup', function(req, res){
+	var username = req.body.username;
+	var password = req.body.password;
+
+	var userObj = {
+		// for wayne: do we need userID here? PostGres will auto-gen right?
+		username: username,
+		password: password
+	}
+
+	controller.findUser(userObj).then(function(user){
+		if(user){
+			res.json("user already exists!");
+		}else {
+			controller.addUser(userObj);
+			// do we need to send them a JWT? 
+		}
+	});
+});
+
+
 io.on('connection', function(client) {
+
 	console.log("Client connected!");
 	client.on("connected", function(data) {
 		controller.addTag(data.tags).then(function(){
-			controller.addUser(data.userID).then(function(){
+			controller.addUser(data).then(function(){
 				controller.addTagsUsers(data.tags, data.userID);
+					//controller.authenticateUser("Wayne", "hello", function(match){console.log(match)});
 			});
 		});
 		console.log(data.userID + " has connected!")
