@@ -44,8 +44,8 @@ export default function loginUser(user) {
           const token = body.token;
           dispatch(loginSucceeded({ token, user: user.username }));
         } else {
-          const err = body.err;
-          dispatch(loginFailed(err));
+          const error = body.error;
+          dispatch(loginFailed(error));
         }
       },
       error => {
