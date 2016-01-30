@@ -1,25 +1,23 @@
 import React, { 
   MapView,
-  StyleSheet,
   Component 
 } from 'react-native';
 
+import styles from '../styles/styles';
 
-class Map extends Component {
-
+export default class Map extends Component {
   constructor(props){
     super(props);
   }
 
   componentDidMount() {
-
     let success = (position) => {
       // console.log('POSITION', position);
-    }
+    };
 
     let error = (error) => {
       console.log('ERROR', error);
-    }
+    };
 
     let watchCallback = (position) => {
       // console.log('Updating Position',position);
@@ -34,8 +32,7 @@ class Map extends Component {
     navigator.geolocation.getCurrentPosition(success, error);
 
     // Dispatch an action here
-    navigator.geolocation.watchPosition(watchCallback, error, options)
-
+    navigator.geolocation.watchPosition(watchCallback, error, options);
   }
 
   render(){
@@ -45,16 +42,6 @@ class Map extends Component {
         showsUserLocation={true}
         followUserLocation={false}
       />
-
-    );   
+    ); 
   }
-
-}
-
-const styles = StyleSheet.create({
-  container:{
-    flex:1
-  }
-})
-
-export default Map
+};

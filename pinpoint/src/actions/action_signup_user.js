@@ -1,6 +1,6 @@
-import { LOGIN_SUCCEEDED, LOGIN_FAILED } from '../constants/actionTypes';
+import { SIGNUP_SUCCEEDED, SIGNUP_FAILED } from '../constants/actionTypes';
 
-const SERVER_URL = 'http://localhost:3000/login';
+const SERVER_URL = 'http://localhost:3000/signup';
 
 // POST username/password to server to request authentication
 // On response, initialize socket connection to server
@@ -9,9 +9,9 @@ const SERVER_URL = 'http://localhost:3000/login';
 function fetchUserData(user) {
   // fetch is React Native's built-in function to make AJAX requests
   return fetch(SERVER_URL, { 
-  	method: 'POST',
-  	headers: { 'Content-Type': 'application/json' },
-  	body: JSON.stringify(user)
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(user)
   });
   // }).then(function(res){
   //   // console.log("Server response",res)
@@ -19,15 +19,15 @@ function fetchUserData(user) {
 }
 
 // Vanilla action creators
-function loginSucceeded(userInfo) {
+function signupSucceeded(userInfo) {
   return {
-    type: LOGIN_SUCCEEDED,
+    type: SIGNUP_SUCCEEDED,
     payload: userInfo
   }
 }
-function loginFailed(error) {
+function signupFailed(error) {
   return {
-    type: LOGIN_FAILED,
+    type: SIGNUP_FAILED,
     payload: error
   }
 }
@@ -35,22 +35,22 @@ function loginFailed(error) {
 // Async action creator, which uses thunk to handle the promise
 // This returns a FUNCTION, which thunk will automatically intercept
 // Thunk will run the function and then dispatch the appropriate vanilla action creator
-export default function loginUser(user) {
- 	return (dispatch) => {
- 		fetchUserData(user).then(
+export default function signupUser(user) {
+  return (dispatch) => {
+    fetchUserData(user).then(
       response => {
         const body = JSON.parse(response._bodyText);
         if (response.status === 200) {
           const token = body.token;
-          dispatch(loginSucceeded({ token, user: user.username }));
+          dispatch(signupSucceeded({ token, user: user.username }));
         } else {
           const error = body.error;
-          dispatch(loginFailed(error));
+          dispatch(signupFailed(error));
         }
       },
       error => {
-        dispatch(loginFailed(error));
+        dispatch(signupFailed(error));
       }
     );
- 	}
+  }
 }

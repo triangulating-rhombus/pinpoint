@@ -6,15 +6,10 @@ var controller = require('./controller');
 var visitHelper = require('./visit');
 var jwt = require('jwt-simple');
 
-
-
 app.set('port', process.env.PORT || 3000);
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static('./public'));
-
 
 var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
@@ -39,13 +34,12 @@ app.post('/login', function (req, res) {
 
 	// Get this promisified so it's not so messy 
   controller.authenticateUser(username, password, function(err, match){
-  	if(match){
+  	if (match) {
   		//send back some sort of identifier
   		var token = jwt.encode(username, 'secret')
   		res.json({token:token})
   	} else {
-  		res.json({error: "user already exists!"});
-  		res.status(401);
+  		res.status(401).json({error: "user not found!"});
   		}
   });
 });
@@ -61,8 +55,7 @@ app.post('/signup', function(req, res){
 
 	controller.findUser(userObj).then(function(user){
 		if(user){
-			res.json({error: "user already exists!"});
-			res.status(401);
+			res.status(401).json({error: "user already exists!"});
 		}else {
 			controller.addUser(userObj);
 			// do we need to send them a JWT? 

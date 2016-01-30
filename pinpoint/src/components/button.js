@@ -5,22 +5,16 @@ import React, {
   View,
   Text,
   Component,
-  StyleSheet
 } from 'react-native';
+
+import styles from '../styles/styles';
 
 const Button = (props)=> {
     return (
       <TouchableHighlight style={styles.button} onPress={props.clickAction}>
-        <Text>{props.text}</Text>
+        <Text style={styles.buttonText}>{props.text}</Text>
       </TouchableHighlight>
     );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    borderColor: 'red',
-    borderRadius: 10
-  }
-})
 
 export default Button;

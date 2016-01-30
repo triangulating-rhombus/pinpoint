@@ -2,7 +2,7 @@ import React, { Component, View, Text, TextInput } from 'react-native';
 import styles from '../styles/styles';
 import Button from "./button.js";
 
-export default class Login extends Component {
+export default class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = { username: '', password: '' };
@@ -25,21 +25,17 @@ export default class Login extends Component {
     }
   }
 
-  // Passes username and password to loginUser 
+  // Passes username and password to signupUser 
   onSubmit() {
     const { username, password } = this.state;
-    this.props.loginUser({ username, password });
-  }
-
-  redirectToSignup() {
-    this.props.navigator.push({ id: 'Signup' });
+    this.props.signupUser({ username, password });
   }
 
   //This is test to ensure that the data is coming full circle from the store 
   test() {
     const { user } = this.props;
     if (user.username) {
-      console.log("Login props:", this.props);
+      console.log("Signup props:", this.props);
       return `Hello ${user.username}`;
     } else {
       return "Please Sign In"
@@ -52,6 +48,10 @@ export default class Login extends Component {
     } else {
       return "";
     }
+  }
+
+  backToLogin() {
+    this.props.navigator.pop();
   }
 
   render() {
@@ -75,13 +75,14 @@ export default class Login extends Component {
           placeholder="Enter your password"
         />
 
-        <Button text="Login" clickAction={this.onSubmit.bind(this)} />
-        <Text style={styles.buttonLabel}>Don't have an account?</Text>
-        <Button text="Signup" clickAction={this.redirectToSignup.bind(this)} />
+        <Button text="Signup" clickAction={this.onSubmit.bind(this)} />
 
-        {/*<Text>{this.test.call(this)}</Text> */}
+        {/*<Text style={styles.buttonLabel}>{this.test.call(this)}</Text> */}
+        
         <Text>{this.showError.call(this)}</Text>
+        <Button text="Back to Login" clickAction={this.backToLogin.bind(this)} />
       </View>
     );
   }
 }
+
