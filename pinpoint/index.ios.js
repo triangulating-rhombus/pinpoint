@@ -17,10 +17,6 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
 import reducer from './src/reducers';
-
-//TODO: Make a mapView container 
-import MapView from './src/components/mapView';
-import Login from './src/containers/login-container';
 import Navigation from './src/routes/routes.js';
 
 // Apply a thunk middleware which makes an instaneous evaluation delayed (to be called later once something else finishes?)

@@ -3,7 +3,10 @@ import React, {
   Component 
 } from 'react-native';
 
+
 import styles from '../styles/styles';
+import { initialGeoLocation, updateGeoLocation } from '../socket/emitters';
+
 
 export default class Map extends Component {
   constructor(props){
@@ -11,16 +14,20 @@ export default class Map extends Component {
   }
 
   componentDidMount() {
+    let socket = this.props.socket;
+
+    console.log("Store is inside Maps", this.props.socket);
+
     let success = (position) => {
-      // console.log('POSITION', position);
-    };
+      initialGeoLocation(socket, position);
+    }
 
     let error = (error) => {
       console.log('ERROR', error);
     };
 
     let watchCallback = (position) => {
-      // console.log('Updating Position',position);
+      updateGeoLocation(socket, position)
     };
 
     let options = {
