@@ -1,6 +1,6 @@
 import { LOGIN_SUCCEEDED, LOGIN_FAILED } from '../constants/actionTypes';
 
-const SERVER_URL = 'http://localhost:3000/signup';
+const SERVER_URL = 'http://localhost:3000/login';
 
 // POST username/password to server to request authentication
 // On response, initialize socket connection to server
