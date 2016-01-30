@@ -12,26 +12,6 @@ import Store from '../../index.ios';
 
 import Button from "./button.js";
 
-const styles = StyleSheet.create({
-  container: {
-    flex:1,
-    justifyContent:'center',
-    alignItems: 'center'
-  },
-  inputStyle:{
-    height:40,
-    padding:5,
-    borderRadius:5,
-    borderColor: 'gray',
-    marginBottom:10,
-    borderWidth:1,
-    width:300
-  },
-  formLabel:{
-    fontSize:20
-  }
-});
-
 export default class Login extends Component {
   constructor(props) {
     super(props);
@@ -63,6 +43,10 @@ export default class Login extends Component {
         password: this.state.password
       },
     );
+  }
+
+  redirectToSignup() {
+    this.props.navigator.push({ id: 'Signup' });
   }
 
   //This is test to ensure that the data is coming full circle from the store 
@@ -107,12 +91,38 @@ export default class Login extends Component {
         />
 
         <Button text="Login" clickAction={this.onSubmit.bind(this)} />
+        <Text style={styles.buttonLabel}>Don't have an account?</Text>
+        <Button text="Signup" clickAction={this.redirectToSignup.bind(this)} />
 
 
-        <Text>{this.test.call(this)}</Text> 
+        {/*<Text>{this.test.call(this)}</Text> */}
         <Text>{this.showError.call(this)}</Text>
       </View>
     );
   }
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex:1,
+    justifyContent: 'center', // vertical align
+    alignItems: 'center' // horizontal align
+  },
+  inputStyle: {
+    height:40,
+    padding:5,
+    borderRadius:5,
+    borderColor: 'gray',
+    marginLeft: 60, // hacky temporary fix, will not scale
+    marginBottom:10,
+    borderWidth:1,
+    width:300
+  },
+  formLabel: {
+    fontSize: 20
+  },
+  buttonLabel: {
+    marginTop: 40,
+    fontSize: 25
+  }
+});
