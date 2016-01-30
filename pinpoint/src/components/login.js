@@ -76,6 +76,14 @@ export default class Login extends Component {
     }
   }
 
+  showError() {
+    if (this.props.user.error) { 
+      return "Invalid user";
+    } else {
+      return "";
+    }
+  }
+
   render() {
 
     return (
@@ -102,7 +110,7 @@ export default class Login extends Component {
 
 
         <Text>{this.test.call(this)}</Text> 
-
+        <Text>{this.showError.call(this)}</Text>
       </View>
     );
   }

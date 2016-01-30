@@ -12,16 +12,17 @@ function fetchUserData(user) {
   	method: 'POST',
   	headers: { 'Content-Type': 'application/json' },
   	body: JSON.stringify(user)
-  }).then(function(res){
-    console.log("Server response",res)
   });
+  // }).then(function(res){
+  //   // console.log("Server response",res)
+  // });
 }
 
 // Vanilla action creators
-function loginSucceeded(user) {
+function loginSucceeded(userInfo) {
   return {
     type: LOGIN_SUCCEEDED,
-    payload: user
+    payload: userInfo
   }
 }
 function loginFailed(error) {
@@ -37,9 +38,19 @@ function loginFailed(error) {
 export default function loginUser(user) {
  	return (dispatch) => {
  		fetchUserData(user).then(
-      response => dispatch(loginSucceeded(user)),
-      error => dispatch(loginFailed(error))
+      response => {
+        const body = JSON.parse(response._bodyText);
+        if (response.status === 200) {
+          const token = body.token;
+          dispatch(loginSucceeded({ token, user: user.username }));
+        } else {
+          const err = body.err;
+          dispatch(loginFailed(err));
+        }
+      },
+      error => {
+        dispatch(loginFailed(error));
+      }
     );
  	}
 }
-

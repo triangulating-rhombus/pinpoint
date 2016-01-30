@@ -4,8 +4,8 @@ import loginUser from '../actions/action_login_user';
 const INITIAL_STATE = {
   loggedIn: false,
   shouldRedirect: false,
-  username: '',
-  password: '',
+  username: null,
+  token: null,
   error: null
 };
 
@@ -17,7 +17,7 @@ export default function (state = INITIAL_STATE, action) {
         loggedIn: true,
         shouldRedirect: true,
         username: action.payload.username,
-        password: action.payload.password
+        token: action.payload.token
       };
     case LOGIN_FAILED:
       return {
