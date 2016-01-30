@@ -1,13 +1,5 @@
-import React, {
-  TouchableHighlight,
-  TextInput,
-  View,
-  Text,
-  Component,
-} from 'react-native';
-
+import React, { Component, View, Text, TextInput } from 'react-native';
 import styles from '../styles/styles';
-
 import Button from "./button.js";
 
 export default class Signup extends Component {
@@ -35,12 +27,8 @@ export default class Signup extends Component {
 
   // Passes username and password to signupUser 
   onSubmit() {
-    this.props.signupUser(
-      {
-        username: this.state.username,
-        password: this.state.password
-      },
-    );
+    const { username, password } = this.state;
+    this.props.signupUser({ username, password });
   }
 
   //This is test to ensure that the data is coming full circle from the store 
@@ -67,7 +55,6 @@ export default class Signup extends Component {
   }
 
   render() {
-
     return (
       <View style={styles.container}>
 

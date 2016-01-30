@@ -1,13 +1,5 @@
-import React, {
-  TouchableHighlight,
-  TextInput,
-  View,
-  Text,
-  Component,
-} from 'react-native';
-
+import React, { Component, View, Text, TextInput } from 'react-native';
 import styles from '../styles/styles';
-
 import Button from "./button.js";
 
 export default class Login extends Component {
@@ -35,12 +27,8 @@ export default class Login extends Component {
 
   // Passes username and password to loginUser 
   onSubmit() {
-    this.props.loginUser(
-      {
-        username: this.state.username,
-        password: this.state.password
-      },
-    );
+    const { username, password } = this.state;
+    this.props.loginUser({ username, password });
   }
 
   redirectToSignup() {
