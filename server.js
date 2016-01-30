@@ -25,6 +25,10 @@ db.init();
 var allUsers = {};
 var usersTracker = {};
 
+/* *******  
+LOGIN & SIGNUP API ROUTES 
+   *******
+*/
 app.post('/login', function (req, res) {
 	var username = req.body.username;
 	var password = req.body.password;
@@ -46,7 +50,6 @@ app.post('/signup', function(req, res){
 	var password = req.body.password;
 
 	var userObj = {
-		// for wayne: do we need userID here? PostGres will auto-gen right?
 		username: username,
 		password: password
 	}
@@ -57,11 +60,16 @@ app.post('/signup', function(req, res){
 		}else {
 			controller.addUser(userObj);
 			// do we need to send them a JWT? 
+			var token = jwt.encode(username, 'secret')
+  		res.json({token:token})
 		}
 	});
 });
 
 
+/* ***** 
+	SOCKETS FOR USER GEOLOCATION UPDATES 
+***** */
 io.on('connection', function(client) {
 
 	console.log("Client connected!");
@@ -108,7 +116,6 @@ io.on('connection', function(client) {
 	})
 
 })
-
 
 //})
 

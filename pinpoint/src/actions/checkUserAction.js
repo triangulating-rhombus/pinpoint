@@ -6,7 +6,7 @@ import Store from '../../index.ios';
 // Make an ajax request to the database to authenticate the user
 // Possibly we may initiliaze the socket.
 
-const server = 'http://localhost:3000/login';
+const server = 'http://localhost:3000/signup';
 
 
 // We will want to modularize this out to a utils later, import the utils folder and use it in checkuser

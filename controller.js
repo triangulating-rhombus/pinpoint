@@ -25,11 +25,14 @@ var authenticateUser = function(username, attemptedPassword, callback){
   model.Users.findOne({where: {username: username}}).then(function(user){
     // Wayne, help me promisify this because it's too verbose right now 
     bcrypt.compare(attemptedPassword, user.password, function(err, isMatch){
-        if(err){
-          callback(err, null);
-        } else{
-          callback(null, isMatch);
-        }
+        // if(err){
+        //   callback(err, null);
+        // } else{
+        //   callback(null, isMatch);
+        // }
+
+        callback(err, isMatch);
+
     });
   });
 };
@@ -46,11 +49,12 @@ var addUser = function (user) {
         .findOrCreate({where: {id: user.userID, username: user.username, password: hashed}})
 
   });
+}
 
 // finduser to find if a user already exists 
 var findUser = function(user){
-  return model.Users.findOne({where: username: user.username})
-}
+  return model.Users.findOne({where: {username: user.username}})
+
 
   // return model.Users
   //   .findOrCreate({where: {id: user.userID, username: user.username, password: }})
@@ -141,5 +145,6 @@ module.exports = {
   addTagsVisits:addTagsVisits,
   addTagsUsers:addTagsUsers,
   getHotSpots:getHotSpots,
-  authenticateUser:authenticateUser
+  authenticateUser:authenticateUser,
+  findUser:findUser
 };
