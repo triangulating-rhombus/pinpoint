@@ -1,3 +1,5 @@
+//Deprecated, use only for reference
+
 //positions: [latitude, longitude]
 var ALLOWED_DISTANCE = 10; // in meters
 var geolib = require('geolib');
