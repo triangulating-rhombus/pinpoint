@@ -47,11 +47,7 @@ export default class Login extends Component {
   }
 
   showError() {
-    if (this.props.user.error) { 
-      return "Invalid user";
-    } else {
-      return "";
-    }
+    return this.props.user.error || '';
   }
 
   render() {
