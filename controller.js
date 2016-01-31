@@ -24,23 +24,14 @@ var getHotSpots = function (tag) {
 };
 
 var authenticateUser = function(username, attemptedPassword, callback){
-  console.log('username and password from client:', username, attemptedPassword);
-
-  model.Users.findOne({where: {username: username}}).then(function(user){
+  model.Users.findOne({where: {username: username}}).then(function(user) {
     if (!user) {
       callback('User not found', null);
       return;
     }
 
-    bcrypt.compare(attemptedPassword, user.password, function(err, isMatch){
-        // if(err){
-        //   callback(err, null);
-        // } else{
-        //   callback(null, isMatch);
-        // }
-
-        callback(err, isMatch);
-
+    bcrypt.compare(attemptedPassword, user.password, function(err, match) {
+      return match ? callback(null, match) : callback('Invalid password', null);
     });
   });
 };
