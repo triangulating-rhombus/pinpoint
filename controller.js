@@ -24,14 +24,23 @@ var getHotSpots = function (tag) {
 };
 
 var authenticateUser = function(username, attemptedPassword, callback){
-  model.Users.findOne({where: {username: username}}).then(function(user) {
+  console.log('username and password from client:', username, attemptedPassword);
+
+  model.Users.findOne({where: {username: username}}).then(function(user){
     if (!user) {
       callback('User not found', null);
       return;
     }
 
-    bcrypt.compare(attemptedPassword, user.password, function(err, match) {
-      return match ? callback(null, match) : callback('Invalid password', null);
+    bcrypt.compare(attemptedPassword, user.password, function(err, isMatch){
+        // if(err){
+        //   callback(err, null);
+        // } else{
+        //   callback(null, isMatch);
+        // }
+
+        callback(err, isMatch);
+
     });
   });
 };
@@ -102,14 +111,10 @@ return Promise.map(tags, function(tag) {
 
 var addTagsVisits = function(userID, visitID){
 
-  return model.Users.findAll({ 
-    where: {
-      id: userID
-    },
-    include: [ model.Tags ]
-  }).then(function(tags) {
-    console.log(tags[0].Tags.map(function(obj){return obj.dataValues.id}));
-  })
+Project.findAll({ where: { user_id: userID } }).then(function(projects) {
+  console.log(projects);
+})
+
 
 
   // var tagsList = visit.tags;
