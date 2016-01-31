@@ -79,53 +79,48 @@ io.on('connection', function(client) {
 
 
 	var username = jwt.decode(data.token, "secret");
-
-	console.log(username);
 	controller.findUser({username:username}).then(function(user){
 		if(user){
 			data.userID = user.id;
-			allUsers[socketID] = data; 
+			allUsers[data.socketID] = data; 
+			usersTracker[data.socketID] = data;
+			io.emit('refreshEvent', allUsers);
 
 		}else {
 			io.emit('error', 'username not found');
 		}
 	});
 
-
-		// assign the socketID from data to userID
-
-		// console.log(data.userID + " has connected!")
-		// console.log(data);
-		// var id = data.userID;
-
-		// usersTracker[id] = data;
-		// //console.log(new Date(allUsers[1].time))
-		// io.emit('refreshEvent', allUsers);
+		
 	})
-	client.on("disconnected", function(data) {
-		delete usersTracker[data.userID];
-		delete allUsers[data.userID];
-		io.emit('refreshEvent', allUsers);
-	})
+	// client.on("disconnected", function(data) {
+	// 	delete usersTracker[data.userID];
+	// 	delete allUsers[data.userID];
+	// 	io.emit('refreshEvent', allUsers);
+	// })
 	client.on("update", function(data) {
-		usersTracker[data.userID] = data;
-		var previousData = allUsers[data.userID];
+
+		var userID = allUsers[data.socketID].userID;
+
+		usersTracker[data.socketID] = data;
+		var previousData = allUsers[data.socketID];
 		var distance = visitHelper.getDistance([previousData.latitude, previousData.longitude],[data.latitude, data.longitude]);
 		var timeDiff = visitHelper.timeDifference(previousData.time, data.time);
 		if (distance >= 10 && timeDiff >= 10){
 			previousData.endTime = new Date();
 			controller.addVisit(previousData).then(function(obj){
-				controller.addTagsVisits(previousData, obj[0].dataValues.id);
+				console.log(obj[0].dataValues.id);
+				controller.addTagsVisits(userID, obj[0].dataValues.id);
 			});
-			allUsers[data.userID] = data;
+			allUsers[data.socketID] = data;
 		}else if (distance < 10 && timeDiff < 10){
-			allUsers[data.userID] = previousData;
+			allUsers[data.socketID] = previousData;
 		}else if (distance > 10 && timeDiff < 10){
-			allUsers[data.userID] = data;
+			allUsers[data.socketID] = data;
 		}
-		controller.getHotSpots("soccer").then(function(data){
-			console.log(data);
-		});
+		// controller.getHotSpots("soccer").then(function(data){
+		// 	console.log(data);
+		// });
 		
 		io.emit('refreshEvent', usersTracker);
 	})
