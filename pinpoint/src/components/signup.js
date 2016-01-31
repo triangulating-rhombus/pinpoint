@@ -12,12 +12,7 @@ export default class Signup extends Component {
     const { user, socket } = this.props;
 
     if(user.loggedIn && !socket) {
-      // send this socket variable to a store
-      // create an action
-      // send it to a reducer
       this.props.addSocket();
-
-      console.log('socket found in store',this.props.socket);
     }
 
     if (user.shouldRedirect) {

@@ -26,6 +26,10 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 // and react will re-render all views 
 const store = createStoreWithMiddleware(reducer)
 
+store.subscribe( () => {
+  console.log(store.getState());
+});
+
 // This should actually be called after login
 // But we put it here for now for testing
 
@@ -54,21 +58,6 @@ const styles = StyleSheet.create({
 
 export default store
 AppRegistry.registerComponent('pinpoint', () => Pinpoint);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
