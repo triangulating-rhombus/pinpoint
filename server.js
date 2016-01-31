@@ -79,8 +79,6 @@ io.on('connection', function(client) {
 
 
 	var username = jwt.decode(data.token, "secret");
-
-	console.log(username);
 	controller.findUser({username:username}).then(function(user){
 		if(user){
 			data.userID = user.id;
@@ -101,24 +99,28 @@ io.on('connection', function(client) {
 	// 	io.emit('refreshEvent', allUsers);
 	// })
 	client.on("update", function(data) {
-		usersTracker[data.userID] = data;
-		var previousData = allUsers[data.userID];
+
+		var userID = allUsers[data.socketID].userID;
+
+		usersTracker[data.socketID] = data;
+		var previousData = allUsers[data.socketID];
 		var distance = visitHelper.getDistance([previousData.latitude, previousData.longitude],[data.latitude, data.longitude]);
 		var timeDiff = visitHelper.timeDifference(previousData.time, data.time);
 		if (distance >= 10 && timeDiff >= 10){
 			previousData.endTime = new Date();
 			controller.addVisit(previousData).then(function(obj){
-				controller.addTagsVisits(previousData, obj[0].dataValues.id);
+				console.log(obj[0].dataValues.id);
+				controller.addTagsVisits(userID, obj[0].dataValues.id);
 			});
-			allUsers[data.userID] = data;
+			allUsers[data.socketID] = data;
 		}else if (distance < 10 && timeDiff < 10){
-			allUsers[data.userID] = previousData;
+			allUsers[data.socketID] = previousData;
 		}else if (distance > 10 && timeDiff < 10){
-			allUsers[data.userID] = data;
+			allUsers[data.socketID] = data;
 		}
-		controller.getHotSpots("soccer").then(function(data){
-			console.log(data);
-		});
+		// controller.getHotSpots("soccer").then(function(data){
+		// 	console.log(data);
+		// });
 		
 		io.emit('refreshEvent', usersTracker);
 	})
