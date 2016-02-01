@@ -151,25 +151,11 @@ var addTagsUsers = function(tags, userID){
   })
 
   for (var i = 0; i < tags.length; i++){
-    var tag = tags[i];
-    model.Tags.findOne({ where: {name: tag} }).then(function(project) {
-      var tagID = project.dataValues.id;
-
+    var tagID = tags[i];
       model.tags_users.findOrCreate({where: {
         tag_id: tagID,
         user_id: userID
       }})
-
-      // var user_tag = model.tags_users.build({
-      //   tag_id: tagID,
-      //   user_id: userID
-      // })
-
-      // user_tag.save().then(function() {
-      //   console.log("saved: " + tagID);
-      // })
-
-    })
   }
 }
 

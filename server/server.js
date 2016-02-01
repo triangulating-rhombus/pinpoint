@@ -45,6 +45,28 @@ app.post('/login', function (req, res) {
   });
 });
 
+app.post('/tags', function (req, res) {
+	var user = jwt.decode(req.body.token, "secret");
+	var tag1 = req.body.tag1;
+	var tag2 = req.body.tag2;
+	var tag3 = req.body.tag3;
+
+	controller.findUser({username:user}).then(function(user){
+		var userID = user.id;
+		console.log(userID);
+		controller.addTag([tag1, tag2, tag3]).then(function(something){
+			var tagsArray = something.map(function(tag){
+				return tag[0].dataValues.id;
+			});
+
+			controller.addTagsUsers(tagsArray, userID)
+			res.send("tags added");
+		});
+	});
+
+
+});
+
 app.post('/signup', function(req, res){
 	var username = req.body.username;
 	var password = req.body.password;
