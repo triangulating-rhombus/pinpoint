@@ -16,7 +16,7 @@ export default class Login extends Component {
     }
 
     if (user.shouldRedirect && !socket) {
-      console.log("Adding Socket");
+    
       this.props.navigator.push({ id: 'MapView' });
     }
   }

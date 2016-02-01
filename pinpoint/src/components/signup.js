@@ -8,18 +8,6 @@ export default class Signup extends Component {
     this.state = { username: '', password: '' };
   }
 
-  componentDidUpdate() {
-    const { user, socket } = this.props;
-
-    if(user.loggedIn && !socket) {
-      this.props.addSocket();
-    }
-
-    if (user.shouldRedirect) {
-      this.props.navigator.push({ id: 'MapView' });
-    }
-  }
-
   // Passes username and password to signupUser 
   onSubmit() {
     const { username, password } = this.state;

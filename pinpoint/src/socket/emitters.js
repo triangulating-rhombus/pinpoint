@@ -1,22 +1,30 @@
-export const initialGeoLocation = (socket, data, tags) => {
+export const initialGeoLocation = (props, data) => {
+
+  let socket = props.socket;
+  let socketID = socket.id;
+  let token = props.user.token;
   let time = data.timestamp;
   let latitude = data.coords.latitude;
   let longitude = data.coords.longitude;
-  let dummyUserID = 3;
+  let tags = ['food', 'cars', 'sports'];
+  let userID = 3;
 
   var socketData = {
+    token,
     time,
+    socketID,
     latitude,
     longitude,
-    userID: dummyUserID,
-    tags: ['food', 'cars', 'sports']
+    tags,
+    userID
   };
 
-  // NOTE we will need to add tags to the state at some point
   socket.emit('connected', socketData );
 } 
 
 export const updateGeoLocation = (socket, data, tags) => {
+  console.log("GeoLocation is updating", data);
+
   let time = data.timestamp;
   let latitude = data.coords.latitude;
   let longitude = data.coords.longitude;
@@ -30,14 +38,5 @@ export const updateGeoLocation = (socket, data, tags) => {
     tags: ['food', 'cars', 'sports']
   };
 
-  // socket.emit('update', data );
+  socket.emit('update', data );
 }
-
-
-
-
-// { userID: 1, longitude: 120.22, latitude: 11.22, time: new Date(), tags: ["coding", "books", "eat"]}
-
-
-
-// socket.emit('update', { userID: 1, longitude: 120.22, latitude: 11.22, time: new Date(), tags: ["coding", "books", "eat"])

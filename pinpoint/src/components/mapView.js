@@ -1,25 +1,22 @@
 import React, { 
-  MapView,
-  Component 
+  Component, 
 } from 'react-native';
 
-
 import styles from '../styles/styles';
+import MapView from 'react-native-maps';
+import initSocketListeners from '../socket/listeners.js';
+
 import { initialGeoLocation, updateGeoLocation } from '../socket/emitters';
 
 
 export default class Map extends Component {
-  constructor(props){
-    super(props);
-  }
 
   componentDidMount() {
-    let socket = this.props.socket;
+    let properties = this.props;
 
-    console.log("Store is inside Maps", this.props.socket);
 
     let success = (position) => {
-      initialGeoLocation(socket, position);
+      initialGeoLocation(properties, position);
     }
 
     let error = (error) => {
@@ -27,28 +24,33 @@ export default class Map extends Component {
     };
 
     let watchCallback = (position) => {
-      updateGeoLocation(socket, position)
+      console.log("UPDATING POSITION", position);
+      // updateGeoLocation(socket, position)
     };
 
     let options = {
       enableHighAccuracy: false,
-      timeout: 5000,
+      timeout: 1000,
       maximumAge: 0
     };
 
+
+    initSocketListeners(this.props.socket);
     navigator.geolocation.getCurrentPosition(success, error);
 
     // Dispatch an action here
-    navigator.geolocation.watchPosition(watchCallback, error, options);
+    // navigator.geolocation.watchPosition(watchCallback, error, options);
   }
 
   render(){
     return (
-      <MapView 
-        style={styles.container}
-        showsUserLocation={true}
-        followUserLocation={false}
-      />
+     <MapView
+       style={styles.container}
+       showsUserLocation={true} 
+       followUserLocation={true}
+     />
     ); 
   }
 };
+
+
