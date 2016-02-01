@@ -80,3 +80,5 @@ HINT:  Is another postmaster already running on port 5432? If not, wait a few se
 WARNING:  could not create listen socket for "localhost"
 FATAL:  could not create any TCP/IP sockets
 
+FATAL:  lock file "postmaster.pid" already exists
+HINT:  Is another postmaster (PID 708) running in data directory "/Users/Wayne/Desktop/pinpoint/pinpointdb"?

@@ -58,7 +58,7 @@ app.post('/signup', function(req, res){
 			res.status(401).json({error: "user already exists!"});
 		} else {
 			controller.addUser(userObj);
-			// do we need to send them a JWT? 
+			// do we need to send them a JWT? i think we only send it on login
 			var token = jwt.encode(username, 'secret');
   		res.json({token:token})
 		}

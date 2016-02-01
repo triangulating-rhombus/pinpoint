@@ -108,7 +108,13 @@ var addTagsVisits = function(userID, visitID){
     },
     include: [ model.Tags ]
   }).then(function(tags) {
-    console.log(tags[0].Tags.map(function(obj){return obj.dataValues.id}));
+    var tagIDs = tags[0].Tags.map(function(obj){return obj.dataValues.id});
+
+  return Promise.map(tagIDs, function(tag) {
+      // Promise.map awaits for returned promises as well.
+      return model.tags_visits.findOrCreate({where: {tag_id: tag, visit_id: visitID}})
+  })
+
   })
 
 
