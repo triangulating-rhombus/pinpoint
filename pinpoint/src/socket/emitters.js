@@ -1,13 +1,15 @@
 export const initialGeoLocation = (props, data) => {
 
+
   let socket = props.socket;
+  console.log('socket',socket);
   let socketID = socket.id;
+
   let token = props.user.token;
   let time = data.timestamp;
   let latitude = data.coords.latitude;
   let longitude = data.coords.longitude;
-  let tags = ['food', 'cars', 'sports'];
-  let userID = 3;
+
 
   var socketData = {
     token,
@@ -15,28 +17,26 @@ export const initialGeoLocation = (props, data) => {
     socketID,
     latitude,
     longitude,
-    tags,
-    userID
   };
-
+  console.log('Before sending to wayne', socketData);
   socket.emit('connected', socketData );
 } 
 
-export const updateGeoLocation = (socket, data, tags) => {
+export const updateGeoLocation = (props, data) => {
   console.log("GeoLocation is updating", data);
 
+  let socket = props.socket;
+  let socketID = socket.id;
   let time = data.timestamp;
   let latitude = data.coords.latitude;
   let longitude = data.coords.longitude;
-  let dummyUserID = tags;
 
   var socketData = {
     time,
     latitude,
     longitude,
-    userID: dummyUserID,
-    tags: ['food', 'cars', 'sports']
+    socketID
   };
 
-  socket.emit('update', data );
+  socket.emit('update', socketData );
 }
