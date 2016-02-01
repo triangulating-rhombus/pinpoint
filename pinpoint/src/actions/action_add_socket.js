@@ -6,7 +6,8 @@ export default function () {
 
   return (dispatch) => {
 
-    const socket = io.connect('http://localhost:3000',{ jsonp:false });
+    const socket = io.connect('http://localhost:3000', { jsonp:false });
+
     
     // currently assuming that socket connection is synchronous
     dispatch({ type: ADD_SOCKET, payload:socket})

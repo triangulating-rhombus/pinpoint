@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import MapView from '../components/mapView.js';
 
 
-function mapStateToProps({ user }) {
-  return { user };
+function mapStateToProps({ user, socket }) {
+  return { user, socket };
 }
 
 export default connect(mapStateToProps)(MapView);

@@ -12,15 +12,11 @@ export default class Login extends Component {
     const { user, socket } = this.props;
 
     if(user.loggedIn && !socket) {
-      // send this socket variable to a store
-      // create an action
-      // send it to a reducer
       this.props.addSocket();
-
-      console.log('socket found in store',this.props.socket);
     }
 
-    if (user.shouldRedirect) {
+    if (user.shouldRedirect && !socket) {
+    
       this.props.navigator.push({ id: 'MapView' });
     }
   }
@@ -45,6 +41,7 @@ export default class Login extends Component {
       return "Please Sign In"
     }
   }
+
 
   showError() {
     return this.props.user.error || '';
