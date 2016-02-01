@@ -58,7 +58,7 @@ app.post('/signup', function(req, res){
 			res.status(401).json({error: "user already exists!"});
 		} else {
 			controller.addUser(userObj);
-			// do we need to send them a JWT? 
+			// do we need to send them a JWT? i think we only send it on login
 			var token = jwt.encode(username, 'secret');
   		res.json({token:token})
 		}
@@ -106,10 +106,10 @@ io.on('connection', function(client) {
 		var previousData = allUsers[data.socketID];
 		var distance = visitHelper.getDistance([previousData.latitude, previousData.longitude],[data.latitude, data.longitude]);
 		var timeDiff = visitHelper.timeDifference(previousData.time, data.time);
-		if (distance >= 10 && timeDiff >= 10){
+		if (distance >= 10 && timeDiff >= 3){
 			previousData.endTime = new Date();
 			controller.addVisit(previousData).then(function(obj){
-				console.log(obj[0].dataValues.id);
+				console.log(userID, obj[0].dataValues.id);
 				controller.addTagsVisits(userID, obj[0].dataValues.id);
 			});
 			allUsers[data.socketID] = data;

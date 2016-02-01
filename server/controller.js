@@ -100,29 +100,46 @@ return Promise.map(tags, function(tag) {
 
 };
 
-var addTagsVisits = function(visit, visitID){
-  var tagsList = visit.tags;
-  for (var i = 0; i < tagsList.length; i++){
-    var tag = tagsList[i];
-    model.Tags.findOne({ where: {name: tag} }).then(function(project) {
-      var tagID = project.dataValues.id;
+var addTagsVisits = function(userID, visitID){
 
-      model.tags_visits.findOrCreate({where: {
-        tag_id: tagID,
-        visit_id: visitID
-      }})
+  return model.Users.findAll({ 
+    where: {
+      id: userID
+    },
+    include: [ model.Tags ]
+  }).then(function(tags) {
+    var tagIDs = tags[0].Tags.map(function(obj){return obj.dataValues.id});
 
-      // var visit_tag = model.tags_visits.build({
-      //   tag_id: tagID,
-      //   visit_id: visitID
-      // })
+  return Promise.map(tagIDs, function(tag) {
+      // Promise.map awaits for returned promises as well.
+      return model.tags_visits.findOrCreate({where: {tag_id: tag, visit_id: visitID}})
+  })
 
-      // visit_tag.save().then(function() {
-      //   console.log("saved: " + tagID);
-      // })
+  })
 
-    })
-  }
+
+  // var tagsList = visit.tags;
+  // for (var i = 0; i < tagsList.length; i++){
+  //   var tag = tagsList[i];
+  //   model.Tags.findOne({ where: {name: tag} }).then(function(project) {
+  //     var tagID = project.dataValues.id;
+
+  //     model.tags_visits.findOrCreate({where: {
+  //       tag_id: tagID,
+  //       visit_id: visitID
+  //     }})
+
+  //     // var visit_tag = model.tags_visits.build({
+  //     //   tag_id: tagID,
+  //     //   visit_id: visitID
+  //     // })
+
+  //     // visit_tag.save().then(function() {
+  //     //   console.log("saved: " + tagID);
+  //     // })
+
+  //   })
+  // }
 }
 
 var addTagsUsers = function(tags, userID){
