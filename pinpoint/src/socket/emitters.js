@@ -20,7 +20,7 @@ export const initialGeoLocation = (props, data) => {
   };
   //console.log('Before sending to wayne', socketData);
   console.log("connecting (called once)");
-  //socket.emit('connected', socketData );
+  socket.emit('connected', socketData );
 } 
 
 export const updateGeoLocation = (props, data) => {
@@ -40,5 +40,5 @@ export const updateGeoLocation = (props, data) => {
   };
   console.log("Updating called");
 
-  //socket.emit('update', socketData );
+  socket.emit('update', socketData );
 }

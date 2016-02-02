@@ -17,13 +17,6 @@ export default class Map extends Component {
 
     let success = (position) => {
       console.log('GETTING INITIAL LOCATION', position);
-
-      let options = {
-        enableHighAccuracy: false,
-        timeout: 5000,
-        maximumAge: 0
-      };
-
       initialGeoLocation(properties, position);
     }
 
@@ -57,13 +50,24 @@ export default class Map extends Component {
   being deisplayed) you'll have to pass in props to re-update 
 */
   render(){
-    console.log("Component Render should update")
+
+    var markers = 
+      {
+        latitude: 37.78825,
+        longitude: -122.4324,
+      }
+    ;
+
     return (
      <MapView
        style={styles.map}
        showsUserLocation={true}
        followUserLocation={true}
-     />
+     >
+      <MapView.Marker 
+        coordinate={markers}
+      />     
+    </MapView>
     ); 
   }
 };
