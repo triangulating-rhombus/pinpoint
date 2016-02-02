@@ -32,5 +32,10 @@ export default StyleSheet.create({
   },
   buttonText: {
     fontSize: 20
-  }
+  },
+  map: {
+    flex: 1,
+    justifyContent: 'center', // vertical align
+    height: 100 // horizontal align
+  },
 });

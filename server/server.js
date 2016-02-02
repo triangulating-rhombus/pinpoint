@@ -122,14 +122,14 @@ io.on('connection', function(client) {
 	// 	io.emit('refreshEvent', allUsers);
 	// })
 	client.on("update", function(data) {
-
 		var userID = allUsers[data.socketID].userID;
-
+		data.userID = userID;
 		usersTracker[data.socketID] = data;
 		var previousData = allUsers[data.socketID];
 		var distance = visitHelper.getDistance([previousData.latitude, previousData.longitude],[data.latitude, data.longitude]);
 		var timeDiff = visitHelper.timeDifference(previousData.time, data.time);
 		if (distance >= 10 && timeDiff >= 3){
+			console.log("new visit");
 			previousData.endTime = new Date();
 			controller.addVisit(previousData).then(function(obj){
 				console.log(userID, obj[0].dataValues.id);
