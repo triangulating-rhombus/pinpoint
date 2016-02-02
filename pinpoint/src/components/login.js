@@ -8,6 +8,8 @@ export default class Login extends Component {
     this.state = { username: '', password: '' };
   }
 
+  // this component rerenders when socket changes, even if it's not the current scene
+  // so this redirect is actually called regardless of if the action is from Login or Signup
   componentDidUpdate() {
     const { user, socket } = this.props;
 
@@ -16,7 +18,11 @@ export default class Login extends Component {
     }
 
     if (user.shouldRedirect && socket) {
+      // if currently on Login page, should go to Map
       this.props.navigator.push({ id: 'MapView' });
+      // else if currently on Signup page, should go to Settings
+      // this.props.navigator.push({ id: 'Settings' });
+
     }
   }
 
