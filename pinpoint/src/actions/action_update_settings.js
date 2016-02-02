@@ -1,6 +1,6 @@
 import { UPDATE_SETTINGS } from '../constants/actionTypes';
 
-const SERVER_URL = 'http://localhost:3000/tags';
+const SERVER_URL = 'http://localhost:3000/settings';
 
 // Move this function to utils later
 function postSettings(settings) {

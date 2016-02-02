@@ -5,7 +5,7 @@ import React, {
 
 import Login from '../containers/login-container.js';
 import Signup from '../containers/signup-container.js';
-import Settings from '../components/settings.js';
+import Settings from '../containers/settings-container.js';
 import MapView from '../containers/map-container.js';
 
 class Navigation extends Component {

@@ -15,7 +15,7 @@ export default class Settings extends Component {
   }
 
   onSubmit() {
-    this.props.submitSettings();
+    this.props.updateSettings({ ...this.state, token: this.props.user.token });
   }
 
   render() {
