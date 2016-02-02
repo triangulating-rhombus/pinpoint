@@ -1,4 +1,4 @@
-var Sequelize = require('sequelize');
+ var Sequelize = require('sequelize');
 var sequelize = new Sequelize(process.env.ENV_DB || 'pinpointdb', 'postgres', '', { dialect: 'postgres', logging: false });
 
 
@@ -47,9 +47,9 @@ var init = function() {
 
   // Users.destroy({where: {}}).then(function () {});
   // Visits.destroy({where: {}}).then(function () {});
-  // Tags.destroy({where: {}}).then(function () {});
+   Tags.destroy({where: {}}).then(function () {});
   // tags_visits.destroy({where: {}}).then(function () {});
-  // tags_users.destroy({where: {}}).then(function () {});
+   tags_users.destroy({where: {}}).then(function () {});
 
 
   sequelize.sync();
