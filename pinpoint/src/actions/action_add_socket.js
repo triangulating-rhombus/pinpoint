@@ -8,12 +8,9 @@ export default function () {
 
     const socket = io.connect('http://localhost:3000', { jsonp:false });
 
-    
-    
+    // System emits this event when fully connected
     socket.on('connect', function(){
-        // currently assuming that socket connection is synchronous
         dispatch({ type: ADD_SOCKET, payload:socket})
-         console.log("Socket has been connected");
     });
 
   }
