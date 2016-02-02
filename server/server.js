@@ -123,8 +123,14 @@ io.on('connection', function(client) {
 	// })
 	client.on("update", function(data) {
 		var userID = allUsers[data.socketID].userID;
-		data.userID = userID;
-		usersTracker[data.socketID] = data;
+		controller.findUserTags(userID).then(function(tags){
+			data.tags = tags;
+			data.userID = userID;
+			usersTracker[data.socketID] = data;
+			io.emit('refreshEvent', usersTracker);
+		});
+		
+		
 		var previousData = allUsers[data.socketID];
 		var distance = visitHelper.getDistance([previousData.latitude, previousData.longitude],[data.latitude, data.longitude]);
 		var timeDiff = visitHelper.timeDifference(previousData.time, data.time);
@@ -145,7 +151,7 @@ io.on('connection', function(client) {
 		// 	console.log(data);
 		// });
 		
-		io.emit('refreshEvent', usersTracker);
+		
 	})
 
 })

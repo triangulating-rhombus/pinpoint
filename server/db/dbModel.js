@@ -46,9 +46,9 @@ var init = function() {
 
 
   // Users.destroy({where: {}}).then(function () {});
-  // Visits.destroy({where: {}}).then(function () {});
+   Visits.destroy({where: {}}).then(function () {});
 //Tags.destroy({where: {}}).then(function () {});
-  // tags_visits.destroy({where: {}}).then(function () {});
+   tags_visits.destroy({where: {}}).then(function () {});
   //tags_users.destroy({where: {}}).then(function () {});
 
 

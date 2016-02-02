@@ -94,3 +94,10 @@ ERROR:  database "pinpointdb" already exists
 STATEMENT:  CREATE DATABASE pinpointdb;
 FATAL:  role "db" does not exist
 FATAL:  role "postgres" does not exist
+LOG:  database system was interrupted; last known up at 2016-02-01 20:55:40 PST
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  invalid record length at 0/21EC218
+LOG:  redo is not required
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started

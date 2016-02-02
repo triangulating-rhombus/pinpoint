@@ -100,6 +100,8 @@ return Promise.map(tags, function(tag) {
 
 };
 
+
+
 var addTagsVisits = function(userID, visitID){
 
   return model.Users.findAll({ 
@@ -159,6 +161,20 @@ var addTagsUsers = function(tags, userID){
   }
 }
 
+var findUserTags = function (userID) {
+  return model.Users.findAll({ 
+    where: {
+      id: userID
+    },
+    include: [ model.Tags ]
+  }).then(function(tags) {
+
+      return (tags[0].dataValues.Tags.map(function(tag){
+        return tag.dataValues.name;
+      }))
+  })
+};
+
 module.exports = {
   addUser: addUser,
   addVisit: addVisit,
@@ -168,5 +184,6 @@ module.exports = {
   getHotSpots:getHotSpots,
   authenticateUser:authenticateUser,
   findUser:findUser,
-  geoCodeThis:geoCodeThis
+  geoCodeThis:geoCodeThis,
+  findUserTags:findUserTags
 };
