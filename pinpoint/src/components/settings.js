@@ -15,7 +15,7 @@ export default class Settings extends Component {
   }
 
   onSubmit() {
-
+    this.props.submitSettings();
   }
 
   render() {
