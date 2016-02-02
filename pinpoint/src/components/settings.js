@@ -1,4 +1,4 @@
-import React, { Component, View, TextInput, Text } from 'react-native';
+import React, { Component, View, TextInput, Text, Switch } from 'react-native';
 import Button from './button';
 import styles from '../styles/styles';
 
@@ -6,7 +6,10 @@ export default class Settings extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { tags: '' };
+    this.state = {
+      tags: '',
+      isBroadcasting: false
+    };
   }
 
   onSubmit() {
@@ -16,7 +19,7 @@ export default class Settings extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>This is Settings view</Text>
+
         <Text style={styles.formLabel}>Tags</Text>
           <TextInput 
             style={styles.inputStyle} 
@@ -25,7 +28,15 @@ export default class Settings extends Component {
             placeholder="Enter tags" 
           />
 
-          <Button text="Update settings" clickAction={this.onSubmit.bind(this)} />
+
+        <Text style={styles.formLabel}>Broadcast Location</Text>
+        <Switch
+          onValueChange={(value) => this.setState({isBroadcasting: value})}
+          style={{marginBottom: 10}}
+          value={this.state.isBroadcasting}
+        />
+
+        <Button text="Update settings" clickAction={this.onSubmit.bind(this)} />
       </View>
     );
   }
