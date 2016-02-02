@@ -5,6 +5,7 @@ import React, {
 
 import Login from '../containers/login-container.js';
 import Signup from '../containers/signup-container.js';
+import Settings from '../components/settings.js';
 import MapView from '../containers/map-container.js';
 
 class Navigation extends Component {
@@ -29,6 +30,8 @@ class Navigation extends Component {
         return (<Login navigator={navigator} />);
       case 'Signup':
         return (<Signup navigator={navigator} />);
+      case 'Settings':
+        return (<Settings navigator={navigator} />);        
       case 'MapView':
         return (<MapView navigator={navigator} />);
       default:
