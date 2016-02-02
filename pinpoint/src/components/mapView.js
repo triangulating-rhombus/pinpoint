@@ -1,5 +1,6 @@
 import React, { 
-  Component, 
+  Component,
+  Animated
 } from 'react-native';
 
 import styles from '../styles/styles';
@@ -41,7 +42,7 @@ export default class Map extends Component {
       } else {
         navigator.geolocation.getCurrentPosition(watchCallback,error)  
       }
-    },5000); // If you want to do this in xcode using watchPosition,
+    }.bind(this),5000); // If you want to do this in xcode using watchPosition,
     // Modify pinpoint/libraries/RCTGeolocation.xcodeproj/RCTLocationObserver.m distance filter variable. use command click
   }
   /* FYI Render is only called once. That is why the 
@@ -50,7 +51,6 @@ export default class Map extends Component {
   being deisplayed) you'll have to pass in props to re-update 
 */
   render(){
-
     var markers = 
       {
         latitude: 37.78825,
@@ -59,15 +59,16 @@ export default class Map extends Component {
     ;
 
     return (
-     <MapView
-       style={styles.map}
-       showsUserLocation={true}
-       followUserLocation={true}
-     >
-      <MapView.Marker 
-        coordinate={markers}
-      />     
-    </MapView>
+      <MapView
+        style={styles.map}
+        showsUserLocation={true}
+        followUserLocation={true}
+       >
+        <MapView.Marker 
+          coordinate={markers}
+        />     
+     </MapView>
+
     ); 
   }
 };
