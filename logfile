@@ -83,3 +83,14 @@ FATAL:  could not create any TCP/IP sockets
 
 FATAL:  lock file "postmaster.pid" already exists
 HINT:  Is another postmaster (PID 708) running in data directory "/Users/Wayne/Desktop/pinpoint/pinpointdb"?
+LOG:  database system was shut down at 2016-01-29 11:23:19 PST
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+FATAL:  role "postgres" does not exist
+FATAL:  role "db" does not exist
+FATAL:  role "postgres" does not exist
+ERROR:  database "pinpointdb" already exists
+STATEMENT:  CREATE DATABASE pinpointdb;
+FATAL:  role "db" does not exist
+FATAL:  role "postgres" does not exist
