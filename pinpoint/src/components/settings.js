@@ -7,7 +7,9 @@ export default class Settings extends Component {
     super(props);
 
     this.state = {
-      tags: '',
+      tag1: '',
+      tag2: '',
+      tag3: '',
       isBroadcasting: false
     };
   }
@@ -21,13 +23,26 @@ export default class Settings extends Component {
       <View style={styles.container}>
 
         <Text style={styles.formLabel}>Tags</Text>
-          <TextInput 
-            style={styles.inputStyle} 
-            value={this.state.tags}
-            onChangeText={ tags => this.setState({ tags }) }
-            placeholder="Enter tags" 
-          />
+        <TextInput 
+          style={styles.inputStyle} 
+          value={this.state.tag1}
+          onChangeText={ tag1 => this.setState({ tag1 }) }
+          placeholder="Enter first tag" 
+        />
 
+        <TextInput 
+          style={styles.inputStyle} 
+          value={this.state.tag2}
+          onChangeText={ tag2 => this.setState({ tag2 }) }
+          placeholder="Enter second tag (optional)" 
+        />
+
+        <TextInput 
+          style={styles.inputStyle} 
+          value={this.state.tag3}
+          onChangeText={ tag3 => this.setState({ tag3 }) }
+          placeholder="Enter third tag (optional)" 
+        />
 
         <Text style={styles.formLabel}>Broadcast Location</Text>
         <Switch
