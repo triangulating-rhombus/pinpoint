@@ -11,14 +11,16 @@ export default class Signup extends Component {
   // Passes username and password to signupUser 
   onSubmit() {
     const { username, password } = this.state;
-    this.props.signupUser({ username, password });
+    this.props.signupUser(
+      { username, password },
+      () => this.props.addSocket(() => this.props.navigator.push({ id: 'Settings' }))
+    );
   }
 
   //This is test to ensure that the data is coming full circle from the store 
   test() {
     const { user } = this.props;
     if (user.username) {
-      console.log("Signup props:", this.props);
       return `Hello ${user.username}`;
     } else {
       return "Please Sign In"

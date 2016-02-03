@@ -15,7 +15,12 @@ export default class Settings extends Component {
   }
 
   onSubmit() {
-    this.props.updateSettings({ ...this.state, token: this.props.user.token });
+    this.props.updateSettings(
+      { ...this.state,
+        token: this.props.user.token
+      },
+      () => this.props.navigator.push({ id: 'MapView' })
+    );
   }
 
   render() {

@@ -23,15 +23,19 @@ function updateSettings(settings) {
 // Async action creator, which uses thunk to handle the promise
 // This returns a FUNCTION, which thunk will automatically intercept
 // Thunk will run the function and then dispatch the appropriate vanilla action creator
-export default function submitSettings(settings) {
+export default function submitSettings(settings, successCallback) {
   return (dispatch) => {
     postSettings(settings).then(
       response => {
+        successCallback(); // temporarily up here since next line will fail without successful server response
         const body = JSON.parse(response._bodyText);
         if (response.status === 200) {
           const token = body.token;
           dispatch(updateSettings({ settings }));
         }
+      },
+      error => {
+        callback();
       }
     );
   }
