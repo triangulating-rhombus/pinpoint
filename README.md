@@ -14,14 +14,17 @@
   4. Move into the repo directory: `cd pinpoint`
   5. Move into the client directory (which is also named pinpoint): `cd pinpoint`
   6. Install dependencies: `npm install`
-  7. Open the file located at pinpoint/pinpoint/ios/pinpoint.xcodeproj with XCode. (The easiest way is to just locate the file in Finder and double-click it.)
+  7. Install React Native Package Manager: `npm install -g rnpm`
+  8. Link React Native dependencies: `rnpm link`
+  9. Replace the file located at node_modules/react-native/Libraries/Animated/src/AnimatedImplementation.js with the code [here](https://gist.githubusercontent.com/lelandrichardson/c0d938e02301f9294465/raw/5053cebc66989d27697bbb08450f360555309b0c/AnimatedImplementation.js).
+  10. Open the file located at pinpoint/pinpoint/ios/pinpoint.xcodeproj with XCode. (The easiest way is to just locate the file in Finder and double-click it.)
     * This will automatically try to build the project, which may take a minute or two.
     * Assuming all went well, "Build Succeeded" should appear.
-  8. When complete, click the Play button at the top left of the XCode window.
+  11. When complete, click the Play button at the top left of the XCode window.
     * XCode will automatically start a server, which will appear in a terminal window.
     * When the server is ready, another "Build Succeeded" notification should appear in the main window.
     * XCode will then automatically open a simulator window. The simulator may take a minute or two to render fully.
-    * Assuming all went well, the simulator should show a page that says "Welcome to React Native!" and some other instructions.
+  
 
 ### Back-End
   
