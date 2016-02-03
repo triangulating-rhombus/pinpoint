@@ -1,5 +1,4 @@
-import { UPDATE_SETTINGS } from '../constants/actionTypes';
-import updateSettings from '../actions/action_update_settings';
+import { GET_SETTINGS, UPDATE_SETTINGS } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
   tag1: '',
@@ -11,6 +10,8 @@ const INITIAL_STATE = {
 export default function(state=INITIAL_STATE, action){
 
   switch(action.type) {
+    case GET_SETTINGS:
+      return action.payload;
     case UPDATE_SETTINGS: 
       return action.payload;
     default:

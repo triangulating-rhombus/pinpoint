@@ -14,11 +14,14 @@ export default class Settings extends Component {
     };
   }
 
+  componentWillMount() {
+    this.props.getSettings(() => this.setState(this.props.settings));
+  }
+
   onSubmit() {
     this.props.updateSettings(
-      { ...this.state,
-        token: this.props.user.token
-      },
+      this.state, 
+      this.props.user.token,
       () => this.props.navigator.push({ id: 'MapView' })
     );
   }

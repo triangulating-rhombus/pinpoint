@@ -12,6 +12,7 @@ export const ADD_SOCKET = 'ADD_SOCKET';
 export const UPDATE_GEO_LOCATION = 'UPDATE_GEO_LOCATION';
 
 // Settings
+export const GET_SETTINGS = 'GET_SETTINGS';
 export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';
 
 // Stats
