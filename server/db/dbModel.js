@@ -15,7 +15,8 @@ var Visits = sequelize.define('Visits', {
 var Users = sequelize.define('Users', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
   username: {type: Sequelize.STRING, unique: true, notNull: true},
-  password: {type: Sequelize.STRING, notNull: true}
+  password: {type: Sequelize.STRING, notNull: true},
+  broadcast: {type: Sequelize.BOOLEAN, notNull: true}
 }, { timestamps: false });
 
 var Tags = sequelize.define('Tags', {
@@ -46,9 +47,9 @@ var init = function() {
 
 
   // Users.destroy({where: {}}).then(function () {});
-   Visits.destroy({where: {}}).then(function () {});
+   //Visits.destroy({where: {}}).then(function () {});
 //Tags.destroy({where: {}}).then(function () {});
-   tags_visits.destroy({where: {}}).then(function () {});
+   //tags_visits.destroy({where: {}}).then(function () {});
   //tags_users.destroy({where: {}}).then(function () {});
 
 
