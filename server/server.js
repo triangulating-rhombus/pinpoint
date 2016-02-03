@@ -45,11 +45,12 @@ app.post('/login', function (req, res) {
   });
 });
 
-app.post('/tags', function (req, res) {
+app.post('/settings', function (req, res) {
 	var user = jwt.decode(req.body.token, "secret");
 	var tag1 = req.body.tag1;
 	var tag2 = req.body.tag2;
 	var tag3 = req.body.tag3;
+	var isBroadcasting = req.body.isBroadcasting;
 
 	controller.findUser({username:user}).then(function(user){
 		var userID = user.id;
@@ -63,6 +64,8 @@ app.post('/tags', function (req, res) {
 			res.send("tags added");
 		});
 	});
+
+	controller.setBroadcast(user, isBroadcasting);
 
 
 });
@@ -86,6 +89,18 @@ app.post('/signup', function(req, res){
   		res.json({token:token})
 		}
 	});
+});
+
+app.post('/stats', function(req, res){
+	var lat = req.body.lat;
+	var lon = req.body.lon;
+	var tag = req.body.tag;
+
+	controller.visitStats(lat, lon, tag).then(function(result){
+		
+		res.json(result);
+	});
+	
 });
 
 

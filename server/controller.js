@@ -3,6 +3,7 @@ var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
 var geocoder = require('node-geocoder');
 var http = require('http');
+var underscore = require('underscore');
 
 var getHotSpots = function (tag) {
   return model.Tags.findAll({ 
@@ -52,17 +53,16 @@ var addUser = function (user) {
 // finduser to find if a user already exists 
 var findUser = function(user){
   return model.Users.findOne({where: {username: user.username}})
+};
 
 
-  // return model.Users
-  //   .findOrCreate({where: {id: user.userID, username: user.username, password: }})
-    // .spread(function(user, created) {
-    //   console.log(user.get({
-    //     plain: true
-    //   }))
-    //   console.log(created)
-
-    // })
+var setBroadcast = function(user, status){
+  model.Users.findOne({where: {username: user}})
+  .then(function(user){
+    user.updateAttributes({
+      broadcast: status
+    })
+  })
 };
 
 var geocoderProvider = 'google';
@@ -175,6 +175,29 @@ var findUserTags = function (userID) {
   })
 };
 
+var visitStats = function(lat, lon, tag){
+  var days = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
+  return model.Visits.findAll({ 
+    where: {
+      latitude: lat,
+      longitude: lon
+    },
+    include: [ {model: model.Tags, where: {name: tag}} ]
+  }).then(function(visits) {
+
+      var result = visits.map(function(visit){
+        return days[visit.dataValues.startTime.getDay()];
+      })
+
+      result = underscore.countBy(result, function(day) {
+        return day;
+      });
+
+      return result;
+
+  })
+};
+
 module.exports = {
   addUser: addUser,
   addVisit: addVisit,
@@ -185,5 +208,7 @@ module.exports = {
   authenticateUser:authenticateUser,
   findUser:findUser,
   geoCodeThis:geoCodeThis,
-  findUserTags:findUserTags
+  findUserTags:findUserTags,
+  setBroadcast:setBroadcast,
+  visitStats:visitStats
 };
