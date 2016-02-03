@@ -17,7 +17,7 @@ class Navigation extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{id: 'Stats'}}
+        initialRoute={{id: 'Login'}}
         renderScene={this.navigatorRenderScene}
         configureScene = { () => Navigator.SceneConfigs.FloatFromRight }
       />
