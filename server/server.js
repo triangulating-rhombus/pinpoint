@@ -108,6 +108,7 @@ app.post('/signup', function(req, res){
 });
 
 app.post('/stats', function(req, res){
+	console.log(req.body);
 	var lat = req.body.lat;
 	var lon = req.body.lon;
 	var tag = req.body.tag;

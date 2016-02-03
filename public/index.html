@@ -14,12 +14,12 @@
   setTimeout(function(){
     socket.emit('connected', {token:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IndheW5lIg.66Qxc0MBJv_cJyvP8WfiEUCZZ4X1BXBSghVQVuAgBTA", socketID: socket.io.engine.id, longitude: -122.4089660, latitude: 37.7836970, time: new Date()});
     console.log("first connect")
-  }, 1000);
+  }, 10);
 
-  setTimeout(function(){
+  setInterval(function(){
     socket.emit('update', {longitude: -123.4089660, latitude: 37.7836970, time: new Date(), socketID: socket.io.engine.id});
     console.log("second connect")
-  }, 7000);
+  }, 500);
 
   socket.on("error", function(data){
     console.log(data);
