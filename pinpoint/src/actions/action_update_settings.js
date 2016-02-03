@@ -5,6 +5,7 @@ const SERVER_URL = 'http://localhost:3000/settings';
 // Move this function to utils later
 function postSettings(settings, token) {
   // fetch is React Native's built-in function to make AJAX requests
+  console.log("stringified settings:", JSON.stringify(settings));
   return fetch(SERVER_URL, { 
     method: 'POST',
     headers: {
@@ -31,15 +32,12 @@ export default function submitSettings(settings, token, successCallback) {
     postSettings(settings, token)
     .then(
       response => {
-        successCallback(); // temporarily up here since next line will fail without successful server response
-        const body = JSON.parse(response._bodyText);
+        // const body = JSON.parse(response._bodyText);
         if (response.status === 200) {
-          const token = body.token;
-          dispatch(updateSettings({ settings }));
+        //   const token = body.token;
+          dispatch(updateSettings(settings));
         }
-      },
-      error => {
-        callback();
+        successCallback();
       }
     );
   }
