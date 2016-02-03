@@ -6,6 +6,7 @@ import React, {
 import Login from '../containers/login-container.js';
 import Signup from '../containers/signup-container.js';
 import Settings from '../containers/settings-container.js';
+import Settings2 from '../containers/settings-container.js';
 import Stats from '../containers/stats-container.js';
 import MapView from '../containers/map-container.js';
 
@@ -32,6 +33,8 @@ export default class Router extends Component {
         return (<Signup navigator={navigator} />);
       case 'Settings':
         return (<Settings navigator={navigator} />);
+      case 'Settings2':
+        return (<Settings2 navigator={navigator} />);
       case 'MapView':
         return (<MapView navigator={navigator} />);
       case 'Stats':

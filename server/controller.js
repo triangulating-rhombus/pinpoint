@@ -176,7 +176,7 @@ var findUserTags = function (userID) {
 };
 
 var addVisit = function (visit) {
-  return geocoder.reverse({lat:lat, lon:lon})
+  return geocoder.reverse({lat:visit.latitude, lon:visit.longitude})
     .then(function(loc){
       loc[0].formattedAddress
   })
