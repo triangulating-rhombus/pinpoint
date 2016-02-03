@@ -9,7 +9,7 @@ import Settings from '../containers/settings-container.js';
 import Stats from '../containers/stats-container.js';
 import MapView from '../containers/map-container.js';
 
-class Navigation extends Component {
+export default class Router extends Component {
   constructor(props){
     super(props)
   }
@@ -41,4 +41,3 @@ class Navigation extends Component {
     }
   }
 }
-export default Navigation;
