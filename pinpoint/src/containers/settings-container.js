@@ -9,8 +9,3 @@ function mapStateToProps({ user, settings }) {
 }
 
 export default connect(mapStateToProps, { updateSettings })(Settings);
-
-
-
-
-

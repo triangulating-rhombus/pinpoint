@@ -8,45 +8,17 @@ export default class Login extends Component {
     this.state = { username: '', password: '' };
   }
 
-  // this component rerenders when socket changes, even if it's not the current scene
-  // so this redirect is actually called regardless of if the action is from Login or Signup
-  componentDidUpdate() {
-    const { user, socket } = this.props;
-
-    if(user.loggedIn && !socket) {
-      this.props.addSocket();
-    }
-
-    if (user.shouldRedirect && socket) {
-      // if currently on Login page, should go to Map
-      this.props.navigator.push({ id: 'MapView' });
-      // else if currently on Signup page, should go to Settings
-      // this.props.navigator.push({ id: 'Settings' });
-
-    }
-  }
-
-  // Passes username and password to loginUser 
   onSubmit() {
     const { username, password } = this.state;
-    this.props.loginUser({ username, password });
+    this.props.loginUser(
+      { username, password },
+      () => this.props.addSocket(() => this.props.navigator.push({ id: 'MapView' }))
+    );
   }
 
-  redirectToSignup() {
-    this.props.navigator.push({ id: 'Signup' });
+  redirectTo(viewId) {
+    this.props.navigator.push({ id: viewId });
   }
-
-  //This is test to ensure that the data is coming full circle from the store 
-  test() {
-    const { user } = this.props;
-    if (user.username) {
-      console.log("Login props:", this.props);
-      return `Hello ${user.username}`;
-    } else {
-      return "Please Sign In"
-    }
-  }
-
 
   showError() {
     return this.props.user.error || '';
@@ -75,9 +47,8 @@ export default class Login extends Component {
 
         <Button text="Login" clickAction={this.onSubmit.bind(this)} />
         <Text style={styles.buttonLabel}>Don't have an account?</Text>
-        <Button text="Signup" clickAction={this.redirectToSignup.bind(this)} />
+        <Button text="Signup" clickAction={() => this.redirectTo('Signup') } />
 
-        {/*<Text>{this.test.call(this)}</Text> */}
         <Text>{this.showError.call(this)}</Text>
       </View>
     );
