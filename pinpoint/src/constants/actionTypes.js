@@ -13,3 +13,6 @@ export const UPDATE_GEO_LOCATION = 'UPDATE_GEO_LOCATION';
 
 // Settings
 export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';
+
+// Stats
+export const GET_STATS = 'GET_STATS';
