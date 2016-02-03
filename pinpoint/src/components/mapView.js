@@ -13,7 +13,7 @@ import React, {
 // import styles from '../styles/styles';
 import MapView from 'react-native-maps';
 
-import initSocketListers from '../socket/listeners.js';
+import initSocketListeners from '../socket/listeners.js';
 import { initialGeoLocation, updateGeoLocation } from '../socket/emitters';
 
 var screen = Dimensions.get('window');
@@ -35,8 +35,44 @@ export default class Map extends Component {
     }
   }
 
+  componentDidUpdate(){
+    console.log('IT WORKED', this.props.allUsers);
+  }
+
+  componentDidMount(){
+    let properties = this.props;
+
+
+    let connect = (position) => {
+      console.log('CONNECTING TO SOCKET');
+      initialGeoLocation(properties, position);
+    }
+
+    let error = (error) => {
+      console.log('ERROR', error);
+    };
+
+    let update = (position) => {
+      console.log('UPDATING');
+      updateGeoLocation(properties, position);
+    }
+
+    initSocketListeners(this.props.socket);
+
+    // Create Socket Connection
+    navigator.geolocation.getCurrentPosition(connect, error);
+
+
+    // NOTE: React Native strongly discourags setInterval, but the SetInterval Mixin 
+    // is not supported by ES6. So for MVP purposes we're going with SetInterval
+    setInterval(function(){       
+      navigator.geolocation.getCurrentPosition(update,error)  
+    },5000); // If you want to do this in xcode using watchPosition,
+       // Modify pinpoint/libraries/RCTGeolocation.xcodeproj/RCTLocationObserver.m distance filter variable. use command click
+  }
+
+
   animate() {
-    console.log('STATE',this.state);
     var { coordinate } = this.state;
     var latitude = 37.33182;
     var longitude = -122.03118; 
@@ -48,17 +84,14 @@ export default class Map extends Component {
       <View style={styles.container}>
         <MapView
           style={styles.map}
-          initialRegion={{
-            latitude: LATITUDE,
-            longitude: LONGITUDE,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          }}
+          showsUserLocation={true}
+          followUserLocation={true}
         >
           <MapView.Marker.Animated
             coordinate={this.state.coordinate}
           />
         </MapView>
+        
         <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={this.animate.bind(this)} style={[styles.bubble, styles.button]}>
               <Text>Animate</Text>

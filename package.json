@@ -1,10 +1,9 @@
 {
-  "//": "https://github.com/petehunt/react-webpack-template",
+  "//": "previous npm start script was: webpack --progress --colors --watch",
   "name": "pinpoint",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
-  "//": "previous npm start script was: webpack --progress --colors --watch",
   "scripts": {
     "start": "nodemon server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -24,11 +24,13 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 
 //Passing all the combined reducer into the store. If any one of those reducer's data changes, store will be alerted
 // and react will re-render all views 
-const store = createStoreWithMiddleware(reducer)
+var store = createStoreWithMiddleware(reducer)
 
-store.subscribe( () => {
-  console.log('STORE HAS CHANGED',store.getState());
-});
+
+
+// store.subscribe( () => {
+//   console.log('STORE HAS CHANGED',store.getState());
+// });
 
 // This should actually be called after login
 // But we put it here for now for testing
@@ -55,8 +57,7 @@ const styles = StyleSheet.create({
   }
 })
 
-
-export default store
+export default store;
 AppRegistry.registerComponent('pinpoint', () => Pinpoint);
 
 
