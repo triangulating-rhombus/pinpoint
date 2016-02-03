@@ -207,6 +207,27 @@ var visitStats = function(lat, lon, tag){
   })
 };
 
+var findSettings = function (username) {
+
+  return model.Users.findAll({ 
+    where: {
+      username: username
+    },
+    include: [ model.Tags ]
+  }).then(function(tags) {
+
+
+      var tagsArray = tags[0].dataValues.Tags.map(function(tag){
+
+        return tag.dataValues.name;
+      })
+      var broadcast = tags[0].dataValues.broadcast;
+
+      return {tags: tagsArray, broadcast: broadcast};
+
+  })
+};
+
 module.exports = {
   addUser: addUser,
   addVisit: addVisit,
@@ -219,5 +240,6 @@ module.exports = {
   geoCodeThis:geoCodeThis,
   findUserTags:findUserTags,
   setBroadcast:setBroadcast,
-  visitStats:visitStats
+  visitStats:visitStats,
+  findSettings:findSettings
 };
