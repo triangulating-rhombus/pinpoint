@@ -175,26 +175,35 @@ var findUserTags = function (userID) {
   })
 };
 
+var addVisit = function (visit) {
+  return geocoder.reverse({lat:lat, lon:lon})
+    .then(function(loc){
+      loc[0].formattedAddress
+  })
+};
+
 var visitStats = function(lat, lon, tag){
   var days = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
-  return model.Visits.findAll({ 
-    where: {
-      latitude: lat,
-      longitude: lon
-    },
-    include: [ {model: model.Tags, where: {name: tag}} ]
-  }).then(function(visits) {
 
-      var result = visits.map(function(visit){
-        return days[visit.dataValues.startTime.getDay()];
-      })
+  return geocoder.reverse({lat:lat, lon:lon})
+    .then(function(loc){
+      loc[0].formattedAddress
 
-      result = underscore.countBy(result, function(day) {
-        return day;
-      });
 
-      return result;
-
+        return model.Visits.findAll({ 
+          where: {
+            address: loc[0].formattedAddress
+          },
+          include: [ {model: model.Tags, where: {name: tag}} ]
+        }).then(function(visits) {
+            var result = visits.map(function(visit){
+              return days[visit.dataValues.startTime.getDay()];
+            })
+            result = underscore.countBy(result, function(day) {
+              return day;
+            });
+            return result;
+        })
   })
 };
 
