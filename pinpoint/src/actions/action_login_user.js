@@ -13,9 +13,6 @@ function fetchUserData(user) {
   	headers: { 'Content-Type': 'application/json' },
   	body: JSON.stringify(user)
   });
-  // }).then(function(res){
-  //   // console.log("Server response",res)
-  // });
 }
 
 // Vanilla action creators
