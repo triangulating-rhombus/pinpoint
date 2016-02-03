@@ -12,7 +12,7 @@ import React, {
 
 // import styles from '../styles/styles';
 import MapView from 'react-native-maps';
-
+import _ from 'underscore';
 import initSocketListeners from '../socket/listeners.js';
 import { initialGeoLocation, updateGeoLocation } from '../socket/emitters';
 
@@ -24,9 +24,21 @@ const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
+var obj = {};
+var getRandomColor = function() {
+   var letters = '0123456789ABCDEF'.split('');
+   var color = '#';
+   for (var i = 0; i < 6; i++ ) {
+       color += letters[Math.floor(Math.random() * 16)];
+   }
+   return color;
+}
+
 export default class Map extends Component {
   constructor() {
+
     super();
+
     this.state = {
       coordinate: new Animated.Region({
         latitude: LATITUDE,
@@ -72,14 +84,67 @@ export default class Map extends Component {
   }
 
 
-  animate() {
-    var { coordinate } = this.state;
-    var latitude = 37.33182;
-    var longitude = -122.03118; 
-    coordinate.timing({latitude, longitude }).start();
+  // animate() {
+  //   var { coordinate } = this.state;
+  //   var latitude = 37.33182;
+  //   var longitude = -122.03118; 
+  //   coordinate.timing({latitude, longitude }).start();
+  // }
+
+  animateMarkers() {
+    let allUsers = this.props.allUsers;
+    
+    _.each(allUsers, (value, user) => {
+      if(value.pastNewPins.length < 2 ){
+        return
+      } else {
+        var currentUser = obj[user];
+        var longitude = value.pastNewPins[1].longitude;
+        var latitude = value.pastNewPins[1].latitude;
+        // this should render each user's lat long on every prop update 
+        currentUser.timing({latitude, longitude}).start();       
+      }
+    }); 
+  }
+
+
+
+  renderMarkers(){
+
+
+    let allUsers = this.props.allUsers;
+    
+    return _.map(allUsers, (value, user) => {
+      var oldPin = value.pastNewPins[0];
+
+      obj[user] = new Animated.Region({
+        latitude: oldPin.latitude,
+        longitude: oldPin.longitude
+      });
+      
+      return (
+        <MapView.Marker.Animated
+          coordinate={obj[user]}
+          pinColor={getRandomColor()}
+        />
+      );
+
+    });
   }
 
   render() {
+    emptyChecker = () => {
+      if(Object.keys(this.props.allUsers).length !== 0){
+        return this.renderMarkers.call(this)
+      }
+    }
+
+    beginAnimate = () => {
+      if(Object.keys(this.props.allUsers).length !== 0){
+        this.animateMarkers();
+      }
+    }
+
     return (
       <View style={styles.container}>
         <MapView
@@ -87,16 +152,9 @@ export default class Map extends Component {
           showsUserLocation={true}
           followUserLocation={true}
         >
-          <MapView.Marker.Animated
-            coordinate={this.state.coordinate}
-          />
+        { emptyChecker.call(this) }
+        { beginAnimate.call(this) }
         </MapView>
-        
-        <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={this.animate.bind(this)} style={[styles.bubble, styles.button]}>
-              <Text>Animate</Text>
-            </TouchableOpacity>
-        </View>
       </View>
     );
   }
