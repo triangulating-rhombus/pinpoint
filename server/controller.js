@@ -175,25 +175,55 @@ var findUserTags = function (userID) {
   })
 };
 
+var addVisit = function (visit) {
+  return geocoder.reverse({lat:lat, lon:lon})
+    .then(function(loc){
+      loc[0].formattedAddress
+  })
+};
+
 var visitStats = function(lat, lon, tag){
   var days = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
-  return model.Visits.findAll({ 
+
+  return geocoder.reverse({lat:lat, lon:lon})
+    .then(function(loc){
+      loc[0].formattedAddress
+
+
+        return model.Visits.findAll({ 
+          where: {
+            address: loc[0].formattedAddress
+          },
+          include: [ {model: model.Tags, where: {name: tag}} ]
+        }).then(function(visits) {
+            var result = visits.map(function(visit){
+              return days[visit.dataValues.startTime.getDay()];
+            })
+            result = underscore.countBy(result, function(day) {
+              return day;
+            });
+            return result;
+        })
+  })
+};
+
+var findSettings = function (username) {
+
+  return model.Users.findAll({ 
     where: {
-      latitude: lat,
-      longitude: lon
+      username: username
     },
-    include: [ {model: model.Tags, where: {name: tag}} ]
-  }).then(function(visits) {
+    include: [ model.Tags ]
+  }).then(function(tags) {
 
-      var result = visits.map(function(visit){
-        return days[visit.dataValues.startTime.getDay()];
+
+      var tagsArray = tags[0].dataValues.Tags.map(function(tag){
+
+        return tag.dataValues.name;
       })
+      var broadcast = tags[0].dataValues.broadcast;
 
-      result = underscore.countBy(result, function(day) {
-        return day;
-      });
-
-      return result;
+      return {tags: tagsArray, broadcast: broadcast};
 
   })
 };
@@ -210,5 +240,6 @@ module.exports = {
   geoCodeThis:geoCodeThis,
   findUserTags:findUserTags,
   setBroadcast:setBroadcast,
-  visitStats:visitStats
+  visitStats:visitStats,
+  findSettings:findSettings
 };

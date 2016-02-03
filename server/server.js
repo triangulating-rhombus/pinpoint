@@ -46,7 +46,11 @@ app.post('/login', function (req, res) {
 });
 
 app.post('/settings', function (req, res) {
-	var user = jwt.decode(req.body.token, "secret");
+
+
+
+	var token = req.headers['x-access-token']; 
+	var user = jwt.decode(token, "secret");
 	var tag1 = req.body.tag1;
 	var tag2 = req.body.tag2;
 	var tag3 = req.body.tag3;
@@ -69,6 +73,18 @@ app.post('/settings', function (req, res) {
 
 
 });
+
+app.get('/settings', function (req, res) {
+	var token = req.headers['x-access-token']; 
+	var user = jwt.decode(token, "secret");
+
+	controller.findSettings(user).then(function(result){
+		res.send(result);
+	});
+	
+
+});
+
 
 app.post('/signup', function(req, res){
 	var username = req.body.username;
