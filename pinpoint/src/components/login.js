@@ -12,7 +12,9 @@ export default class Login extends Component {
     const { username, password } = this.state;
     this.props.loginUser(
       { username, password },
-      () => this.props.addSocket(() => this.props.navigator.push({ id: 'Settings' }))
+      () => this.props.addSocket(() => {}),
+      this.props.navigator
+      // () => this.props.addSocket(() => this.props.navigator.push({ id: 'Settings' }))
     );
   }
 
