@@ -14,16 +14,20 @@ export default class Settings extends Component {
     };
   }
 
+  componentWillMount() {
+    this.props.getSettings(this.props.user.token, () => this.setState(this.props.settings));
+  }
+
   onSubmit() {
     this.props.updateSettings(
-      { ...this.state,
-        token: this.props.user.token
-      },
-      () => this.props.navigator.push({ id: 'MapView' })
+      this.state, 
+      this.props.user.token,
+      () => {console.log('this:', this.props.navigator); this.props.navigator.push({ id: 'MapView' })}
     );
   }
 
   render() {
+    console.log(this.props.settings);
     return (
       <View style={styles.container}>
 

@@ -223,7 +223,12 @@ var findSettings = function (username) {
       })
       var broadcast = tags[0].dataValues.broadcast;
 
-      return {tags: tagsArray, broadcast: broadcast};
+      return {
+        tag1: tagsArray[0],
+        tag2: tagsArray[1],
+        tag3: tagsArray[2],
+        isBroadcasting: broadcast
+      };
 
   })
 };

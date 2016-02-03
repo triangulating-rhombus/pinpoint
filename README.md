@@ -31,15 +31,26 @@
   1. If you don't already have Postgres, install it: `brew install postgres`
   2. In the terminal, run:
 ```
-> initdb pinpoint db 
+> initdb pinpointdb 
 > pg_ctl -D pinpointdb -l logfile start
 > createdb pinpointdb
 ```
   3. Run the psql command line tool to create a role:
 ```
-> psql pinpoint db
+> psql pinpointdb
 $ CREATE ROLE postgres WITH superuser;
 $ ALTER ROLE postgres WITH login;
 $ \q
 ```
   4. Make sure you are in the root directory of the repo and then start the server: `nodemon server.js`
+
+#### Resetting database tables
+
+  If your database tables are not up to date to the latest schemas, you need to drop all tables:
+```
+  > psql pinpointdb
+  $ drop schema public cascade;
+  $ create schema public;
+  $ \q
+```
+  Then restart the server by running `rs` in the server's terminal tab, if the server is already running, or else `npm start` from the root directory.

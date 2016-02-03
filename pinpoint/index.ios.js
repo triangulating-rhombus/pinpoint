@@ -3,30 +3,20 @@
  * https://github.com/facebook/react-native
  */
 'use strict';
-import React, {
-  AppRegistry,
-  Component,
-  StyleSheet,
-  Text,
-  View,
-  Navigator
-} from 'react-native';
+import React, { AppRegistry, Component } from 'react-native';
 
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
-import reducer from './src/reducers';
-import Navigation from './src/routes/routes.js';
+import rootReducer from './src/reducers';
+import Router from './src/router/router.js';
 
-// Apply a thunk middleware which makes an instaneous evaluation delayed (to be called later once something else finishes?)
+// Applies thunk middleware to handle more complex action dispatching
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 
-//Passing all the combined reducer into the store. If any one of those reducer's data changes, store will be alerted
-// and react will re-render all views 
-var store = createStoreWithMiddleware(reducer)
-
-
+// Connects reducers to store
+var store = createStoreWithMiddleware(rootReducer);
 
 // store.subscribe( () => {
 //   console.log('STORE HAS CHANGED',store.getState());
@@ -45,20 +35,11 @@ class Pinpoint extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Navigation />
+        <Router />
       </Provider>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-})
-
 export default store;
 AppRegistry.registerComponent('pinpoint', () => Pinpoint);
-
-
-
