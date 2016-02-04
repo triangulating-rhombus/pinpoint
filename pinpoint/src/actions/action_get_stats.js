@@ -3,12 +3,12 @@ import { GET_STATS } from '../constants/actionTypes';
 const SERVER_URL = 'http://localhost:3000/stats';
 
 // Move this function to utils later
-function fetchStats(stats) {
+function fetchStats(options) { // options: { lat: Number, lon: Number, tag: String }
   // fetch is React Native's built-in function to make AJAX requests
   return fetch(SERVER_URL, { 
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(stats)
+    body: JSON.stringify(options)
   });
 }
 
@@ -23,11 +23,11 @@ function getStats(stats) {
 // Async action creator, which uses thunk to handle the promise
 // This returns a FUNCTION, which thunk will automatically intercept
 // Thunk will run the function and then dispatch the appropriate vanilla action creator
-export default function submitStats(stats, successCallback) {
+export default function submitStats(options, successCallback) {
   return (dispatch) => {
-    fetchStats(stats).then(
+    fetchStats(options).then(
       response => {
-        console.log('response from /stats:', stats);
+        console.log('response from /stats:', response);
         const body = JSON.parse(response._bodyText);
         if (response.status === 200) {
           dispatch(getStats(body));
@@ -35,7 +35,8 @@ export default function submitStats(stats, successCallback) {
         successCallback();
       },
       error => {
-        callback();
+        console.log('error');
+        successCallback();
       }
     );
   }

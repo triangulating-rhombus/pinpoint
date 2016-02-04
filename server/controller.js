@@ -191,23 +191,23 @@ var visitStats = function(lat, lon, tag){
       loc[0].formattedAddress
 
 
-        return model.Visits.findAll({ 
-          where: {
-            address: loc[0].formattedAddress
-          },
-          include: [ {model: model.Tags, where: {name: tag}} ]
-        }).then(function(visits) {
-          console.log(visits);
-            var result = visits.map(function(visit){
-              return days[visit.dataValues.startTime.getDay()];
-            })
+      return model.Visits.findAll({ 
+        where: {
+          address: loc[0].formattedAddress
+        },
+        include: [ {model: model.Tags, where: {name: tag}} ]
+      }).then(function(visits) {
+        console.log(visits);
+          var result = visits.map(function(visit){
+            return days[visit.dataValues.startTime.getDay()];
+          })
 
-            result = underscore.countBy(result, function(day) {
-              return day;
-            });
-            return result;
-        })
-  })
+          result = underscore.countBy(result, function(day) {
+            return day;
+          });
+          return result;
+      })
+  });
 };
 
 var findSettings = function (username) {
