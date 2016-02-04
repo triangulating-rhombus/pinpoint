@@ -10,6 +10,8 @@ import React, {
   Platform, 
 } from 'react-native';
 
+import image from '../assets/images/check.png';
+
 // import styles from '../styles/styles';
 import MapView from 'react-native-maps';
 import _ from 'underscore';
@@ -108,6 +110,7 @@ export default class Map extends Component {
 
         return (
           <MapView.Marker.Animated
+            image={image}
             title={tags}
             key={user}
             coordinate={value.pastNewPins[0]}
