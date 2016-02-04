@@ -5,26 +5,20 @@ import Button from "./button.js";
 export default class Signup extends Component {
   constructor(props) {
     super(props);
-    this.state = { username: '', password: '' };
+    this.state = {
+      username: '',
+      password: '',
+      errorMessage: ''
+    };
   }
 
-  // Passes username and password to signupUser 
   onSubmit() {
     const { username, password } = this.state;
     this.props.signupUser(
       { username, password },
-      () => this.props.addSocket(() => this.props.navigator.push({ id: 'Settings' }))
+      this.props.navigator
+      // () => this.props.addSocket(() => this.props.navigator.push({ id: 'Settings' }))
     );
-  }
-
-  //This is test to ensure that the data is coming full circle from the store 
-  test() {
-    const { user } = this.props;
-    if (user.username) {
-      return `Hello ${user.username}`;
-    } else {
-      return "Please Sign In"
-    }
   }
 
   showError() {
@@ -56,10 +50,9 @@ export default class Signup extends Component {
           placeholder="Enter your password"
         />
 
+        <Text style={styles.formLabel}>{this.state.errorMessage}</Text>
         <Button text="Signup" clickAction={this.onSubmit.bind(this)} />
 
-        {/*<Text style={styles.buttonLabel}>{this.test.call(this)}</Text> */}
-        
         <Text>{this.showError.call(this)}</Text>
         <Button text="Back to Login" clickAction={this.backToLogin.bind(this)} />
       </View>

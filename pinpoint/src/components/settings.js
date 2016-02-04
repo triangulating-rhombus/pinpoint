@@ -22,7 +22,8 @@ export default class Settings extends Component {
     this.props.updateSettings(
       this.state, 
       this.props.user.token,
-      () => {console.log('this:', this.props.navigator); this.props.navigator.push({ id: 'MapView' })}
+      this.props.navigator
+      // () => {console.log('this:', this.props.navigator); this.props.navigator.push({ id: 'MapView' })}
     );
   }
 

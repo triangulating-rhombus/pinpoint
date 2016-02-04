@@ -9,15 +9,18 @@ export default class Login extends Component {
   }
 
   onSubmit() {
+    // this.props.navigator.push({ id: 'Settings' });
     const { username, password } = this.state;
     this.props.loginUser(
       { username, password },
-      () => this.props.addSocket(() => this.props.navigator.push({ id: 'Settings' }))
+      () => this.props.addSocket(() => {}),
+      this.props.navigator
+      // () => this.props.addSocket(() => this.props.navigator.push({ id: 'Settings' }))
     );
   }
 
-  redirectTo(viewId) {
-    this.props.navigator.push({ id: viewId });
+  redirectTo(routeName) {
+    this.props.navigator.push({ name: routeName });
   }
 
   showError() {
