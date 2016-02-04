@@ -33,7 +33,7 @@ export default function submitSettings(settings, token, navigator) {
       response => {
         console.log('starting');
         console.log(navigator);
-        navigator.immediatelyResetRouteStack([{ name: 'MapView' }]);
+        navigator.immediatelyResetRouteStack([{ name: 'TabBar' }]);
         console.log('done');
         // const body = JSON.parse(response._bodyText);
         if (response.status === 200) {

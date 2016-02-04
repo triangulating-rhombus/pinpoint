@@ -33,7 +33,7 @@ export default class TabBar extends Component {
 
   renderScene(routeName) {
     var Component = ROUTES[routeName];
-    return <Component />
+    return <Component navigator={this.props.navigator}/>
   }
 
   render() {
