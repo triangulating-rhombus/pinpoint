@@ -148,11 +148,12 @@ var addTagsUsers = function(tags, userID){
 
   model.tags_users.destroy({
       where: {
-        id: userID
+        user_id: userID
       }
   })
 
   for (var i = 0; i < tags.length; i++){
+    console.log("hi");
     var tagID = tags[i];
       model.tags_users.findOrCreate({where: {
         tag_id: tagID,
