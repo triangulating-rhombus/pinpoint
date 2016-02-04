@@ -1,6 +1,5 @@
 export const initialGeoLocation = (props, data) => {
 
-
   let socket = props.socket;
   let socketID = socket.id;
 

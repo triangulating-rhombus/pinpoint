@@ -3,6 +3,17 @@ import { UPDATE_GEO_LOCATION } from '../constants/actionTypes';
 import _ from 'underscore';
 
 
+import React, {
+  PropTypes,
+  View,
+  Text,
+  Dimensions,
+  Animated,
+  Platform, 
+} from 'react-native';
+
+
+
 // const INITIAL_STATE = {
 //   socketID : {
 //     pastNewPins: [{latitude:0, longitude:0, tags:[]},{latitude:0, longitude:0}]
@@ -35,7 +46,12 @@ export default function(state = {}, action) {
 
       let longitude = val.longitude;
       let latitude = val.latitude;
-      let newPins = { longitude: longitude, latitude: latitude }
+
+      let newPins = new Animated.Region({
+        latitude: latitude,
+        longitude: longitude,
+      })
+
       let tags = val.tags;
 
       // Push New Index
