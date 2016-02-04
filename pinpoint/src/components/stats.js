@@ -16,7 +16,6 @@ export default class Stats extends Component {
   }
 
   render() {
-    console.log("rendering via:", this.props.stats);
     if (Object.keys(this.props.stats).length === 0) {
       return (
         <View style={styles.container}>
@@ -24,10 +23,33 @@ export default class Stats extends Component {
         </View>
       );
     } else {
+      const dataValues = [
+        this.props.stats.Sun,
+        this.props.stats.Mon,
+        this.props.stats.Tues,
+        this.props.stats.Wed,
+        this.props.stats.Thur,
+        this.props.stats.Fri,
+        this.props.stats.Sat
+      ];
+      console.log(dataValues);
+      const chartData = [
+        {
+          name: 'BarChart',
+          type: 'bar',
+          color:'purple',
+          widthPercent: 0.6,
+          data: dataValues //[30, 1, 1, 2, 3, 5, 21, 13, 21, 34, 55, 30],
+        }
+      ];
       return (
         <View style={styles.container}>
           <Text style={styles.formLabel}>By Day</Text>
-          <Text></Text>
+          <RNChart style={styles.chart}
+            chartData={chartData}
+            verticalGridStep={5}
+            xLabels={xLabels}
+           />
         </View>
       );
     }
@@ -50,17 +72,7 @@ const styles = StyleSheet.create({
   }
 });
 
-// const chartData = [
-//   {
-//     name: 'BarChart',
-//     type: 'bar',
-//     color:'purple',
-//     widthPercent: 0.6,
-//     data: [30, 1, 1, 2, 3, 5, 21, 13, 21, 34, 55, 30],
-//   }
-// ];
-
-// const xLabels = ['0','1','2','3','4','5','6','7','8','9','10','11'];
+const xLabels = ['0','1','2','3','4','5','6','7','8','9','10','11'];
 
 // export default class Stats extends Component {
 //   render() {
