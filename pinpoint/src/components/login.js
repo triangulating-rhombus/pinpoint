@@ -9,6 +9,7 @@ export default class Login extends Component {
   }
 
   onSubmit() {
+    // this.props.navigator.push({ id: 'Settings' });
     const { username, password } = this.state;
     this.props.loginUser(
       { username, password },
@@ -18,8 +19,8 @@ export default class Login extends Component {
     );
   }
 
-  redirectTo(viewId) {
-    this.props.navigator.push({ id: viewId });
+  redirectTo(routeName) {
+    this.props.navigator.push({ name: routeName });
   }
 
   showError() {

@@ -32,7 +32,8 @@ export default function submitSettings(settings, token, navigator) {
     .then(
       response => {
         console.log('starting');
-        navigator.push({id: 'MapView'});
+        console.log(navigator);
+        navigator.replace({ name: 'MapView' });
         console.log('done');
         // const body = JSON.parse(response._bodyText);
         if (response.status === 200) {
