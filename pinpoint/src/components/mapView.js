@@ -26,48 +26,41 @@ var getRandomColor = function() {
    }
    return color;
 }
+var count = true;
 
 
 export default class Map extends Component {
 
-  componentDidMount(){
-    let properties = this.props;
+  componentDidUpdate(){
+
+    if(count && this.props.socket){
+      initSocketListeners(this.props.socket);
+      let properties = this.props;
 
 
-    let connect = (position) => {
-      console.log('CONNECTING TO SOCKET',position);
-      initialGeoLocation(properties, position);
+      let connect = (position) => {
+        initialGeoLocation(properties, position);
+      }
+
+      let error = (error) => {
+        console.log('ERROR', error);
+      };
+
+      let update = (position) => {
+        updateGeoLocation(properties, position);
+      }
+
+
+      // Create Socket Connection
+      navigator.geolocation.getCurrentPosition(connect, error);
+      // NOTE: React Native strongly discourags setInterval, but the SetInterval Mixin 
+      // is not supported by ES6. So for MVP purposes we're going with SetInterval
+      setInterval(function(){       
+        navigator.geolocation.getCurrentPosition(update,error)  
+      },5000); // If you want to do this in xcode using watchPosition,
+         // Modify pinpoint/libraries/RCTGeolocation.xcodeproj/RCTLocationObserver.m distance filter variable. use command click
+      count = false;
     }
-
-    let error = (error) => {
-      console.log('ERROR', error);
-    };
-
-    let update = (position) => {
-      updateGeoLocation(properties, position);
-    }
-
-    initSocketListeners(this.props.socket);
-
-    // Create Socket Connection
-    navigator.geolocation.getCurrentPosition(connect, error);
-
-    // let centerMap = (position) => {
-    //   var newLocation = {longitude:position.coords.longitude, latitude:position.coords.latitude};
-    //   this.setState({coords: newLocation});
-    // }
-    // setInterval(() => {
-    //   navigator.geolocation.getCurrentPosition(centerMap,error);
-    // }, 500);
-
-
-
-    // NOTE: React Native strongly discourags setInterval, but the SetInterval Mixin 
-    // is not supported by ES6. So for MVP purposes we're going with SetInterval
-    setInterval(function(){       
-      navigator.geolocation.getCurrentPosition(update,error)  
-    },5000); // If you want to do this in xcode using watchPosition,
-       // Modify pinpoint/libraries/RCTGeolocation.xcodeproj/RCTLocationObserver.m distance filter variable. use command click
   }
 
   animateMarkers() {
