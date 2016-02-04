@@ -57,7 +57,7 @@ export default class TabBar extends Component {
           title="Map"
           iconName="ios-navigate-outline"
           selectedIconName="ios-navigate"
-          badge={this.state.notifCount > 0 ? this.state.notifCount : undefined}
+          //badge={this.state.notifCount > 0 ? this.state.notifCount : undefined}
           selected={this.state.selectedTab === 'redTab'}
           onPress={() => {
             this.setState({
