@@ -24,7 +24,7 @@ export default class Login extends Component {
   }
 
   showError() {
-    //return this.props.user.error || '';
+    return this.props.user.error || '';
   }
 
   render() {

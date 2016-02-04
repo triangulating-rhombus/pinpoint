@@ -22,7 +22,7 @@ export default class Signup extends Component {
   }
 
   showError() {
-    // return this.props.user.error || '';
+    return this.props.user.error || '';
   }
 
   backToLogin() {

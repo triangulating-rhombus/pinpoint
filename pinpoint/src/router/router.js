@@ -9,8 +9,9 @@ import Signup from '../containers/signup-container.js';
 import Settings from '../containers/settings-container.js';
 import Stats from '../containers/stats-container.js';
 import MapView from '../containers/map-container.js';
+import TabBar from '../components/tabBar.js';
 
-const ROUTES = { Login, Signup, Settings, Stats, MapView };
+const ROUTES = { Login, Signup, Settings, Stats, MapView, TabBar };
 
 export default class Router extends Component {
   renderScene(route, navigator) {
