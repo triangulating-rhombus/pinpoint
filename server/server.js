@@ -58,12 +58,10 @@ app.post('/settings', function (req, res) {
 
 	controller.findUser({username:user}).then(function(user){
 		var userID = user.id;
-		console.log(userID);
 		controller.addTag([tag1, tag2, tag3]).then(function(something){
 			var tagsArray = something.map(function(tag){
 				return tag[0].dataValues.id;
 			});
-
 			controller.addTagsUsers(tagsArray, userID)
 			res.send("tags added");
 		});
@@ -108,7 +106,6 @@ app.post('/signup', function(req, res){
 });
 
 app.post('/stats', function(req, res){
-	console.log(req.body);
 	var lat = req.body.lat;
 	var lon = req.body.lon;
 	var tag = req.body.tag;
@@ -167,10 +164,8 @@ io.on('connection', function(client) {
 		var distance = visitHelper.getDistance([previousData.latitude, previousData.longitude],[data.latitude, data.longitude]);
 		var timeDiff = visitHelper.timeDifference(previousData.time, data.time);
 		if (distance >= 10 && timeDiff >= 3){
-			console.log("new visit");
 			previousData.endTime = new Date();
 			controller.addVisit(previousData).then(function(obj){
-				console.log(userID, obj[0].dataValues.id);
 				controller.addTagsVisits(userID, obj[0].dataValues.id);
 			});
 			allUsers[data.socketID] = data;
