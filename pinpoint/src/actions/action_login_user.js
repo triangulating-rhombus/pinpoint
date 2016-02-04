@@ -41,7 +41,7 @@ export default function loginUser(user, successCallback, navigator) {
           const token = body.token;
           dispatch(loginSucceeded({ token, user: user.username }));
           successCallback();
-          navigator.push({ name: 'Settings' });
+          navigator.immediatelyResetRouteStack([{ name: 'Settings' }]);
         } else {
           const error = body.error;
           dispatch(loginFailed(error));

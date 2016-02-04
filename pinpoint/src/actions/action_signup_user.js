@@ -41,7 +41,7 @@ export default function signupUser(user, navigator) {
           const token = body.token;
           dispatch(signupSucceeded({ token, user: user.username }));
           // successCallback();
-          navigator.push({ name: 'Settings' });
+          navigator.immediatelyResetRouteStack([{ name: 'Settings' }]);
         } else {
           const error = body.error;
           dispatch(signupFailed(error));
