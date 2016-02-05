@@ -26,98 +26,99 @@ var getRandomColor = function() {
    }
    return color;
 }
+
 var count = true;
 
 
 export default class Map extends Component {
 
   componentDidUpdate(){
-
+    // If component had updated because socket is now connected to the server run this code. Modified after code refactor.
     if(count && this.props.socket){
-      initSocketListeners(this.props.socket);
-      let properties = this.props;
-
-
-      let connect = (position) => {
-        initialGeoLocation(properties, position);
-      }
-
-      let error = (error) => {
-        console.log('ERROR', error);
-      };
-
-      let update = (position) => {
-        updateGeoLocation(properties, position);
-      }
-
-
-      // Create Socket Connection
-      navigator.geolocation.getCurrentPosition(connect, error);
-      // NOTE: React Native strongly discourags setInterval, but the SetInterval Mixin 
-      // is not supported by ES6. So for MVP purposes we're going with SetInterval
-      setInterval(function(){       
-        navigator.geolocation.getCurrentPosition(update,error)  
-      },5000); // If you want to do this in xcode using watchPosition,
-         // Modify pinpoint/libraries/RCTGeolocation.xcodeproj/RCTLocationObserver.m distance filter variable. use command click
-      count = false;
+      this.setDefaults.call(this);
     }
+
+  }
+
+  componentDidMount(){
+    if(this.props.socket){
+      this.setDefaults.call(this)
+    }
+  }
+
+  setDefaults(){
+
+    initSocketListeners(this.props.socket);
+    let properties = this.props;
+
+
+    let connect = (position) => {
+      initialGeoLocation(properties, position);
+    }
+
+    let error = (error) => {
+      console.log('ERROR', error);
+    };
+
+    let update = (position) => {
+      updateGeoLocation(properties, position);
+    }
+
+    navigator.geolocation.getCurrentPosition(connect, error);
+
+    setInterval(function(){       
+      navigator.geolocation.getCurrentPosition(update,error)  
+    },5000); 
+
+    count = false;
+
   }
 
   animateMarkers() {
     let allUsers = this.props.allUsers;
-
-    if(Object.keys(allUsers).length !== 0){
       
-      _.each(allUsers, (value, user) => {
-        if(value.pastNewPins.length < 2 ){
-          return
-        } else {
-          var oldLatLng = value.pastNewPins[0];
-          var longitude = value.pastNewPins[1].longitude._value;
-          var latitude = value.pastNewPins[1].latitude._value;
+    _.each(allUsers, (value, user) => {
+      if(value.pastNewPins.length < 2 ){
+        return
+      } else {
+        var oldLatLng = value.pastNewPins[0];
+        var longitude = value.pastNewPins[1].longitude._value;
+        var latitude = value.pastNewPins[1].latitude._value;
 
-          // this should render each user's lat long on every prop update 
-          oldLatLng.timing({latitude, longitude}).start();       
-        }
-      }); 
-
-    }
+        // this should render each user's lat long on every prop update 
+        oldLatLng.timing({latitude, longitude}).start();       
+      }
+    }); 
 
   }
 
   renderMarkers(){
 
     let allUsers = this.props.allUsers;
-    let tags = '';
 
-    if(Object.keys(allUsers).length !== 0) {
+    return _.map(allUsers, (value, user) => {
 
-      return _.map(allUsers, (value, user) => {
+      let tags = value.tags = '';
+      
+      if(tags){
+        tags = tags.join(', ');
+      }
 
-        tags = value.tags;
-        
-        if(tags){
-          tags = tags.join(', ');
-        }
+      return (
+        <MapView.Marker.Animated
+          image={image}
+          title={tags}
+          key={user}
+          coordinate={value.pastNewPins[0]}
+          pinColor={getRandomColor()}
+        />
+      );
 
-
-        return (
-          <MapView.Marker.Animated
-            image={image}
-            title={tags}
-            key={user}
-            coordinate={value.pastNewPins[0]}
-            pinColor={getRandomColor()}
-          />
-        );
-
-      });
-    }
+    });
 
   }
 
   getRegion(){
-    console.log('re-rendering');
     var socketId = this.props.socket.id;
     var currentUser = this.props.allUsers[socketId];
 
@@ -135,8 +136,20 @@ export default class Map extends Component {
 
   }
 
-  render() {
+  renderHotSpots(){
+    return (
+      <MapView.Circle 
+        center={ {latitude:37.331177, longitude:-122.031641} }
+        radius={300}
+        strokeColor='rgba(200, 0, 0, 0.5)'
+        fillColor='rgba(200, 0, 0, 0.5)'
+      /> 
+    );
+  }
 
+
+
+  render() {
     return (
       <View style={styles.container}>
         <MapView.Animated
@@ -144,8 +157,10 @@ export default class Map extends Component {
           showsUserLocation={true}
           followUserLocation={true} 
         >
-        { this.renderMarkers.call(this) }
-        { this.animateMarkers.call(this) }
+        { this.props.hotSpotVisibility ? this.renderHotSpots.call(this) : void 0 }
+        { Object.keys(this.props.allUsers).length !== 0 ? this.renderMarkers.call(this) : void 0 }
+        { Object.keys(this.props.allUsers).length !== 0 ? this.animateMarkers.call(this) : void 0 }
+
         </MapView.Animated>
 
 

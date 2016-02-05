@@ -32,7 +32,7 @@ function signupFailed(error) {
 // Async action creator, which uses thunk to handle the promise
 // This returns a FUNCTION, which thunk will automatically intercept
 // Thunk will run the function and then dispatch the appropriate vanilla action creator
-export default function signupUser(user, navigator) {
+export default function signupUser(user, successCallback, navigator) {
   return (dispatch) => {
     fetchUserData(user).then(
       response => {
@@ -40,7 +40,7 @@ export default function signupUser(user, navigator) {
         if (response.status === 200) {
           const token = body.token;
           dispatch(signupSucceeded({ token, user: user.username }));
-          // successCallback();
+          successCallback();
           navigator.immediatelyResetRouteStack([{ name: 'Settings' }]);
         } else {
           const error = body.error;

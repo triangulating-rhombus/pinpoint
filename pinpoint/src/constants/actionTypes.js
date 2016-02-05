@@ -17,3 +17,6 @@ export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';
 
 // Stats
 export const GET_STATS = 'GET_STATS';
+
+// HotSpots
+export const TOGGLE_HOTSPOT = 'TOGGLE_HOTSPOT';
