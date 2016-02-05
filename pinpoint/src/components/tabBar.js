@@ -27,12 +27,16 @@ export default class TabBar extends Component {
     );
   }
 
+  changeTab(tabName) {
+    this.setState({ selectedTab: tabName });
+  }
   renderScene(routeName) {
     var Component = ROUTES[routeName];
-    return <Component navigator={this.props.navigator}/>
+    return <Component changeTab={this.changeTab.bind(this)} navigator={this.props.navigator}/>
   }
 
   render() {
+    console.log('rerendering with:', this.state.selectedTab);
     return (
       <TabBarIOS
         tintColor="white"
@@ -42,11 +46,7 @@ export default class TabBar extends Component {
           iconName="stats-bars"
           selectedIconName="stats-bars"
           selected={this.state.selectedTab === 'statsTab'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'statsTab',
-            });
-          }}>
+          onPress={() => this.changeTab('statsTab') }>
           {this.renderScene('Stats')}
         </Icon.TabBarItem>
         <Icon.TabBarItem
@@ -68,12 +68,7 @@ export default class TabBar extends Component {
           iconName="ios-gear-outline"
           selectedIconName="ios-gear"
           selected={this.state.selectedTab === 'settingsTab'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'settingsTab',
-              presses: this.state.presses + 1
-            });
-          }}>
+          onPress={() => this.changeTab('settingsTab') }>
           {this.renderScene('Settings')}
         </Icon.TabBarItem>
       </TabBarIOS>
