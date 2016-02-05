@@ -6,6 +6,16 @@ import allUsers from './reducer_updatePins';
 import toggleHotspot from './reducer_toggle_hotspots';
 import PoiReducer from './reducer_poi';
 
+// This will help us acheieve filtering on mapView
+import filterTags from './reducer_filterTags';
+import filterTagName from './reducer_filter_tag_name';
+
+
+// This will help us acheieve filtering on mapView
+import filterTags from './reducer_filterTags';
+import filterTagName from './reducer_filter_tag_name';
+
+
 const rootReducer = combineReducers({
   user: UserReducer,
   socket: SocketReducer,
@@ -13,6 +23,8 @@ const rootReducer = combineReducers({
   allUsers: allUsers,
   hotSpotVisibility: toggleHotspot,
   poi: PoiReducer
+  filterTags: filterTags,
+  filterTagName: filterTagName
 });
 
 export default rootReducer;
