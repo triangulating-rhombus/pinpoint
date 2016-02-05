@@ -26,6 +26,7 @@ var getRandomColor = function() {
    }
    return color;
 }
+
 var count = true;
 
 
@@ -144,6 +145,14 @@ export default class Map extends Component {
           showsUserLocation={true}
           followUserLocation={true} 
         >
+
+        <MapView.Circle 
+          center={ {latitude:37.331177, longitude:-122.031641} }
+          radius={300}
+          strokeColor='rgba(200, 0, 0, 0.5)'
+          fillColor='rgba(200, 0, 0, 0.5)'
+        />
+
         { this.renderMarkers.call(this) }
         { this.animateMarkers.call(this) }
         </MapView.Animated>
