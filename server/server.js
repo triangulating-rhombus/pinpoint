@@ -15,12 +15,9 @@ app.use(express.static('./public'));
 var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
 });
-var io = require('socket.io').listen(server);
 
 db.init();
 
-var allUsers = {};
-var usersTracker = {};
 
 /* *******  
 Login and Signup
@@ -121,21 +118,30 @@ app.post('/stats', function(req, res){
 /* ***** 
 	Sockets for user geolocation updates
 ***** */
+// Constants
+var MIN_VISIT_LENGTH = 3; // seconds stopped in one location to count as a visit
+var ALLOWED_DISTANCE = 10; // feet away from last position to count as at the same place
 
+// Each object stores one entry for each connected user
+// socketID: position
+var visitStarts = {};
+var currPositions = {};
+
+var io = require('socket.io').listen(server);
 io.on('connection', function(client) {
-	console.log("Client connected!");
 
 	// On initial connection, check for JWT match
 	// if match, then allow access to below. If not, then send an error
 	client.on("connected", function(data) {
+		console.log("Client connected with socketID:", data.socketID);
 		var username = jwt.decode(data.token, "secret");
 		controller.findUser({ username: username })
 		.then(function(user) {
 			if (user) {
 				data.userID = user.id;
-				allUsers[data.socketID] = data; 
-				usersTracker[data.socketID] = data;
-				io.emit('refreshEvent', allUsers);
+				visitStarts[data.socketID] = data;
+				currPositions[data.socketID] = data;
+				io.emit('refreshEvent', currPositions);
 			} else {
 				io.emit('error', 'username not found');
 			}
@@ -143,34 +149,40 @@ io.on('connection', function(client) {
 	});
 
 	// client.on("disconnected", function(data) {
-	// 	delete usersTracker[data.userID];
-	// 	delete allUsers[data.userID];
-	// 	io.emit('refreshEvent', allUsers);
+	// 	delete currPositions[data.userID];
+	// 	delete visitStarts[data.userID];
+	// 	io.emit('refreshEvent', visitStarts);
 	// });
 
 	client.on("update", function(data) {
-		var userID = allUsers[data.socketID].userID;
+		var userID = visitStarts[data.socketID].userID;
 		controller.findUserTags(userID)
 		.then(function(tags) {
 			data.tags = tags;
 			data.userID = userID;
-			usersTracker[data.socketID] = data;
-			io.emit('refreshEvent', usersTracker);
+			currPositions[data.socketID] = data;
+			io.emit('refreshEvent', currPositions);
 		});
 		
-		var previousData = allUsers[data.socketID];
+		var previousData = visitStarts[data.socketID];
 		var distance = visitHelper.getDistance([previousData.latitude, previousData.longitude],[data.latitude, data.longitude]);
 		var timeDiff = visitHelper.timeDifference(previousData.time, data.time);
-		if (distance >= 10 && timeDiff >= 3){
+		
+		// If visit of over MIN_VISIT_LENGTH seconds has just ended
+		if (distance >= ALLOWED_DISTANCE && timeDiff >= MIN_VISIT_LENGTH) {
 			previousData.endTime = new Date();
 			controller.addVisit(previousData).then(function(obj) {
 				controller.addTagsVisits(userID, obj[0].dataValues.id);
 			});
-			allUsers[data.socketID] = data;
-		} else if (distance < 10 && timeDiff < 10){
-			allUsers[data.socketID] = previousData;
-		} else if (distance > 10 && timeDiff < 10){
-			allUsers[data.socketID] = data;
+			visitStarts[data.socketID] = data;
+
+		} else if (distance < ALLOWED_DISTANCE && timeDiff < 10) {
+			// do not update
+			visitStarts[data.socketID] = previousData;
+
+		} else if (distance > ALLOWED_DISTANCE && timeDiff < 10) {
+			// reset visit start to current data
+			visitStarts[data.socketID] = data;
 		}
 		// controller.getHotSpots("soccer").then(function(data){
 		// 	console.log(data);
