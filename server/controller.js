@@ -207,7 +207,8 @@ var visitStats = function(lat, lon, tag){
           return result;
       })
     }).catch(function(err) {
-        return "could not resolve address";
+      console.log("error with geocoder:", err);
+      return "could not resolve address";
     });
 };
 

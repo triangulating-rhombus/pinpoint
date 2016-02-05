@@ -1,5 +1,3 @@
-const DEFAULT_LATITUDE = 37.331177;
-const DEFAULT_LONGITUDE = -122.031641;
 const DEFAULT_TAG = 'Tennis';
 
 import React, { Component, View, Text, StyleSheet } from 'react-native';
@@ -14,8 +12,8 @@ export default class Stats extends Component {
   componentWillMount() {
     const { latitude, longitude } = this.props.poi;
     this.props.getStats({ 
-      lat: latitude || DEFAULT_LATITUDE,
-      lon: longitude || DEFAULT_LONGITUDE,
+      lat: latitude,
+      lon: longitude,
       tag: DEFAULT_TAG
     });
   }
@@ -23,8 +21,8 @@ export default class Stats extends Component {
   componentWillUpdate() {
     const { latitude, longitude } = this.props.poi;
     this.props.getStats({ 
-      lat: latitude || DEFAULT_LATITUDE,
-      lon: longitude || DEFAULT_LONGITUDE,
+      lat: latitude,
+      lon: longitude,
       tag: DEFAULT_TAG
     });
   }
@@ -50,11 +48,18 @@ export default class Stats extends Component {
     return Math.round(float * 1000) / 1000;
   }
   render() {
-    console.log('rerendering');
     const latitude = this.roundToNearestThousandth(this.props.poi.latitude);
     const longitude = this.roundToNearestThousandth(this.props.poi.longitude);
 
-    if (Object.keys(this.props.stats).length === 0) {
+    // If address could not be resolved by server, response will be a string (rather than object)
+    if (typeof this.props.stats === 'string') {
+      return (
+        <View style={styles.container}>
+          <Text>{`Sorry! We could not resolve the address at ${latitude}, ${longitude}.`}</Text>
+          <Text>Please try another location.</Text>
+        </View>
+      );
+    } else if (Object.keys(this.props.stats).length === 0) {
       return (
         <View style={styles.container}>
           <Text>{`Loading stats for ${latitude}, ${longitude}...`}</Text>
