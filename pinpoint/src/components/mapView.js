@@ -10,7 +10,7 @@ import React, {
   Platform, 
 } from 'react-native';
 
-import image from '../assets/images/check.png';
+import image from '../assets/images/redDot-small-whiteBorder.png';
 
 // import styles from '../styles/styles';
 import MapView from 'react-native-maps';
