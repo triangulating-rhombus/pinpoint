@@ -69,7 +69,7 @@ var geocoderProvider = 'google';
 var httpAdapter = 'https';
 
 var extra = {
-    apiKey: 'AIzaSyCtsxXD-6Dl-dCzmvSDneXFvCknDYJ3GGA',
+    apiKey: 'AIzaSyDzjbK9IXT3Es4-9HhJ_7dYwpx3_Nt3Sp4',
     formatter: null
 };
 
@@ -173,13 +173,6 @@ var findUserTags = function (userID) {
       return (tags[0].dataValues.Tags.map(function(tag){
         return tag.dataValues.name;
       }))
-  })
-};
-
-var addVisit = function (visit) {
-  return geocoder.reverse({lat:visit.latitude, lon:visit.longitude})
-    .then(function(loc){
-      loc[0].formattedAddress
   })
 };
 
