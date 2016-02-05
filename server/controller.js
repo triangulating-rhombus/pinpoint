@@ -186,15 +186,6 @@ var visitStats = function(lat, lon, tag){
   console.log({lat:lat, lon:lon});
   var days = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
 
-  geocoder.reverse({lat:lat, lon:lon})
-    .then(function(res) {
-        console.log(res);
-    })
-    .catch(function(err) {
-        console.log(err);
-    });
-
-
   return geocoder.reverse({lat:lat, lon:lon})
     .then(function(loc){
       console.log(loc);

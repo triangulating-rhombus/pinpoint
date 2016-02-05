@@ -12,7 +12,29 @@ export default class Stats extends Component {
   }
 
   componentWillMount() {
-    this.props.getStats({ DEFAULT_LATITUDE, DEFAULT_LONGITUDE, DEFAULT_TAG });
+    if (!this.props.data) {
+      this.props.getStats({ 
+        lat: DEFAULT_LATITUDE,
+        lon: DEFAULT_LONGITUDE,
+        tag: DEFAULT_TAG
+      });
+    } else {
+      const { latitude, longitude } = this.props.data;
+      this.props.getStats({ 
+        lat: latitude || DEFAULT_LATITUDE,
+        lon: longitude || DEFAULT_LONGITUDE,
+        tag: DEFAULT_TAG
+      });
+    }
+  }
+
+  componentWillUpdate() {
+    const { latitude, longitude } = this.props.data;
+    this.props.getStats({ 
+      lat: latitude,
+      lon: longitude,
+      tag: DEFAULT_TAG
+    });
   }
 
   // Returns this.props.stats in format to be rendered by chart
@@ -36,6 +58,7 @@ export default class Stats extends Component {
     return Math.round(float * 1000) / 1000;
   }
   render() {
+    console.log('rerendering');
     const latitude = this.roundToNearestThousandth(this.props.data.latitude);
     const longitude = this.roundToNearestThousandth(this.props.data.longitude);
 
