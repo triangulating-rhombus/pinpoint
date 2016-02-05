@@ -10,7 +10,7 @@ export default class Settings extends Component {
       tag1: '',
       tag2: '',
       tag3: '',
-      isBroadcasting: false
+      isBroadcasting: false,
     };
   }
 
@@ -28,7 +28,7 @@ export default class Settings extends Component {
   }
 
   render() {
-    console.log(this.props.settings);
+
     return (
       <View style={styles.container}>
 
@@ -55,10 +55,20 @@ export default class Settings extends Component {
         />
 
         <Text style={styles.formLabel}>Broadcast Location</Text>
+        
         <Switch
-          onValueChange={(value) => this.setState({isBroadcasting: value})}
+          onValueChange={(value) => this.setState({ isBroadcasting: value})}
           style={{marginBottom: 10}}
           value={this.state.isBroadcasting}
+        />
+
+
+        <Text style={styles.formLabel}>Showcase Hotspots</Text>
+
+        <Switch
+          onValueChange={(value) => this.props.toggleHotspot() }
+          style={{marginBottom:10}}
+          value={this.state.renderHotspot}
         />
 
         <Button text="Update settings" clickAction={this.onSubmit.bind(this)} />
