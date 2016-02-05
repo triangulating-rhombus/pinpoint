@@ -158,34 +158,34 @@ io.on('connection', function(client) {
 		var userID = visitStarts[data.socketID].userID;
 		controller.findUserTags(userID)
 		.then(function(tags) {
+			// Augment data with user info and save to currentPositions
 			data.tags = tags;
 			data.userID = userID;
 			currPositions[data.socketID] = data;
+
+			// Send current positions of all users back to client
 			io.emit('refreshEvent', currPositions);
 		});
 		
-		var previousData = visitStarts[data.socketID];
-		var distance = visitHelper.getDistance([previousData.latitude, previousData.longitude],[data.latitude, data.longitude]);
-		var timeDiff = visitHelper.timeDifference(previousData.time, data.time);
+		var prevData = visitStarts[data.socketID];
+		var distance = visitHelper.getDistance(
+			[prevData.latitude, prevData.longitude],
+			[data.latitude, data.longitude]
+		);
+		var timeDiff = visitHelper.timeDifference(prevData.time, data.time);
 		
-		// If visit of over MIN_VISIT_LENGTH seconds has just ended
-		if (distance >= ALLOWED_DISTANCE && timeDiff >= MIN_VISIT_LENGTH) {
-			previousData.endTime = new Date();
-			controller.addVisit(previousData).then(function(obj) {
-				controller.addTagsVisits(userID, obj[0].dataValues.id);
-			});
-			visitStarts[data.socketID] = data;
+		// If user has left their last location
+		if (distance >= ALLOWED_DISTANCE) {
+			// Log visit to db if they had been there for at least MIN_VISIT_LENGTH seconds
+			if (timeDiff >= MIN_VISIT_LENGTH) {
+				prevData.endTime = new Date();
+				controller.addVisit(prevData).then(function(obj) {
+					controller.addTagsVisits(userID, obj[0].dataValues.id);
+				});
+			}
 
-		} else if (distance < ALLOWED_DISTANCE && timeDiff < 10) {
-			// do not update
-			visitStarts[data.socketID] = previousData;
-
-		} else if (distance > ALLOWED_DISTANCE && timeDiff < 10) {
-			// reset visit start to current data
+			// Set visitStart to current data
 			visitStarts[data.socketID] = data;
 		}
-		// controller.getHotSpots("soccer").then(function(data){
-		// 	console.log(data);
-		// });
 	});
 });
