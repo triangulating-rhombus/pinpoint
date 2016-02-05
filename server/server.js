@@ -1,11 +1,11 @@
-
 var express = require('express');
-var app = express();
 var bodyParser = require('body-parser');
+var jwt = require('jwt-simple');
 var db = require('./db/dbModel');
 var controller = require('./controller');
-var visitHelper = require('./visit');
-var jwt = require('jwt-simple');
+var utils = require('./utils');
+
+var app = express();
 
 app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -15,17 +15,12 @@ app.use(express.static('./public'));
 var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
 });
-var io = require('socket.io').listen(server);
 
 db.init();
-// app.get('/socket', function(req, res) {
-//   res.send('hello world');
 
-var allUsers = {};
-var usersTracker = {};
 
 /* *******  
-LOGIN & SIGNUP API ROUTES 
+Login and Signup
    *******
 */
 
@@ -33,56 +28,15 @@ app.post('/login', function (req, res) {
 	var username = req.body.username;
 	var password = req.body.password;
 
-	// Get this promisified so it's not so messy 
-  controller.authenticateUser(username, password, function(err, match){
-  	if (err) { // err is a string describing the error
+  controller.authenticateUser(username, password, function(err, match) {
+  	if (err) { // err: String describing the error
   		res.status(401).json({error: err});
   	} else {
-  		//send back some sort of identifier
   		var token = jwt.encode(username, 'secret');
   		res.json({ token: token });	
 		}
   });
 });
-
-app.post('/settings', function (req, res) {
-
-
-
-	var token = req.headers['x-access-token']; 
-	var user = jwt.decode(token, "secret");
-	var tag1 = req.body.tag1;
-	var tag2 = req.body.tag2;
-	var tag3 = req.body.tag3;
-	var isBroadcasting = req.body.isBroadcasting;
-
-	controller.findUser({username:user}).then(function(user){
-		var userID = user.id;
-		controller.addTag([tag1, tag2, tag3]).then(function(something){
-			var tagsArray = something.map(function(tag){
-				return tag[0].dataValues.id;
-			});
-			controller.addTagsUsers(tagsArray, userID)
-			res.send("tags added");
-		});
-	});
-
-	controller.setBroadcast(user, isBroadcasting);
-
-
-});
-
-app.get('/settings', function (req, res) {
-	var token = req.headers['x-access-token']; 
-	var user = jwt.decode(token, "secret");
-
-	controller.findSettings(user).then(function(result){
-		res.send(result);
-	});
-	
-
-});
-
 
 app.post('/signup', function(req, res){
 	var username = req.body.username;
@@ -91,98 +45,149 @@ app.post('/signup', function(req, res){
 	var userObj = {
 		username: username,
 		password: password
-	}
+	};
 
-	controller.findUser(userObj).then(function(user){
-		if(user){
+	controller.findUser(userObj)
+	.then(function(user) {
+		if (user) {
 			res.status(401).json({error: "user already exists!"});
 		} else {
 			controller.addUser(userObj);
-			// do we need to send them a JWT? i think we only send it on login
 			var token = jwt.encode(username, 'secret');
   		res.json({token:token})
 		}
 	});
 });
 
+/* ***** 
+	Settings
+***** */
+
+app.post('/settings', function (req, res) {
+	var token = req.headers['x-access-token']; 
+	var user = jwt.decode(token, "secret");
+	var tag1 = req.body.tag1;
+	var tag2 = req.body.tag2;
+	var tag3 = req.body.tag3;
+	var isBroadcasting = req.body.isBroadcasting;
+
+	controller.findUser({ username: user })
+	.then(function(user) {
+		var userID = user.id;
+		controller.addTag([tag1, tag2, tag3])
+		.then(function(results) {
+			var tagsArray = results.map(function(tag){
+				return tag[0].dataValues.id;
+			});
+			controller.addTagsUsers(tagsArray, userID)
+			res.send("tags added");
+		});
+	});
+
+	controller.setBroadcast(user, isBroadcasting);
+});
+
+app.get('/settings', function (req, res) {
+	var token = req.headers['x-access-token']; 
+	var user = jwt.decode(token, "secret");
+
+	controller.findSettings(user)
+	.then(function(result) {
+		res.send(result);
+	});
+});
+
+/* ***** 
+	Stats
+***** */
+
+// This is really more of a GET request, but we use POST to send parameters
 app.post('/stats', function(req, res){
 	var lat = req.body.lat;
 	var lon = req.body.lon;
 	var tag = req.body.tag;
 
-	controller.visitStats(lat, lon, tag).then(function(result){
+	controller.visitStats(lat, lon, tag)
+	.then(function(result){
 		console.log('got POST to /stats:', lat, lon, tag);
 		res.json(result);
 	});
-	
 });
 
 
 /* ***** 
-	SOCKETS FOR USER GEOLOCATION UPDATES 
+	Sockets for user geolocation updates
 ***** */
+
+// Constants
+var MIN_VISIT_LENGTH = 3; // seconds stopped in one location to count as a visit
+var ALLOWED_DISTANCE = 10; // meters away from last position to count as continuing a visit
+
+// Each object stores one entry for each connected user
+//   key: socketID (unique for each user)
+//   value: snapshot (object with socketID, latitude, longitude, and time)
+var visitStarts = {};
+var currPositions = {};
+
+var io = require('socket.io').listen(server);
 io.on('connection', function(client) {
 
-	console.log("Client connected!");
-	client.on("connected", function(data) {
+	client.on("connected", function(snapshot) {
+		// Snapshots usually just contain socketID and position/time
+		// On connection, the snapshot also includes the user's JWT token to authenticate them
+		console.log("Client connected with socketID:", snapshot.socketID);
+		var username = jwt.decode(snapshot.token, "secret");
+		controller.findUser({ username: username })
+		.then(function(user) {
+			if (user) {
+				snapshot.userID = user.id;
+				visitStarts[snapshot.socketID] = snapshot;
+				currPositions[snapshot.socketID] = snapshot;
+				io.emit('refreshEvent', currPositions);
+			} else {
+				io.emit('error', 'username not found');
+			}
+		});
+	});
 
-	// On initial connection, check for JWT match. 
-	// if match, then allow access to below. If not, then send an error 
+	client.on("update", function(snapshot) {
+		var userID = visitStarts[snapshot.socketID].userID;
+		controller.findUserTags(userID)
+		.then(function(tags) {
+			// Augment snapshot with user info and save to currentPositions
+			snapshot.tags = tags;
+			snapshot.userID = userID;
+			currPositions[snapshot.socketID] = snapshot;
 
+			// Send current positions of all users back to client
+			io.emit('refreshEvent', currPositions);
+		});
+		
+		var prevSnapshot = visitStarts[snapshot.socketID];
+		var distance = utils.getDistance(
+			[prevSnapshot.latitude, prevSnapshot.longitude],
+			[snapshot.latitude, snapshot.longitude]
+		);
+		var timeDiff = utils.timeDifference(prevSnapshot.time, snapshot.time);
+		
+		// If user has left their last location
+		if (distance >= ALLOWED_DISTANCE) {
+			// Log visit to db if they had been there for at least MIN_VISIT_LENGTH seconds
+			if (timeDiff >= MIN_VISIT_LENGTH) {
+				prevSnapshot.endTime = new Date();
+				controller.addVisit(prevSnapshot).then(function(obj) {
+					controller.addTagsVisits(userID, obj[0].snapshotValues.id);
+				});
+			}
 
-	var username = jwt.decode(data.token, "secret");
-	controller.findUser({username:username}).then(function(user){
-		if(user){
-			data.userID = user.id;
-			allUsers[data.socketID] = data; 
-			usersTracker[data.socketID] = data;
-			io.emit('refreshEvent', allUsers);
-
-		}else {
-			io.emit('error', 'username not found');
+			// Set visitStart to current snapshot
+			visitStarts[snapshot.socketID] = snapshot;
 		}
 	});
 
-		
-	})
-	// client.on("disconnected", function(data) {
-	// 	delete usersTracker[data.userID];
-	// 	delete allUsers[data.userID];
-	// 	io.emit('refreshEvent', allUsers);
-	// })
-	client.on("update", function(data) {
-		var userID = allUsers[data.socketID].userID;
-		controller.findUserTags(userID).then(function(tags){
-			data.tags = tags;
-			data.userID = userID;
-			usersTracker[data.socketID] = data;
-			io.emit('refreshEvent', usersTracker);
-		});
-		
-		
-		var previousData = allUsers[data.socketID];
-		var distance = visitHelper.getDistance([previousData.latitude, previousData.longitude],[data.latitude, data.longitude]);
-		var timeDiff = visitHelper.timeDifference(previousData.time, data.time);
-		if (distance >= 10 && timeDiff >= 3){
-			previousData.endTime = new Date();
-			controller.addVisit(previousData).then(function(obj){
-				controller.addTagsVisits(userID, obj[0].dataValues.id);
-			});
-			allUsers[data.socketID] = data;
-		}else if (distance < 10 && timeDiff < 10){
-			allUsers[data.socketID] = previousData;
-		}else if (distance > 10 && timeDiff < 10){
-			allUsers[data.socketID] = data;
-		}
-		// controller.getHotSpots("soccer").then(function(data){
-		// 	console.log(data);
-		// });
-		
-		
-	})
-
-})
-
-//})
-
-// });
+	// client.on("disconnected", function(snapshot) {
+	// 	delete currPositions[snapshot.userID];
+	// 	delete visitStarts[snapshot.userID];
+	// 	io.emit('refreshEvent', visitStarts);
+	// });
+});
