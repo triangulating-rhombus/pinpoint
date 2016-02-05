@@ -15,6 +15,7 @@ export default class TabBar extends Component {
       selectedTab: 'mapTab',
       notifCount: 0,
       presses: 0,
+      data: null // any data needing to be passed between child views
     };
   }
 
@@ -27,16 +28,22 @@ export default class TabBar extends Component {
     );
   }
 
-  changeTab(tabName) {
-    this.setState({ selectedTab: tabName });
+  changeTab(tabName, data) {
+    this.setState({ selectedTab: tabName, data });
   }
+  
   renderScene(routeName) {
     var Component = ROUTES[routeName];
-    return <Component changeTab={this.changeTab.bind(this)} navigator={this.props.navigator}/>
+    return (
+      <Component
+        changeTab={this.changeTab.bind(this)}
+        navigator={this.props.navigator}
+        data={this.state.data}
+      />
+    );
   }
 
   render() {
-    console.log('rerendering with:', this.state.selectedTab);
     return (
       <TabBarIOS
         tintColor="white"

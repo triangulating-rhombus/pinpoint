@@ -1,6 +1,6 @@
-const lat = 37.331177;
-const lon = -122.031641;
-const tag = 'Tennis';
+const DEFAULT_LATITUDE = 37.331177;
+const DEFAULT_LONGITUDE = -122.031641;
+const DEFAULT_TAG = 'Tennis';
 
 import React, { Component, View, Text, StyleSheet } from 'react-native';
 import RNChart from 'react-native-chart';
@@ -12,7 +12,7 @@ export default class Stats extends Component {
   }
 
   componentWillMount() {
-    this.props.getStats({ lat, lon, tag });
+    this.props.getStats({ DEFAULT_LATITUDE, DEFAULT_LONGITUDE, DEFAULT_TAG });
   }
 
   // Returns this.props.stats in format to be rendered by chart
@@ -32,11 +32,17 @@ export default class Stats extends Component {
     ];
   }
 
+  roundToNearestThousandth(float) {
+    return Math.round(float * 1000) / 1000;
+  }
   render() {
+    const latitude = this.roundToNearestThousandth(this.props.data.latitude);
+    const longitude = this.roundToNearestThousandth(this.props.data.longitude);
+
     if (Object.keys(this.props.stats).length === 0) {
       return (
         <View style={styles.container}>
-          <Text>Loading...</Text>
+          <Text>{`Loading stats for ${latitude}, ${longitude}...`}</Text>
         </View>
       );
     } else {
@@ -44,7 +50,7 @@ export default class Stats extends Component {
         <View style={styles.container}>
           <Text style={styles.formLabel}>By Day</Text>
           <RNChart style={styles.chart}
-            chartTitle={`Visits by ${tag} people @ (${lat}, ${lon})`}
+            chartTitle={`Visits by ${DEFAULT_TAG} people @ (${latitude}, ${longitude})`}
             chartTitleColor='black'
             labelTextColor='black'
             labelFontSize={15}
