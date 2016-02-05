@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var jwt = require('jwt-simple');
 var db = require('./db/dbModel');
 var controller = require('./controller');
-var visitHelper = require('./visit');
+var utils = require('./utils');
 
 var app = express();
 
@@ -168,11 +168,11 @@ io.on('connection', function(client) {
 		});
 		
 		var prevData = visitStarts[data.socketID];
-		var distance = visitHelper.getDistance(
+		var distance = utils.getDistance(
 			[prevData.latitude, prevData.longitude],
 			[data.latitude, data.longitude]
 		);
-		var timeDiff = visitHelper.timeDifference(prevData.time, data.time);
+		var timeDiff = utils.timeDifference(prevData.time, data.time);
 		
 		// If user has left their last location
 		if (distance >= ALLOWED_DISTANCE) {
