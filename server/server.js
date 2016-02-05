@@ -103,9 +103,12 @@ app.get('/settings', function (req, res) {
 
 // This is really more of a GET request, but we use POST to send parameters
 app.post('/stats', function(req, res){
+
 	var lat = req.body.lat;
 	var lon = req.body.lon;
 	var tag = req.body.tag;
+
+	console.log('got POST to /stats:', lat, lon, tag);
 
 	controller.visitStats(lat, lon, tag)
 	.then(function(result){
@@ -114,23 +117,29 @@ app.post('/stats', function(req, res){
 	});
 });
 
-// for (var i = 0; i < 20; i++){
+// controller.getHotSpots("shopping").then(function(visits){
+// 	console.log(visits);
+// })
 
-//       var sign = Math.random() > 0.5? -1: 1;
-//       var lon = -122.031641 + sign * Math.random() * .002;
-//       sign = Math.random() > 0.5? -1: 1;
-//       var lat = 37.331177 + sign * Math.random() * .002;
-//       var time = new Date();
-//       time.setDate(time.getDate() + Math.floor(Math.random() * (7)));
+// setInterval(function(){
+// 	for (var i = 0; i < 10; i++){
 
-//       var random = {token:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IndheW5lIg.66Qxc0MBJv_cJyvP8WfiEUCZZ4X1BXBSghVQVuAgBTA", 
-//       socketID: null, longitude: lon, latitude: lat, time: time, endTime: time};
+// 	      var sign = Math.random() > 0.5? -1: 1;
+// 	      var lon = -122.031641 + sign * Math.random() * .002;
+// 	      sign = Math.random() > 0.5? -1: 1;
+// 	      var lat = 37.331177 + sign * Math.random() * .002;
+// 	      var time = new Date();
+// 	      time.setDate(time.getDate() + Math.floor(Math.random() * (7)));
 
-//       controller.addVisit(random).then(function(obj){
-        
-//         controller.addTagsVisits(1, obj[0].dataValues.id);
-//       });
-// }
+// 	      var random = {token:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IndheW5lIg.66Qxc0MBJv_cJyvP8WfiEUCZZ4X1BXBSghVQVuAgBTA", 
+// 	      socketID: null, longitude: lon, latitude: lat, time: time, endTime: time};
+
+// 	      controller.addVisit(random).then(function(obj){
+	        
+// 	        controller.addTagsVisits(1, obj[0].dataValues.id);
+// 	      });
+// 	}
+// }, 1000)
 
 
 /* ***** 

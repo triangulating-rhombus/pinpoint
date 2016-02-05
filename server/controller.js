@@ -15,12 +15,19 @@ var getHotSpots = function (tag) {
 
     var visits = locations[0].dataValues.Visits;
     visits = visits.map(function(visit){
+      console.log(visit);
       //return visit.dataValues;
       var latitude = visit.dataValues.latitude;
       var longitude = visit.dataValues.longitude;
-      return {latitude:latitude, longitude:longitude};
+      var address = visit.dataValues.address;
+      return {latitude:latitude, longitude:longitude, address:address};
     });
-    return visits;
+
+          result = underscore.countBy(visits, function(location) {
+            return location.address;
+          });
+
+    return result;
   })
 };
 
@@ -153,7 +160,6 @@ var addTagsUsers = function(tags, userID){
   })
 
   for (var i = 0; i < tags.length; i++){
-    console.log("hi");
     var tagID = tags[i];
       model.tags_users.findOrCreate({where: {
         tag_id: tagID,
@@ -177,19 +183,28 @@ var findUserTags = function (userID) {
 };
 
 var visitStats = function(lat, lon, tag){
+  console.log({lat:lat, lon:lon});
   var days = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
+
+  geocoder.reverse({lat:lat, lon:lon})
+    .then(function(res) {
+        console.log(res);
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
+
 
   return geocoder.reverse({lat:lat, lon:lon})
     .then(function(loc){
-      loc[0].formattedAddress
-
-
+      console.log(loc);
       return model.Visits.findAll({ 
         where: {
           address: loc[0].formattedAddress
         },
         include: [ {model: model.Tags, where: {name: tag}} ]
       }).then(function(visits) {
+        console.log("bye");
         console.log(visits);
           var result = visits.map(function(visit){
             return days[visit.dataValues.startTime.getDay()];
@@ -200,7 +215,9 @@ var visitStats = function(lat, lon, tag){
           });
           return result;
       })
-  });
+    }).catch(function(err) {
+        return "could not resolve address";
+    });
 };
 
 var findSettings = function (username) {
