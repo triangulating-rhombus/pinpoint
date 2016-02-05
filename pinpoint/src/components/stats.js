@@ -12,27 +12,19 @@ export default class Stats extends Component {
   }
 
   componentWillMount() {
-    if (!this.props.data) {
-      this.props.getStats({ 
-        lat: DEFAULT_LATITUDE,
-        lon: DEFAULT_LONGITUDE,
-        tag: DEFAULT_TAG
-      });
-    } else {
-      const { latitude, longitude } = this.props.data;
-      this.props.getStats({ 
-        lat: latitude || DEFAULT_LATITUDE,
-        lon: longitude || DEFAULT_LONGITUDE,
-        tag: DEFAULT_TAG
-      });
-    }
+    const { latitude, longitude } = this.props.poi;
+    this.props.getStats({ 
+      lat: latitude || DEFAULT_LATITUDE,
+      lon: longitude || DEFAULT_LONGITUDE,
+      tag: DEFAULT_TAG
+    });
   }
 
   componentWillUpdate() {
-    const { latitude, longitude } = this.props.data;
+    const { latitude, longitude } = this.props.poi;
     this.props.getStats({ 
-      lat: latitude,
-      lon: longitude,
+      lat: latitude || DEFAULT_LATITUDE,
+      lon: longitude || DEFAULT_LONGITUDE,
       tag: DEFAULT_TAG
     });
   }
@@ -59,8 +51,8 @@ export default class Stats extends Component {
   }
   render() {
     console.log('rerendering');
-    const latitude = this.roundToNearestThousandth(this.props.data.latitude);
-    const longitude = this.roundToNearestThousandth(this.props.data.longitude);
+    const latitude = this.roundToNearestThousandth(this.props.poi.latitude);
+    const longitude = this.roundToNearestThousandth(this.props.poi.longitude);
 
     if (Object.keys(this.props.stats).length === 0) {
       return (
