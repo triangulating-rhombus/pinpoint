@@ -118,29 +118,31 @@ app.post('/stats', function(req, res){
 /* ***** 
 	Sockets for user geolocation updates
 ***** */
+
 // Constants
 var MIN_VISIT_LENGTH = 3; // seconds stopped in one location to count as a visit
-var ALLOWED_DISTANCE = 10; // feet away from last position to count as at the same place
+var ALLOWED_DISTANCE = 10; // meters away from last position to count as continuing a visit
 
 // Each object stores one entry for each connected user
-// socketID: position
+//   key: socketID (unique for each user)
+//   value: snapshot (object with socketID, latitude, longitude, and time)
 var visitStarts = {};
 var currPositions = {};
 
 var io = require('socket.io').listen(server);
 io.on('connection', function(client) {
 
-	// On initial connection, check for JWT match
-	// if match, then allow access to below. If not, then send an error
-	client.on("connected", function(data) {
-		console.log("Client connected with socketID:", data.socketID);
-		var username = jwt.decode(data.token, "secret");
+	client.on("connected", function(snapshot) {
+		// Snapshots usually just contain socketID and position/time
+		// On connection, the snapshot also includes the user's JWT token to authenticate them
+		console.log("Client connected with socketID:", snapshot.socketID);
+		var username = jwt.decode(snapshot.token, "secret");
 		controller.findUser({ username: username })
 		.then(function(user) {
 			if (user) {
-				data.userID = user.id;
-				visitStarts[data.socketID] = data;
-				currPositions[data.socketID] = data;
+				snapshot.userID = user.id;
+				visitStarts[snapshot.socketID] = snapshot;
+				currPositions[snapshot.socketID] = snapshot;
 				io.emit('refreshEvent', currPositions);
 			} else {
 				io.emit('error', 'username not found');
@@ -148,44 +150,44 @@ io.on('connection', function(client) {
 		});
 	});
 
-	// client.on("disconnected", function(data) {
-	// 	delete currPositions[data.userID];
-	// 	delete visitStarts[data.userID];
-	// 	io.emit('refreshEvent', visitStarts);
-	// });
-
-	client.on("update", function(data) {
-		var userID = visitStarts[data.socketID].userID;
+	client.on("update", function(snapshot) {
+		var userID = visitStarts[snapshot.socketID].userID;
 		controller.findUserTags(userID)
 		.then(function(tags) {
-			// Augment data with user info and save to currentPositions
-			data.tags = tags;
-			data.userID = userID;
-			currPositions[data.socketID] = data;
+			// Augment snapshot with user info and save to currentPositions
+			snapshot.tags = tags;
+			snapshot.userID = userID;
+			currPositions[snapshot.socketID] = snapshot;
 
 			// Send current positions of all users back to client
 			io.emit('refreshEvent', currPositions);
 		});
 		
-		var prevData = visitStarts[data.socketID];
+		var prevSnapshot = visitStarts[snapshot.socketID];
 		var distance = utils.getDistance(
-			[prevData.latitude, prevData.longitude],
-			[data.latitude, data.longitude]
+			[prevSnapshot.latitude, prevSnapshot.longitude],
+			[snapshot.latitude, snapshot.longitude]
 		);
-		var timeDiff = utils.timeDifference(prevData.time, data.time);
+		var timeDiff = utils.timeDifference(prevSnapshot.time, snapshot.time);
 		
 		// If user has left their last location
 		if (distance >= ALLOWED_DISTANCE) {
 			// Log visit to db if they had been there for at least MIN_VISIT_LENGTH seconds
 			if (timeDiff >= MIN_VISIT_LENGTH) {
-				prevData.endTime = new Date();
-				controller.addVisit(prevData).then(function(obj) {
-					controller.addTagsVisits(userID, obj[0].dataValues.id);
+				prevSnapshot.endTime = new Date();
+				controller.addVisit(prevSnapshot).then(function(obj) {
+					controller.addTagsVisits(userID, obj[0].snapshotValues.id);
 				});
 			}
 
-			// Set visitStart to current data
-			visitStarts[data.socketID] = data;
+			// Set visitStart to current snapshot
+			visitStarts[snapshot.socketID] = snapshot;
 		}
 	});
+
+	// client.on("disconnected", function(snapshot) {
+	// 	delete currPositions[snapshot.userID];
+	// 	delete visitStarts[snapshot.userID];
+	// 	io.emit('refreshEvent', visitStarts);
+	// });
 });
