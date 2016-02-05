@@ -111,7 +111,7 @@ app.post('/stats', function(req, res){
 	var tag = req.body.tag;
 
 	controller.visitStats(lat, lon, tag).then(function(result){
-		
+		console.log('got POST to /stats:', lat, lon, tag);
 		res.json(result);
 	});
 	
