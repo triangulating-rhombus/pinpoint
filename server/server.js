@@ -23,7 +23,7 @@ var allUsers = {};
 var usersTracker = {};
 
 /* *******  
-LOGIN & SIGNUP API ROUTES 
+Login and Signup
    *******
 */
 
@@ -40,6 +40,31 @@ app.post('/login', function (req, res) {
 		}
   });
 });
+
+app.post('/signup', function(req, res){
+	var username = req.body.username;
+	var password = req.body.password;
+
+	var userObj = {
+		username: username,
+		password: password
+	};
+
+	controller.findUser(userObj)
+	.then(function(user) {
+		if (user) {
+			res.status(401).json({error: "user already exists!"});
+		} else {
+			controller.addUser(userObj);
+			var token = jwt.encode(username, 'secret');
+  		res.json({token:token})
+		}
+	});
+});
+
+/* ***** 
+	Settings
+***** */
 
 app.post('/settings', function (req, res) {
 	var token = req.headers['x-access-token']; 
@@ -75,28 +100,11 @@ app.get('/settings', function (req, res) {
 	});
 });
 
+/* ***** 
+	Stats
+***** */
 
-app.post('/signup', function(req, res){
-	var username = req.body.username;
-	var password = req.body.password;
-
-	var userObj = {
-		username: username,
-		password: password
-	};
-
-	controller.findUser(userObj)
-	.then(function(user) {
-		if (user) {
-			res.status(401).json({error: "user already exists!"});
-		} else {
-			controller.addUser(userObj);
-			var token = jwt.encode(username, 'secret');
-  		res.json({token:token})
-		}
-	});
-});
-
+// This is really more of a GET request, but we use POST to send parameters
 app.post('/stats', function(req, res){
 	var lat = req.body.lat;
 	var lon = req.body.lon;
@@ -111,8 +119,9 @@ app.post('/stats', function(req, res){
 
 
 /* ***** 
-	SOCKETS FOR USER GEOLOCATION UPDATES 
+	Sockets for user geolocation updates
 ***** */
+
 io.on('connection', function(client) {
 	console.log("Client connected!");
 
