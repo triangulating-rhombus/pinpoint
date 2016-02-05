@@ -1,6 +1,4 @@
-const lat = 37.331177;
-const lon = -122.031641;
-const tag = 'Tennis';
+const DEFAULT_TAG = 'Tennis';
 
 import React, { Component, View, Text, StyleSheet } from 'react-native';
 import RNChart from 'react-native-chart';
@@ -12,7 +10,21 @@ export default class Stats extends Component {
   }
 
   componentWillMount() {
-    this.props.getStats({ lat, lon, tag });
+    const { latitude, longitude } = this.props.poi;
+    this.props.getStats({ 
+      lat: latitude,
+      lon: longitude,
+      tag: DEFAULT_TAG
+    });
+  }
+
+  componentWillUpdate() {
+    const { latitude, longitude } = this.props.poi;
+    this.props.getStats({ 
+      lat: latitude,
+      lon: longitude,
+      tag: DEFAULT_TAG
+    });
   }
 
   // Returns this.props.stats in format to be rendered by chart
@@ -32,11 +44,25 @@ export default class Stats extends Component {
     ];
   }
 
+  roundToNearestThousandth(float) {
+    return Math.round(float * 1000) / 1000;
+  }
   render() {
-    if (Object.keys(this.props.stats).length === 0) {
+    const latitude = this.roundToNearestThousandth(this.props.poi.latitude);
+    const longitude = this.roundToNearestThousandth(this.props.poi.longitude);
+
+    // If address could not be resolved by server, response will be a string (rather than object)
+    if (typeof this.props.stats === 'string') {
       return (
         <View style={styles.container}>
-          <Text>Loading...</Text>
+          <Text>{`Sorry! We could not resolve the address at ${latitude}, ${longitude}.`}</Text>
+          <Text>Please try another location.</Text>
+        </View>
+      );
+    } else if (Object.keys(this.props.stats).length === 0) {
+      return (
+        <View style={styles.container}>
+          <Text>{`Loading stats for ${latitude}, ${longitude}...`}</Text>
         </View>
       );
     } else {
@@ -44,7 +70,7 @@ export default class Stats extends Component {
         <View style={styles.container}>
           <Text style={styles.formLabel}>By Day</Text>
           <RNChart style={styles.chart}
-            chartTitle={`Visits by ${tag} people @ (${lat}, ${lon})`}
+            chartTitle={`Visits by ${DEFAULT_TAG} people @ (${latitude}, ${longitude})`}
             chartTitleColor='black'
             labelTextColor='black'
             labelFontSize={15}

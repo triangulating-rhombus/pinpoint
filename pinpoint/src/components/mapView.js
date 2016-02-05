@@ -147,7 +147,16 @@ export default class Map extends Component {
     );
   }
 
+  onPress(e) {
+    const { latitude, longitude } = e.nativeEvent.coordinate;
+    console.log('pressed map:', latitude, longitude);
 
+    this.props.setPoi({ latitude, longitude });
+
+    // For some reason, TabBarIOS counts a press on the map as a press on the map icon
+    // This sets the displayed tab to mapTab again, so we have to delay the change to statsTab
+    setTimeout(()=>this.props.changeTab('statsTab'), 0);
+  }
 
   render() {
     return (
@@ -155,7 +164,8 @@ export default class Map extends Component {
         <MapView.Animated
           style={styles.map}
           showsUserLocation={true}
-          followUserLocation={true} 
+          followUserLocation={true}
+          onPress={(e) => this.onPress(e)}
         >
         { this.props.hotSpotVisibility ? this.renderHotSpots.call(this) : void 0 }
         { Object.keys(this.props.allUsers).length !== 0 ? this.renderMarkers.call(this) : void 0 }
@@ -170,8 +180,6 @@ export default class Map extends Component {
   }
 
 };
-
-
 
 var styles = StyleSheet.create({
   container: {
