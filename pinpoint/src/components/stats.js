@@ -44,10 +44,13 @@ export default class Stats extends Component {
         <View style={styles.container}>
           <Text style={styles.formLabel}>By Day</Text>
           <RNChart style={styles.chart}
+            chartTitle={`Visits by ${tag} people @ (${lat}, ${lon})`}
+            chartTitleColor='black'
+            labelTextColor='black'
+            labelFontSize={15}
             chartData={this.getChartData()}
             verticalGridStep={5}
             xLabels={xLabels}
-            xAxisTitle='Days of Week'
           />
         </View>
       );
@@ -64,9 +67,9 @@ const styles = StyleSheet.create({
   },
   chart: {
     position: 'absolute', 
-    top: 16, 
+    top: 70, 
     left: 4, 
-    bottom: 30,
+    bottom: 70,
     right: 16,
   }
 });
