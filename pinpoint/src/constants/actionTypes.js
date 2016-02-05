@@ -20,3 +20,6 @@ export const GET_STATS = 'GET_STATS';
 
 // HotSpots
 export const TOGGLE_HOTSPOT = 'TOGGLE_HOTSPOT';
+
+// POI (Point of Interest)
+export const SET_POI = 'SET_POI';
