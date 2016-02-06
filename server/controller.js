@@ -66,6 +66,9 @@ var getHotSpots = function (tag, callback) {
     },
     include: [ model.Visits ]
   }).then(function(locations) {
+    if (locations.length === 0){
+      callback("no results")
+    }
 
     var visits = locations[0].dataValues.Visits;
     visits = visits.map(function(visit){
