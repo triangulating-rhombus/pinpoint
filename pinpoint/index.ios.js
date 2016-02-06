@@ -19,7 +19,7 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 var store = createStoreWithMiddleware(rootReducer);
 
 store.subscribe( () => {
-  console.log('STORE HAS CHANGED',store.getState());
+  // console.log('STORE HAS CHANGED',store.getState());
 });
 
 // This should actually be called after login
@@ -27,7 +27,7 @@ store.subscribe( () => {
 
 
 store.subscribe(() => {
-  console.log('Username',store.getState());
+  // console.log('Username',store.getState());
 });
 
 class Pinpoint extends Component {

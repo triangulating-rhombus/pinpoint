@@ -1,44 +1,36 @@
-import { SIGNUP_SUCCEEDED, SIGNUP_FAILED } from '../constants/actionTypes';
+import { SIGNUP_USER } from '../constants/actionTypes';
 import { sendRequest } from './utils';
 
 // POST username/password to server to request authentication
 // On response, initialize socket connection to server
 
-// Vanilla action creators
-function signupSucceeded(userInfo) {
+// Vanilla action creator
+function signupUser(userInfo) {
   return {
-    type: SIGNUP_SUCCEEDED,
+    type: SIGNUP_USER,
     payload: userInfo
-  }
-}
-function signupFailed(error) {
-  return {
-    type: SIGNUP_FAILED,
-    payload: error
   }
 }
 
 // Async action creator, which uses thunk to handle the promise
 // This returns a FUNCTION, which thunk will automatically intercept
 // Thunk will run the function and then dispatch the appropriate vanilla action creator
-export default function signupUser(user, successCallback, navigator) {
+export default (user, successCallback, navigator) => {
   return (dispatch) => {
     sendRequest('POST', '/signup', user)
     .then(
       response => {
         const body = JSON.parse(response._bodyText);
         if (response.status === 200) {
-          const token = body.token;
-          dispatch(signupSucceeded({ token, user: user.username }));
+          body.username = user.username;
           successCallback();
           navigator.immediatelyResetRouteStack([{ name: 'Settings' }]);
-        } else {
-          const error = body.error;
-          dispatch(signupFailed(error));
         }
+        dispatch(signupUser(body));
       },
       error => {
-        dispatch(signupFailed(error));
+        const body = JSON.parse(response._bodyText);
+        dispatch(signupUser(body));
       }
     );
   }

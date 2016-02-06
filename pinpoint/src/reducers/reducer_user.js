@@ -1,7 +1,4 @@
-import {
-  SIGNUP_SUCCEEDED, SIGNUP_FAILED,
-  LOGIN_SUCCEEDED, LOGIN_FAILED, LOGOUT_USER
-} from '../constants/actionTypes';
+import { SIGNUP_USER, LOGIN_USER, LOGOUT_USER } from '../constants/actionTypes';
 import loginUser from '../actions/action_login_user';
 
 const INITIAL_STATE = {
@@ -12,30 +9,12 @@ const INITIAL_STATE = {
 
 export default function (state = INITIAL_STATE, action) {
   switch(action.type) {
-    case SIGNUP_SUCCEEDED:
-      return {
-        ...state,
-        username: action.payload.username,
-        token: action.payload.token
-      };
-    case SIGNUP_FAILED:
-      return {
-        ...state,
-        error: action.payload
-      };
-    case LOGIN_SUCCEEDED:
-      return {
-        ...state,
-        username: action.payload.username,
-        token: action.payload.token
-      };
-    case LOGIN_FAILED:
-      return {
-        ...state,
-        error: action.payload
-      };
-    case LOGOUT_USER:
-      return INITIAL_STATE;
+    case SIGNUP_USER:
+      console.log(action);
+      return action.payload;
+    case LOGIN_USER:
+      console.log(action);
+      return action.payload;
     default:
       return state;
   }
