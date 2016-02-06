@@ -7,7 +7,8 @@ const INITIAL_STATE = {
   latitude: DEFAULT_LATITUDE,
   longitude: DEFAULT_LONGITUDE,
   tag: null,
-  stats: null
+  stats: { warning: 'NOT_LOADED' },
+  friendlyExplanation: 'Loading...'
 };
 
 export default (state=INITIAL_STATE, action) => {

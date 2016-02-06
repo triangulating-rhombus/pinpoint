@@ -29,25 +29,11 @@ export default class Stats extends Component {
   render() {
     const latitude = this.roundToNearestThousandth(this.props.poi.latitude);
     const longitude = this.roundToNearestThousandth(this.props.poi.longitude);
-
-    // If address could not be resolved by server, response will be a string (rather than object)
-    if (typeof this.props.poi.stats === 'string') {
+    const { error, warning, friendlyExplanation } = this.props.poi.stats;
+    if (error || warning) {
       return (
         <View style={styles.container}>
-          <Text>{`Sorry! We could not resolve the address at ${latitude}, ${longitude}.`}</Text>
-          <Text>Please try another location.</Text>
-        </View>
-      );
-    } else if (this.props.poi.stats === null) {
-      return (
-        <View style={styles.container}>
-          <Text>{`Loading stats for ${latitude}, ${longitude}...`}</Text>
-        </View>
-      );
-    } else if (Object.keys(this.props.poi.stats).length === 0) {
-      return (
-        <View style={styles.container}>
-          <Text>No logged visits for this place! Try another?</Text>
+          <Text>{friendlyExplanation}</Text>
         </View>
       );
     } else {

@@ -1,5 +1,7 @@
- var Sequelize = require('sequelize');
-var sequelize = new Sequelize(process.env.ENV_DB || 'pinpointdb', 'postgres', '', { dialect: 'postgres', logging: false });
+var Sequelize = require('sequelize');
+var sequelize = process.env.DATABASE_URL ?
+  new Sequelize(process.env.DATABASE_URL) :
+  new Sequelize(process.env.ENV_DB || 'pinpointdb', 'postgres', '', { dialect: 'postgres', logging: false });
 
 
 

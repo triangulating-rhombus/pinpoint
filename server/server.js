@@ -17,6 +17,10 @@ var server = app.listen(app.get('port'), function() {
 
 db.init();
 
+// Helper to send AJAX response with errorMessage
+var respondWithError = function(res, errorMessage) {
+  res.status(401).json({ error: errorMessage });
+};
 
 /* *******  
 Login and Signup
@@ -49,7 +53,7 @@ app.post('/signup', function(req, res){
 	controller.findUser(userObj)
 	.then(function(user) {
 		if (user) {
-			res.status(401).json({error: "user already exists!"});
+			res.status(401).json({error: 'user already exists!'});
 		} else {
 			controller.addUser(userObj);
 			var token = jwt.encode(username, 'secret');
@@ -63,38 +67,61 @@ app.post('/signup', function(req, res){
 ***** */
 
 app.post('/settings', function (req, res) {
-	var token = req.headers['x-access-token']; 
-	var user = jwt.decode(token, "secret");
-	var tag1 = req.body.tag1;
-	var tag2 = req.body.tag2;
-	var tag3 = req.body.tag3;
-	var isBroadcasting = req.body.isBroadcasting;
+	var token = req.headers['x-access-token'];
+	if (!token) {
+		respondWithError(res, 'Missing token: no x-access-token header was provided');
+	}
+	try {
+		var user = jwt.decode(token, 'secret');
+		var tagNames = [ req.body.tag1, req.body.tag2, req.body.tag3 ];
+		var isBroadcasting = req.body.isBroadcasting;
 
-	controller.findUser({ username: user })
-	.then(function(user) {
-		var userID = user.id;
-		controller.addTag([tag1, tag2, tag3])
+		var userID = null;
+		controller.findUser({ username: user })
+		.then(function(user) {
+			userID = user.id;
+			return controller.addTag(tagNames);
+		})
 		.then(function(results) {
-			var tagsArray = results.map(function(tag){
+			var tagIDs = results.map(function(tag) {
 				return tag[0].dataValues.id;
 			});
-			controller.addTagsUsers(tagsArray, userID)
-			res.send("tags added");
+			controller.addTagsUsers(tagIDs, userID); // this doesn't return a promise
+			res.status(201).json({ success: 'Updated tags: ' + tagNames.join(', ') });
+		})
+		.catch(function(error) {
+			respondWithError(res, 'Invalid token: ' + error.message);
 		});
-	});
 
-	controller.setBroadcast(user, isBroadcasting);
+		controller.setBroadcast(user, isBroadcasting);
+	} catch(error) {
+		respondWithError(res, 'Invalid token: ' + error.message);
+	}
 });
 
 app.get('/settings', function (req, res) {
-	var token = req.headers['x-access-token']; 
-	var user = jwt.decode(token, "secret");
-
-	controller.findSettings(user)
-	.then(function(result) {
-		res.send(result);
-	});
+	var token = req.headers['x-access-token'];
+	if (!token) {
+		respondWithError(res, 'Missing token: no x-access-token header was provided');
+		return;
+	}
+	try {
+		var user = jwt.decode(token, 'secret');
+		controller.findSettings(user)
+		.then(function(result) {
+			res.send(result);
+		})
+		.catch(function(error) {
+			respondWithError(res, 'Invalid token: ' + error.message);
+		});
+	} catch(error) {
+		respondWithError(res, 'Invalid token: ' + error.message);
+	}
 });
+
+/* ***** 
+	Hotspots
+***** */
 
 app.get('/hotspot', function (req, res) {
 	var tag = req.headers['tag']; 
@@ -117,14 +144,15 @@ app.post('/stats', function(req, res){
 	var tag = req.body.tag;
 	console.log('got POST to /stats:', lat, lon, tag);
 
-	controller.visitStats(lat, lon, tag)
-	.then(function(result){
-		res.json(result);
+	controller.visitStats(lat, lon, tag) // returns the object to send to client
+	.then(function(responseBody) {
+		if (responseBody.error) {
+			respondWithError(res, responseBody.error);
+		} else {
+			res.json(responseBody);
+		}
 	});
 });
-
-
-
 
 // setInterval(function(){
 // 	for (var i = 0; i < 5; i++){
@@ -136,7 +164,7 @@ app.post('/stats', function(req, res){
 // 	      var time = new Date();
 // 	      time.setDate(time.getDate() + Math.floor(Math.random() * (7)));
 
-// 	      var random = {token:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IndheW5lIg.66Qxc0MBJv_cJyvP8WfiEUCZZ4X1BXBSghVQVuAgBTA", 
+// 	      var random = {token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IndheW5lIg.66Qxc0MBJv_cJyvP8WfiEUCZZ4X1BXBSghVQVuAgBTA', 
 // 	      socketID: null, longitude: lon, latitude: lat, time: time, endTime: time};
 
 // 	      controller.addVisit(random).then(function(obj){
