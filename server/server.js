@@ -67,27 +67,38 @@ app.post('/signup', function(req, res){
 ***** */
 
 app.post('/settings', function (req, res) {
-	var token = req.headers['x-access-token']; 
-	var user = jwt.decode(token, "secret");
-	var tag1 = req.body.tag1;
-	var tag2 = req.body.tag2;
-	var tag3 = req.body.tag3;
-	var isBroadcasting = req.body.isBroadcasting;
+	var token = req.headers['x-access-token'];
+	if (!token) {
+		respondWithError(res, "Missing token: no x-access-token header was provided");
+	}
+	try {
+		var user = jwt.decode(token, "secret");
+		var tag1 = req.body.tag1;
+		var tag2 = req.body.tag2;
+		var tag3 = req.body.tag3;
+		var isBroadcasting = req.body.isBroadcasting;
 
-	controller.findUser({ username: user })
-	.then(function(user) {
-		var userID = user.id;
-		controller.addTag([tag1, tag2, tag3])
+		var userID = null;
+		controller.findUser({ username: user })
+		.then(function(user) {
+			userID = user.id;
+			return controller.addTag([tag1, tag2, tag3]);
+		})
 		.then(function(results) {
 			var tagsArray = results.map(function(tag){
 				return tag[0].dataValues.id;
 			});
-			controller.addTagsUsers(tagsArray, userID)
+			controller.addTagsUsers(tagsArray, userID);
 			res.send("tags added");
+		})
+		.catch(function(error) {
+			respondWithError(res, "Invalid token: " + error.message);
 		});
-	});
 
-	controller.setBroadcast(user, isBroadcasting);
+		controller.setBroadcast(user, isBroadcasting);
+	} catch(error) {
+		respondWithError(res, "Invalid token: " + error.message);
+	}
 });
 
 app.get('/settings', function (req, res) {
