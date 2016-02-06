@@ -1,19 +1,8 @@
 import { LOGIN_SUCCEEDED, LOGIN_FAILED } from '../constants/actionTypes';
-
-const SERVER_URL = 'http://localhost:3000/login';
+import sendRequest from './utils';
 
 // POST username/password to server to request authentication
 // On response, initialize socket connection to server
-
-// Move this function to utils later
-function fetchUserData(user) {
-  // fetch is React Native's built-in function to make AJAX requests
-  return fetch(SERVER_URL, { 
-  	method: 'POST',
-  	headers: { 'Content-Type': 'application/json' },
-  	body: JSON.stringify(user)
-  });
-}
 
 // Vanilla action creators
 function loginSucceeded(userInfo) {
@@ -22,6 +11,7 @@ function loginSucceeded(userInfo) {
     payload: userInfo
   }
 }
+
 function loginFailed(error) {
   return {
     type: LOGIN_FAILED,
@@ -34,7 +24,8 @@ function loginFailed(error) {
 // Thunk will run the function and then dispatch the appropriate vanilla action creator
 export default function loginUser(user, successCallback, navigator) {
  	return (dispatch) => {
- 		fetchUserData(user).then(
+ 		sendRequest('POST', '/login', user)
+    .then(
       response => {
         const body = JSON.parse(response._bodyText);
         if (response.status === 200) {
