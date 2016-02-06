@@ -1,10 +1,9 @@
 import { SIGNUP_USER } from '../constants/actionTypes';
 import { sendRequest } from './utils';
 
-// POST username/password to server to request authentication
-// On response, initialize socket connection to server
+import addSocket from './action_add_socket';
+import getSettings from './action_get_settings';
 
-// Vanilla action creator
 function signupUser(userInfo) {
   return {
     type: SIGNUP_USER,
@@ -14,8 +13,8 @@ function signupUser(userInfo) {
 
 // Async action creator, which uses thunk to handle the promise
 // This returns a FUNCTION, which thunk will automatically intercept
-// Thunk will run the function and then dispatch the appropriate vanilla action creator
-export default (user, successCallback, navigator) => {
+// Thunk will run the function and dispatch the appropriate vanilla action creator(s)
+export default (user, navigator) => {
   return (dispatch) => {
     sendRequest('POST', '/signup', user)
     .then(
@@ -23,7 +22,8 @@ export default (user, successCallback, navigator) => {
         const body = JSON.parse(response._bodyText);
         if (response.status === 200) {
           body.username = user.username;
-          successCallback();
+          dispatch(addSocket());
+          dispatch(getSettings(body.token));
           navigator.immediatelyResetRouteStack([{ name: 'Settings' }]);
         }
         dispatch(signupUser(body));

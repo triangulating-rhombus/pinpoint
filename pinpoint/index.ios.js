@@ -19,7 +19,7 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 var store = createStoreWithMiddleware(rootReducer);
 
 store.subscribe( () => {
-  // console.log('STORE HAS CHANGED',store.getState());
+  console.log('Store updated:', store.getState());
 });
 
 // This should actually be called after login

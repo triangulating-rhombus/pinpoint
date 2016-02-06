@@ -6,24 +6,30 @@ export default class Settings extends Component {
   constructor(props) {
     super(props);
 
+    // Component level state simply holds the values currently entered in form
+    // These will be initialized to values from the settings store,
+    // or, if any fields are missing, hold these default values
+    const { tag1, tag2, tag3, isBroadcasting } = this.props.settings;
     this.state = {
-      tag1: '',
-      tag2: '',
-      tag3: '',
-      isBroadcasting: false,
+      tempTag1: tag1 || '',
+      tempTag2: tag2 || '',
+      tempTag3: tag3 || '',
+      tempIsBroadcasting: isBroadcasting || false,
     };
   }
 
-  componentWillMount() {
-    this.props.getSettings(this.props.user.token, () => this.setState(this.props.settings));
-  }
-
   onSubmit() {
+    const settingsToSend = {
+      tag1: this.state.tempTag1,
+      tag2: this.state.tempTag2,
+      tag3: this.state.tempTag3,
+      isBroadcasting: this.state.tempIsBroadcasting
+    };
+
     this.props.updateSettings(
-      this.state, 
+      settingsToSend,
       this.props.user.token,
       this.props.navigator
-      // () => {console.log('this:', this.props.navigator); this.props.navigator.push({ id: 'MapView' })}
     );
   }
 
@@ -34,31 +40,31 @@ export default class Settings extends Component {
         <Text style={styles.formLabel}>Tags</Text>
         <TextInput 
           style={styles.inputStyle} 
-          value={this.state.tag1}
-          onChangeText={ tag1 => this.setState({ tag1 }) }
+          value={this.state.tempTag1}
+          onChangeText={ tempTag1 => this.setState({ tempTag1 }) }
           placeholder="Enter first tag" 
         />
 
         <TextInput 
           style={styles.inputStyle} 
-          value={this.state.tag2}
-          onChangeText={ tag2 => this.setState({ tag2 }) }
+          value={this.state.tempTag2}
+          onChangeText={ tempTag2 => this.setState({ tempTag2 }) }
           placeholder="Enter second tag (optional)" 
         />
 
         <TextInput 
           style={styles.inputStyle} 
-          value={this.state.tag3}
-          onChangeText={ tag3 => this.setState({ tag3 }) }
+          value={this.state.tempTag3}
+          onChangeText={ tempTag3 => this.setState({ tempTag3 }) }
           placeholder="Enter third tag (optional)" 
         />
 
         <Text style={styles.formLabel}>Broadcast Location</Text>
         
         <Switch
-          onValueChange={(value) => this.setState({ isBroadcasting: value})}
           style={{marginBottom: 10}}
-          value={this.state.isBroadcasting}
+          value={this.state.tempIsBroadcasting}
+          onValueChange={ tempIsBroadcasting => this.setState({ tempIsBroadcasting }) }
         />
 
 
