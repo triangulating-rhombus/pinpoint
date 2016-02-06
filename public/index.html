@@ -1,35 +1,151 @@
+<!DOCTYPE html>
 <html>
-<head>
-	<title>Test file</title>
-</head>
-<body>
-<p> Welcome to the Pinpoint test page where you will be served sockets </p>
+  <head>
+  	<title>Pinpoint Server</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.4/socket.io.js"></script>
+  <body>
+    <div class="container">
+      <h1> Welcome to the Pinpoint Server!</h1>
 
-<script>
-  var socket = io();
+      <table class="table">
+        <thead>
+          <tr>
+            <th colspan="3">Request</th>
+            <th colspan="2">Response</th>
+          </tr>
+          <tr>
+            <th>Method</th>
+            <th>URL</th>
+            <th>Body</th>
+            <th>Status</th>
+            <th>Body</th>
+          </tr>
+        </thead>
+        <tbody class="code">
+          <!-- POST to /signup -->
+          <tr>
+            <td rowspan="2">POST</td>
+            <td rowspan="2">/signup</td>
+            <td rowspan="2">{ username: String, password: String }</td>
+            <td class="success">200</td>
+            <td class="success">{ token: String }</td>
+          </tr>
+          <tr>
+            <td class="danger">401</td>
+            <td class="danger">{ error: String }</td>
+          </tr>
 
+          <!-- POST to /login -->
+          <tr>
+            <td rowspan="2">POST</td>
+            <td rowspan="2">/login</td>
+            <td rowspan="2">{ username: String, password: String }</td>
+            <td class="success">200</td>
+            <td class="success">{ token: String }</td>
+          </tr>
+          <tr>
+            <td class="danger">401</td>
+            <td class="danger">{ error: String }</td>
+          </tr>
 
-  setTimeout(function(){
-    socket.emit('connected', {token:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IndheW5lIg.66Qxc0MBJv_cJyvP8WfiEUCZZ4X1BXBSghVQVuAgBTA", socketID: socket.io.engine.id, longitude: -122.4089660, latitude: 37.7836970, time: new Date()});
-    console.log("first connect")
-  }, 10);
+          <!-- GET to /settings -->
+          <tr>
+            <td rowspan="2">GET</td>
+            <td rowspan="2">/settings</td>
+            <td rowspan="2"></td>
+            <td class="success">200</td>
+            <td class="success">{<br>&nbsp;&nbsp;tag1: String,<br>&nbsp;&nbsp;tag2: String,<br>&nbsp;&nbsp;tag3: String,<br>&nbsp;&nbsp;isBroadcasting: Boolean<br>}</td>
+          </tr>
+          <tr>
+            <td class="danger">401</td>
+            <td class="danger">{ error: String }</td>
+          </tr>
 
-  setInterval(function(){
-    socket.emit('update', {longitude: -123.4089660, latitude: 37.7836970, time: new Date(), socketID: socket.io.engine.id});
-    console.log("second connect")
-  }, 500);
+          <!-- POST to /settings -->
+          <tr>
+            <td rowspan="2">POST</td>
+            <td rowspan="2">/settings</td>
+            <td rowspan="2">{<br>&nbsp;&nbsp;tag1: String,<br>&nbsp;&nbsp;tag2: String,<br>&nbsp;&nbsp;tag3: String,<br>&nbsp;&nbsp;isBroadcasting: Boolean<br>}</td>
+            <td class="success">201</td>
+            <td class="success">{ success: String }</td>
+          </tr>
+          <tr>
+            <td class="danger">401</td>
+            <td class="danger">{ error: String }</td>
+          </tr>
 
-  socket.on("error", function(data){
-    console.log(data);
-  });
+          <!-- POST to /stats -->
+          <tr>
+            <td rowspan="2">POST</td>
+            <td rowspan="2">/stats</td>
+            <td rowspan="2">{ lat: Number, lon: Number, tag: String }</td>
+            <td class="success">200</td>
+            <td class="success">{ Sun: Number, Mon: Number, etc. }<br>OR<br>{ warning: String }</td>
+          </tr>
+          <tr>
+            <td class="danger">401</td>
+            <td class="danger">{ error: String }</td>
+          </tr>
 
-  socket.on("refreshEvent", function(data){
-  	console.log(data);
-  });
-</script>
+          <!-- GET to /hotspot -->
+          <tr>
+            <td rowspan="2">GET</td>
+            <td rowspan="2">/hotspot</td>
+            <td rowspan="2">{ tag: String }</td>
+            <td class="success">200</td>
+            <td class="success">[<br>&nbsp;&nbsp;{ lat: Number, lon: Number },<br>&nbsp;&nbsp;{ lat: Number, lon: Number },<br>&nbsp;&nbsp;etc.<br>]</td>
+          </tr>
+          <tr>
+            <td class="danger">None</td>
+            <td class="danger">None</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.4/socket.io.js"></script>
+    <script>
+      // This script is a slightly outdated one, used to test sockets
+      // We've turned this off for production
 
+      // var socket = io();
+
+      // setTimeout(function() {
+      //   socket.emit('connected', {
+      //     token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IndheW5lIg.66Qxc0MBJv_cJyvP8WfiEUCZZ4X1BXBSghVQVuAgBTA",
+      //     socketID: socket.io.engine.id,
+      //     latitude: 37.7836970,
+      //     longitude: -122.4089660,
+      //     time: new Date()
+      //   });
+      //   console.log("first connect");
+      // }, 10);
+
+      // setInterval(function() {
+      //   socket.emit('update', {
+      //     socketID: socket.io.engine.id,
+      //     latitude: 37.7836970,
+      //     longitude: -123.4089660,
+      //     time: new Date()
+      //   });
+      //   console.log("second connect")
+      // }, 5000);
+
+      // socket.on("error", function(data) {
+      //   console.log(data);
+      // });
+
+      // socket.on("refreshEvent", function(data) {
+      // 	console.log(data);
+      // });
+
+    </script>
+
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  </body>
 </html>
