@@ -145,13 +145,14 @@ app.post('/stats', function(req, res){
 	console.log('got POST to /stats:', lat, lon, tag);
 
 	controller.visitStats(lat, lon, tag)
-	.then(function(result){
-		res.json(result);
+	.then(function(result) {
+		if (typeof result === 'string') {
+			respondWithError(res, result);
+		} else {
+			res.json(result);
+		}
 	});
 });
-
-
-
 
 // setInterval(function(){
 // 	for (var i = 0; i < 5; i++){

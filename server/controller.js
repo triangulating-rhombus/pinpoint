@@ -3,7 +3,7 @@ var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
 var geocoder = require('node-geocoder');
 var http = require('http');
-var underscore = require('underscore');
+var _ = require('underscore');
 var async = require('async');
 
 
@@ -79,18 +79,18 @@ var getHotSpots = function (tag, callback) {
       return {latitude:latitude, longitude:longitude, address:address};
     });
 
-          result = underscore.countBy(visits, function(location) {
+          result = _.countBy(visits, function(location) {
             return location.address;
           });
 
-          result = underscore.map(result, function(count, address){
+          result = _.map(result, function(count, address){
             return {count: count, address: address}
           }).sort(function(a, b){
             return b.count - a.count;
           }).slice(0, 10);
 
         async.map(result, geocoder.geocode.bind(geocoder), function(err, results){
-          var result = underscore.map(results, function(location){
+          var result = _.map(results, function(location){
             return {lon:location[0].longitude, lat: location[0].latitude};
           })
           callback(result);
@@ -114,8 +114,8 @@ var addVisit = function (visit) {
     .findOrCreate({where: {latitude: visit.latitude, longitude: visit.longitude, address: loc[0].formattedAddress, 
       startTime: visit.time, endTime: visit.endTime}})
   })
-    .catch(function(err) {
-        console.log(err);
+    .catch(function(error) {
+      //console.log("addVisit error:", error.message);
     });
 
 };
@@ -210,25 +210,22 @@ var visitStats = function(lat, lon, tag){
     .then(function(loc){
       console.log(loc);
       return model.Visits.findAll({ 
-        where: {
-          address: loc[0].formattedAddress
-        },
+        where: { address: loc[0].formattedAddress },
         include: [ {model: model.Tags, where: {name: tag}} ]
-      }).then(function(visits) {
-        console.log("bye");
-        console.log(visits);
-          var result = visits.map(function(visit){
-            return days[visit.dataValues.startTime.getDay()];
-          })
-
-          result = underscore.countBy(result, function(day) {
-            return day;
-          });
-          return result;
+      });
+    })
+    .then(function(visits) {
+      var result = visits.map(function(visit){
+        return days[visit.dataValues.startTime.getDay()];
       })
-    }).catch(function(err) {
-      console.log("error with geocoder:", err);
-      return "could not resolve address";
+
+      return _.countBy(result, function(day) {
+        return day;
+      });
+    })
+    .catch(function(error) {
+      console.log("Geocoder error:", error.message);
+      return "Geocoder error: " + error.message;
     });
 };
 

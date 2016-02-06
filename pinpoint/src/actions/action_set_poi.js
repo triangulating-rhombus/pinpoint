@@ -31,16 +31,13 @@ export default function (latitude, longitude) {
   return (dispatch) => {
     fetchStats(latitude, longitude, 'Tennis').then(
       response => {
-        console.log('response from /stats:', response);
         const body = JSON.parse(response._bodyText);
-        if (response.status === 200) {
-          dispatch(setPoi({
-            latitude,
-            longitude,
-            tag: 'Tennis',
-            stats: body
-          }));
-        }
+        dispatch(setPoi({
+          latitude,
+          longitude,
+          tag: 'Tennis',
+          stats: body
+        }));
         // successCallback();
       },
       error => {
