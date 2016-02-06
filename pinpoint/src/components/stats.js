@@ -18,14 +18,14 @@ export default class Stats extends Component {
     });
   }
 
-  componentWillUpdate() {
-    const { latitude, longitude } = this.props.poi;
-    this.props.getStats({ 
-      lat: latitude,
-      lon: longitude,
-      tag: DEFAULT_TAG
-    });
-  }
+  // componentWillUpdate() {
+  //   const { latitude, longitude } = this.props.poi;
+  //   this.props.getStats({ 
+  //     lat: latitude,
+  //     lon: longitude,
+  //     tag: DEFAULT_TAG
+  //   });
+  // }
 
   // Returns this.props.stats in format to be rendered by chart
   // this.props.stats is an object returned by the server
