@@ -31,13 +31,10 @@ export default function submitSettings(settings, token, navigator) {
     postSettings(settings, token)
     .then(
       response => {
-        console.log('starting');
-        console.log(navigator);
         navigator.immediatelyResetRouteStack([{ name: 'TabBar' }]);
-        console.log('done');
-        // const body = JSON.parse(response._bodyText);
-        if (response.status === 200) {
-        //   const token = body.token;
+        const body = JSON.parse(response._bodyText);
+        if (response.status === 201) {
+          //console.log(body.success);
           dispatch(updateSettings(settings));
         }
       }

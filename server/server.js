@@ -73,23 +73,21 @@ app.post('/settings', function (req, res) {
 	}
 	try {
 		var user = jwt.decode(token, 'secret');
-		var tag1 = req.body.tag1;
-		var tag2 = req.body.tag2;
-		var tag3 = req.body.tag3;
+		var tagNames = [ req.body.tag1, req.body.tag2, req.body.tag3 ];
 		var isBroadcasting = req.body.isBroadcasting;
 
 		var userID = null;
 		controller.findUser({ username: user })
 		.then(function(user) {
 			userID = user.id;
-			return controller.addTag([tag1, tag2, tag3]);
+			return controller.addTag(tagNames);
 		})
 		.then(function(results) {
-			var tagIDs = results.map(function(tag){
+			var tagIDs = results.map(function(tag) {
 				return tag[0].dataValues.id;
 			});
 			controller.addTagsUsers(tagIDs, userID); // this doesn't return a promise
-			res.status(201).json({ success: 'Updated tags' });
+			res.status(201).json({ success: 'Updated tags: ' + tagNames.join(', ') });
 		})
 		.catch(function(error) {
 			respondWithError(res, 'Invalid token: ' + error.message);
