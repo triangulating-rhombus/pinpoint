@@ -10,7 +10,7 @@ import React, {
   Platform, 
 } from 'react-native';
 
-import image from '../assets/images/redDot-small-whiteBorder.png';
+import image from '../assets/images/greenDot-small-whiteBorder.png';
 
 // import styles from '../styles/styles';
 import MapView from 'react-native-maps';
@@ -31,13 +31,11 @@ var count = true;
 
 
 export default class Map extends Component {
-
   componentDidUpdate(){
     // If component had updated because socket is now connected to the server run this code. Modified after code refactor.
     if(count && this.props.socket){
       this.setDefaults.call(this);
     }
-
   }
 
   componentDidMount(){
