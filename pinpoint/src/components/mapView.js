@@ -150,7 +150,11 @@ export default class Map extends Component {
   }
 
   onPress(e) {
-    console.log(e);
+    // If you click on a marker (and possibly some other cases), Map doesn't return position data
+    if (!e.nativeEvent || !e.nativeEvent.coordinate) {
+      return;
+    }
+    
     const { latitude, longitude } = e.nativeEvent.coordinate;
     console.log('pressed map:', latitude, longitude);
 
