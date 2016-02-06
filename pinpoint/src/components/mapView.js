@@ -37,7 +37,7 @@ export default class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isVisible: false
+      isVisible: false,
     };
   }
 
@@ -185,24 +185,28 @@ export default class Map extends Component {
   }
 
   setItem(tag){
-    console.log("This tag is clicked",tag)
     this.props.toggleTag(tag);
-   // this.props.fetchTag(this.props.currentTagLabel);
+    let update = (position) => {
+      updateGeoLocation(this.props, position);
+    };
+
+    let error = (error) => {
+      console.log('ERROR', error);
+    };
+    
+    navigator.geolocation.getCurrentPosition(update, error);  
+
   }
 
   renderPins(){
     var obj = {
       ALLTAGS: "Show All"
     };
-    let allUsers = this.props.allUsers;    
-     _.each(allUsers, (value, user) => {
-      if (this.props.socket.id === user) {
-        // TODO: send tags back from server.js on initial connection because we're waiting instead for the update 
-        value.tags.forEach(function(tag){
-          obj[tag] = tag;
-        })
-      }
-    })
+    var meTags = this.props.me.tags;
+    meTags.forEach(function(val){
+      obj[val] = val;
+    });
+
     return obj;
   }
 
@@ -236,7 +240,7 @@ export default class Map extends Component {
 
         </MapView.Animated>
 
-        { this.props.socket ? this.renderFilterBar.call(this) : void 0 }
+        { this.props.socket && this.props.me ? this.renderFilterBar.call(this) : void 0 }
 
       </View>
     );

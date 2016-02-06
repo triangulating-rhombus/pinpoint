@@ -2,6 +2,7 @@ import { Component } from 'react-native';
 import { connect } from 'react-redux';
 import MapView from '../components/mapView';
 import setPoi from '../actions/action_set_poi';
+import updateAction from '../actions/action_update_geolocation.js';
 
 // This action will fire off a AJAX to the server to get the tags 
 //import fetchTag from '../actions/action_filter_by_tags.js';
@@ -9,11 +10,11 @@ import setPoi from '../actions/action_set_poi';
 import toggleTag from '../actions/action_filter_tag_name.js';
 
 
-function mapStateToProps({ user, socket, allUsers, hotSpotVisibility, currentTagLabel }) {
-  return { user, socket, allUsers, hotSpotVisibility, currentTagLabel };
+function mapStateToProps({ user, socket, allUsers, hotSpotVisibility, currentTagLabel, me }) {
+  return { user, socket, allUsers, hotSpotVisibility, currentTagLabel, me };
 }
 
-export default connect(mapStateToProps, {setPoi, toggleTag })(MapView);
+export default connect(mapStateToProps, {setPoi, toggleTag, updateAction})(MapView);
 
 
 

@@ -19,6 +19,7 @@ export const initialGeoLocation = (props, data) => {
   };
 
   socket.emit('connected', socketData );
+  
 } 
 
 export const updateGeoLocation = (props, data) => {

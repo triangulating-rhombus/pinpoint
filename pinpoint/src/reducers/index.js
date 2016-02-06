@@ -5,6 +5,7 @@ import SettingsReducer from './reducer_settings';
 import allUsers from './reducer_updatePins';
 import toggleHotspot from './reducer_toggle_hotspots';
 import PoiReducer from './reducer_poi';
+import AccountSetupReducer from './reducer_account_setup';
 
 // This will help us acheieve filtering on mapView
 //import FilterTags from './reducer_filterTags';
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
   //currentTagState: FilterTags,
 
   // Store now knows what current Tag we are filtering by!
-  currentTagLabel: FilterBySelectedTagName
+  currentTagLabel: FilterBySelectedTagName,
+  me: AccountSetupReducer
 
 });
 
