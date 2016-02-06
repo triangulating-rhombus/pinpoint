@@ -17,6 +17,10 @@ var server = app.listen(app.get('port'), function() {
 
 db.init();
 
+// Helper to send AJAX response with errorMessage
+var respondWithError = function(res, errorMessage) {
+  res.status(401).json({ error: errorMessage });
+};
 
 /* *******  
 Login and Signup
@@ -87,13 +91,23 @@ app.post('/settings', function (req, res) {
 });
 
 app.get('/settings', function (req, res) {
-	var token = req.headers['x-access-token']; 
-	var user = jwt.decode(token, "secret");
-
-	controller.findSettings(user)
-	.then(function(result) {
-		res.send(result);
-	});
+	var token = req.headers['x-access-token'];
+	if (!token) {
+		respondWithError(res, "Missing token: no x-access-token header was provided");
+		return;
+	}
+	try {
+		var user = jwt.decode(token, "secret");
+		controller.findSettings(user)
+		.then(function(result) {
+			res.send(result);
+		})
+		.catch(function(error) {
+			respondWithError(res, "Invalid token: " + error.message);
+		});
+	} catch(error) {
+		respondWithError(res, "Invalid token: " + error.message);
+	}
 });
 
 app.get('/hotspot', function (req, res) {

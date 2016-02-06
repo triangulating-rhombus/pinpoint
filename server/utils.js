@@ -15,4 +15,4 @@ exports.getTimeDifference = function(time1, time2){
 // Returns a value within number +/- range
 exports.getRandomNumberWithinRange = function(number, range) {
   return number + (Math.random() * range * 2) - range;
-}
+};
