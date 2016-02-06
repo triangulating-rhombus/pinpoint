@@ -179,7 +179,6 @@ export default class Map extends Component {
 
   showPopover() {
       this.setState({isVisible: true});
-      console.log("show popover clicked")
   }
 
   closePopover() {
@@ -187,10 +186,8 @@ export default class Map extends Component {
   }
 
   setItem(tag){
-    console.log("Set Item tag", tag);
-
     this.props.toggleTag(tag);
-    
+    this.props.fetchTag(this.props.currentTagLabel);
   }
 
   renderPins(){
