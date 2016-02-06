@@ -24,12 +24,20 @@ var currPositions = {};
 var fakeUsers = [];
 
 // ---- Fake users ----
+var tagPool = ['cats', 'dogs', 'horses']
+var generateRandomTags = function() {
+  var tagIndex = Math.floor(Math.random()*tagPool.length);
+  return [tagPool[tagIndex]];
+};
+
 var initializeFakeUsers = function() {
   for (var i = 0; i < NUM_FAKE_USERS; i++) {
-    var fakeUser = '_fakeUser' + i.toString();
+    var fakeUserSocketID = '_fakeUser' + i.toString();
+    var fakeUser = {socketID:fakeUserSocketID, tags: generateRandomTags()};
     fakeUsers.push(fakeUser);
-    currPositions[fakeUser] = {
-      socketID: fakeUser,
+    currPositions[fakeUser.socketID] = {
+      socketID: fakeUser.socketID,
+      tags: fakeUser.tags,
       latitude: Utils.getRandomNumberWithinRange(DEFAULT_FAKE_LATITUDE, 0.01),
       longitude: Utils.getRandomNumberWithinRange(DEFAULT_FAKE_LONGITUDE, 0.01),
       time: new Date().valueOf() // now, in milliseconds since 1/1/1970
@@ -40,14 +48,15 @@ var initializeFakeUsers = function() {
 
 var generateFakeUserSnapshots = function() {
   _.forEach(fakeUsers, function(fakeUser) {
-    var latestSnapshot = currPositions[fakeUser];
+    var latestSnapshot = currPositions[fakeUser.socketID];
     var newSnapshot = {
       socketID: latestSnapshot.socketID,
+      tags: fakeUser.tags,
       latitude: Utils.getRandomNumberWithinRange(latestSnapshot.latitude, 0.001),
       longitude: Utils.getRandomNumberWithinRange(latestSnapshot.longitude, 0.001),
       time: new Date().valueOf() // now, in milliseconds since 1/1/1970
     };
-    currPositions[fakeUser] = newSnapshot;
+    currPositions[fakeUser.socketID] = newSnapshot;
   });
 };
 
@@ -69,15 +78,24 @@ module.exports = function(server, includeFakeUsers) {
 var connectHandler = function(snapshot) {
   // Snapshots usually just contain socketID and position/time
   // On connection, the snapshot also includes the user's JWT token to authenticate them
-  console.log("Client connected with socketID:", snapshot.socketID);
   var username = JWT.decode(snapshot.token, "secret");
   controller.findUser({ username: username })
   .then(function(user) {
     if (user) {
-      snapshot.userID = user.id;
-      visitStarts[snapshot.socketID] = snapshot;
-      currPositions[snapshot.socketID] = snapshot;
-      serverSocket.emit('refreshEvent', currPositions);
+      controller.findUserTags(user.id)
+      .then(function(tags) {
+        // Augment snapshot with user info and save to currentPositions
+        snapshot.tags = tags;
+        snapshot.userID = user.id;
+        visitStarts[snapshot.socketID] = snapshot;
+        currPositions[snapshot.socketID] = snapshot;
+
+        var everybodyExceptMe = _.extend({}, currPositions );
+        delete everybodyExceptMe[snapshot.socketID];
+
+        serverSocket.emit('refreshEvent', everybodyExceptMe);
+        serverSocket.emit('foundAccount', currPositions[snapshot.socketID])
+      });
     } else {
       serverSocket.emit('error', 'username not found');
     }
@@ -92,9 +110,27 @@ var updateHandler = function(snapshot) {
     snapshot.tags = tags;
     snapshot.userID = userID;
     currPositions[snapshot.socketID] = snapshot;
+    console.log("Current Tag Label:", snapshot.currentTagLabel);
+    if (snapshot.currentTagLabel !== 'Show All') {
+      var allUsersFilteredByTag = {};
+      _.each(currPositions, function(val, user){
+        if ( (val.tags.indexOf(snapshot.currentTagLabel) !== -1) && (snapshot.socketID !== user) ) {
+          
+          allUsersFilteredByTag[user] = val;
+        }
+      });
+      serverSocket.emit('refreshEvent', allUsersFilteredByTag);
+    } else {
 
-    // Send current positions of all users back to clientSocket
-    serverSocket.emit('refreshEvent', currPositions);
+      var everybodyExceptMe = _.extend({}, currPositions );
+      delete everybodyExceptMe[snapshot.socketID];
+
+      // Send current positions of all users back to clientSocket
+      serverSocket.emit('refreshEvent', everybodyExceptMe); 
+    }
+
+
+
   });
   
   var prevSnapshot = visitStarts[snapshot.socketID];

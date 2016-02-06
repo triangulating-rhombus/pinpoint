@@ -5,6 +5,11 @@ import SettingsReducer from './reducer_settings';
 import allUsers from './reducer_updatePins';
 import toggleHotspot from './reducer_toggle_hotspots';
 import PoiReducer from './reducer_poi';
+import AccountSetupReducer from './reducer_account_setup';
+
+// This will help us acheieve filtering on mapView
+import FilterBySelectedTagName from './reducer_filter_tag_name';
+
 
 const rootReducer = combineReducers({
   user: UserReducer,
@@ -12,7 +17,12 @@ const rootReducer = combineReducers({
   settings: SettingsReducer,
   allUsers: allUsers,
   hotSpotVisibility: toggleHotspot,
-  poi: PoiReducer
+  poi: PoiReducer,
+
+  // Store now knows what current Tag we are filtering by!
+  currentTagLabel: FilterBySelectedTagName,
+  me: AccountSetupReducer
+
 });
 
 export default rootReducer;

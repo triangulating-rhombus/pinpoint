@@ -8,6 +8,7 @@
   "dependencies": {
     "react-native": "^0.18.1",
     "react-native-chart": "^0.1.9",
+    "react-native-list-overlay": "^1.0.6",
     "react-native-maps": "^0.2.3",
     "react-native-vector-icons": "^1.1.1",
     "react-redux": "^4.0.6",
