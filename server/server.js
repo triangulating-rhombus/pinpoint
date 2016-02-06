@@ -97,6 +97,15 @@ app.get('/settings', function (req, res) {
 	});
 });
 
+app.get('/hotspot', function (req, res) {
+	var tag = req.headers['tag']; 
+
+	controller.getHotSpots(tag, function(result){
+		res.json(result);
+	})
+
+});
+
 /* ***** 
 	Stats
 ***** */
@@ -117,9 +126,6 @@ app.post('/stats', function(req, res){
 	});
 });
 
-controller.getHotSpots("shopping", function(result){
-	console.log(result);
-})
 
 
 
