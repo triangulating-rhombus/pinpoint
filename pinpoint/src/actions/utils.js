@@ -4,7 +4,6 @@ import io from '../../node_modules/socket.io-client/socket.io';
 const SERVER_ROOT = 'http://tr-pinpoint-server.herokuapp.com';
 
 // Sends AJAX request and returns promise
-// 
 export function sendRequest(method, endpoint, bodyObj, token) {
   const url = `${SERVER_ROOT}${endpoint}`;
 
@@ -18,10 +17,11 @@ export function sendRequest(method, endpoint, bodyObj, token) {
     options.body = JSON.stringify(bodyObj);
   }
 
-  // fetch is React Native's built-in function to make AJAX requests
+  // built-in React Native function to make AJAX requests
   return fetch(url, options);
 }
 
+// Creates socket connection to server and returns client socket
 export function createSocketConnection() {
   return io.connect(SERVER_ROOT, { jsonp: false });
 }
