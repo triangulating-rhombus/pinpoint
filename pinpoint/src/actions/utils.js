@@ -1,7 +1,11 @@
+import io from '../../node_modules/socket.io-client/socket.io';
+
 // const SERVER_ROOT = 'http://localhost:3000';
 const SERVER_ROOT = 'http://tr-pinpoint-server.herokuapp.com';
 
-export default sendRequest = (method, endpoint, bodyObj, token) => {
+// Sends AJAX request and returns promise
+// 
+export function sendRequest(method, endpoint, bodyObj, token) {
   const url = `${SERVER_ROOT}${endpoint}`;
 
   const headers = { 'Content-Type': 'application/json' };
@@ -16,4 +20,8 @@ export default sendRequest = (method, endpoint, bodyObj, token) => {
 
   // fetch is React Native's built-in function to make AJAX requests
   return fetch(url, options);
+}
+
+export function createSocketConnection() {
+  return io.connect(SERVER_ROOT, { jsonp: false });
 }

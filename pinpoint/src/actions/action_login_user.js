@@ -1,5 +1,5 @@
 import { LOGIN_SUCCEEDED, LOGIN_FAILED } from '../constants/actionTypes';
-import sendRequest from './utils';
+import { sendRequest } from './utils';
 
 // POST username/password to server to request authentication
 // On response, initialize socket connection to server
