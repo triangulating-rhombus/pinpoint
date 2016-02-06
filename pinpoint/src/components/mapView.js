@@ -76,7 +76,11 @@ export default class Map extends Component {
 
   animateMarkers() {
     let allUsers = this.props.allUsers;
-      
+    
+    console.log(_.map(allUsers, function(user, userKey) {
+      return userKey + ':' + user.pastNewPins[0].latitude._value + ',';
+    }));
+
     _.each(allUsers, (value, user) => {
       if(value.pastNewPins.length < 2 ){
         return

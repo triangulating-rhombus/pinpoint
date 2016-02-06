@@ -11,3 +11,8 @@ exports.getDistance = function(pos1, pos2) {
 exports.getTimeDifference = function(time1, time2){
   return Math.abs((new Date(time1) - new Date(time2)) / 1000);
 };
+
+// Returns a value within number +/- range
+exports.getRandomNumberWithinRange = function(number, range) {
+  return number + (Math.random() * range * 2) - range;
+}

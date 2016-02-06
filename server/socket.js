@@ -1,6 +1,7 @@
 // Exports a function that takes a server as input and returns a server socket
 // Server socket will handle all client sockets for application
 
+var _ = require('underscore');
 var SocketIO = require('socket.io');
 var JWT = require('jwt-simple');
 var controller = require('./controller');
@@ -10,6 +11,8 @@ var Utils = require('./utils');
 var MIN_VISIT_LENGTH = 3; // seconds stopped in one location to count as a visit
 var ALLOWED_DISTANCE = 10; // meters away from last position to count as continuing a visit
 var NUM_FAKE_USERS = 3; // used only if includeFakeUsers is true
+const DEFAULT_FAKE_LATITUDE = 37.331177;
+const DEFAULT_FAKE_LONGITUDE = -122.031641;
 
 // ---- Global variables ----
 var serverSocket = null;
@@ -18,17 +21,42 @@ var serverSocket = null;
 //   value: snapshot (object with socketID, latitude, longitude, and time)
 var visitStarts = {};
 var currPositions = {};
+var fakeUsers = [];
 
-var generateSnapshots = function(fakeUsers) {
-  // for each fakeUser
-    // look up its last info in currPosition
-    // create a new snapshot
-      // with time equal to now
-      // with distance somewhere less than ALLOWED_DISTANCE * 3
-    // update currPosition with snapshot
+// ---- Fake users ----
+var initializeFakeUsers = function() {
+  for (var i = 0; i < NUM_FAKE_USERS; i++) {
+    var fakeUser = '_fakeUser' + i.toString();
+    fakeUsers.push(fakeUser);
+    currPositions[fakeUser] = {
+      socketID: fakeUser,
+      latitude: DEFAULT_FAKE_LATITUDE,
+      longitude: DEFAULT_FAKE_LONGITUDE,
+      time: new Date().valueOf() // now, in milliseconds since 1/1/1970
+    };
+  }
+  setInterval(generateFakeUserSnapshots, 5000);
 };
 
+var generateFakeUserSnapshots = function() {
+  _.forEach(fakeUsers, function(fakeUser) {
+    var latestSnapshot = currPositions[fakeUser];
+    var newSnapshot = {
+      socketID: latestSnapshot.socketID,
+      latitude: Utils.getRandomNumberWithinRange(latestSnapshot.latitude, 0.001),
+      longitude: Utils.getRandomNumberWithinRange(latestSnapshot.longitude, 0.001),
+      time: new Date().valueOf() // now, in milliseconds since 1/1/1970
+    };
+    currPositions[fakeUser] = newSnapshot;
+  });
+};
+
+// ---- Export function and its handlers ----
 module.exports = function(server, includeFakeUsers) {
+  if (includeFakeUsers) {
+    initializeFakeUsers();
+  }
+
   serverSocket = SocketIO.listen(server);
   serverSocket.on('connection', function(clientSocket) {
     clientSocket.on("connected", connectHandler);
