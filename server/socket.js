@@ -103,6 +103,13 @@ var connectHandler = function(snapshot) {
 };
 
 var updateHandler = function(snapshot) {
+  // Ignore unauthenticated socketIDs
+  if (!visitStarts[snapshot.socketID]) {
+    console.log('Received update from unauthenticated socketID...');
+    console.log('Refresh your client simulator to fix this!')
+    return;
+  }
+
   var userID = visitStarts[snapshot.socketID].userID;
   controller.findUserTags(userID)
   .then(function(tags) {
