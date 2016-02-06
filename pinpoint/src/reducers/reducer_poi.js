@@ -5,7 +5,9 @@ import { SET_POI } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
   latitude: DEFAULT_LATITUDE,
-  longitude: DEFAULT_LONGITUDE
+  longitude: DEFAULT_LONGITUDE,
+  tag: null,
+  stats: null
 };
 
 export default (state=INITIAL_STATE, action) => {

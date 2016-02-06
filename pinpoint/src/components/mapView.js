@@ -150,6 +150,7 @@ export default class Map extends Component {
   }
 
   onPress(e) {
+    console.log(e);
     const { latitude, longitude } = e.nativeEvent.coordinate;
     console.log('pressed map:', latitude, longitude);
 
