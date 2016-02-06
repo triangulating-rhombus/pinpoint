@@ -174,20 +174,17 @@ var addTagsVisits = function(userID, visitID){
   // }
 }
 
-var addTagsUsers = function(tags, userID){
-
+var addTagsUsers = function(tags, userID) {
   model.tags_users.destroy({
-      where: {
-        user_id: userID
-      }
-  })
+    where: { user_id: userID }
+  });
 
   for (var i = 0; i < tags.length; i++){
     var tagID = tags[i];
       model.tags_users.findOrCreate({where: {
         tag_id: tagID,
         user_id: userID
-      }})
+      }});
   }
 }
 
