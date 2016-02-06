@@ -97,6 +97,15 @@ app.get('/settings', function (req, res) {
 	});
 });
 
+app.get('/hotspot', function (req, res) {
+	var tag = req.headers['tag']; 
+
+	controller.getHotSpots(tag, function(result){
+		res.json(result);
+	})
+
+});
+
 /* ***** 
 	Stats
 ***** */
@@ -117,12 +126,11 @@ app.post('/stats', function(req, res){
 	});
 });
 
-// controller.getHotSpots("shopping").then(function(visits){
-// 	console.log(visits);
-// })
+
+
 
 // setInterval(function(){
-// 	for (var i = 0; i < 10; i++){
+// 	for (var i = 0; i < 5; i++){
 
 // 	      var sign = Math.random() > 0.5? -1: 1;
 // 	      var lon = -122.031641 + sign * Math.random() * .002;
@@ -139,7 +147,7 @@ app.post('/stats', function(req, res){
 // 	        controller.addTagsVisits(1, obj[0].dataValues.id);
 // 	      });
 // 	}
-// }, 1000)
+// }, 1500)
 
 
 /* ***** 

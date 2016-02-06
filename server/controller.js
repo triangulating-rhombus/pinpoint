@@ -4,32 +4,9 @@ var bcrypt = require('bcrypt-nodejs');
 var geocoder = require('node-geocoder');
 var http = require('http');
 var underscore = require('underscore');
+var async = require('async');
 
-var getHotSpots = function (tag) {
-  return model.Tags.findAll({ 
-    where: {
-      name: tag
-    },
-    include: [ model.Visits ]
-  }).then(function(locations) {
 
-    var visits = locations[0].dataValues.Visits;
-    visits = visits.map(function(visit){
-      console.log(visit);
-      //return visit.dataValues;
-      var latitude = visit.dataValues.latitude;
-      var longitude = visit.dataValues.longitude;
-      var address = visit.dataValues.address;
-      return {latitude:latitude, longitude:longitude, address:address};
-    });
-
-          result = underscore.countBy(visits, function(location) {
-            return location.address;
-          });
-
-    return result;
-  })
-};
 
 var authenticateUser = function(username, attemptedPassword, callback){
   model.Users.findOne({where: {username: username}}).then(function(user) {
@@ -76,11 +53,50 @@ var geocoderProvider = 'google';
 var httpAdapter = 'https';
 
 var extra = {
-    apiKey: 'AIzaSyDzjbK9IXT3Es4-9HhJ_7dYwpx3_Nt3Sp4',
+    apiKey: 'AIzaSyDZJzu5MvHz0s6PsokNcMWy03bRpoGiJ74',
     formatter: null
 };
 
 geocoder = geocoder(geocoderProvider, httpAdapter, extra);
+
+var getHotSpots = function (tag, callback) {
+  return model.Tags.findAll({ 
+    where: {
+      name: tag
+    },
+    include: [ model.Visits ]
+  }).then(function(locations) {
+
+    var visits = locations[0].dataValues.Visits;
+    visits = visits.map(function(visit){
+      //return visit.dataValues;
+      var latitude = visit.dataValues.latitude;
+      var longitude = visit.dataValues.longitude;
+      var address = visit.dataValues.address;
+      return {latitude:latitude, longitude:longitude, address:address};
+    });
+
+          result = underscore.countBy(visits, function(location) {
+            return location.address;
+          });
+
+          result = underscore.map(result, function(count, address){
+            return {count: count, address: address}
+          }).sort(function(a, b){
+            return b.count - a.count;
+          }).slice(0, 10);
+
+        async.map(result, geocoder.geocode.bind(geocoder), function(err, results){
+          var result = underscore.map(results, function(location){
+            return {lon:location[0].longitude, lat: location[0].latitude};
+          })
+          callback(result);
+        });
+
+
+  })
+};
+
 
 const geoCodeThis = () => {
   geocoder.reverse({lat:37.782377, lon:-122.410168}, function(err, res) {
@@ -95,6 +111,10 @@ var addVisit = function (visit) {
     .findOrCreate({where: {latitude: visit.latitude, longitude: visit.longitude, address: loc[0].formattedAddress, 
       startTime: visit.time, endTime: visit.endTime}})
   })
+    .catch(function(err) {
+        console.log(err);
+    });
+
 };
 
 var addTag = function (tags) {
@@ -237,6 +257,9 @@ var findSettings = function (username) {
 
   })
 };
+
+
+
 
 module.exports = {
   addUser: addUser,
