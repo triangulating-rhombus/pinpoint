@@ -32,7 +32,6 @@ var getRandomColor = function() {
 
 var count = true;
 
-
 export default class Map extends Component {
 
   constructor(props) {
@@ -44,7 +43,10 @@ export default class Map extends Component {
 
   componentDidUpdate(){
     // If component had updated because socket is now connected to the server run this code. Modified after code refactor.
+    
+    
     if(count && this.props.socket){
+      count = false;
       this.setDefaults.call(this);
     }
   }
@@ -70,17 +72,14 @@ export default class Map extends Component {
     };
 
     let update = (position) => {
-      updateGeoLocation(properties, position);
+      updateGeoLocation(this.props, position);
     }
 
     navigator.geolocation.getCurrentPosition(connect, error);
 
     setInterval(function(){       
-      navigator.geolocation.getCurrentPosition(update,error)  
+      navigator.geolocation.getCurrentPosition(update, error)  
     }, 5000); 
-
-    count = false;
-
   }
 
   animateMarkers() {
@@ -186,8 +185,9 @@ export default class Map extends Component {
   }
 
   setItem(tag){
+    console.log("This tag is clicked",tag)
     this.props.toggleTag(tag);
-    this.props.fetchTag(this.props.currentTagLabel);
+   // this.props.fetchTag(this.props.currentTagLabel);
   }
 
   renderPins(){
@@ -198,13 +198,11 @@ export default class Map extends Component {
      _.each(allUsers, (value, user) => {
       if (this.props.socket.id === user) {
         // TODO: send tags back from server.js on initial connection because we're waiting instead for the update 
-        if(value.tags){
-          value.tags.forEach(function(tag){
-            obj[tag] = tag;
-          })
-        }
+        value.tags.forEach(function(tag){
+          obj[tag] = tag;
+        })
       }
-      })
+    })
     return obj;
   }
 
