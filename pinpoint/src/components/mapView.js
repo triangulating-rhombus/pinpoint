@@ -188,12 +188,15 @@ export default class Map extends Component {
 
   setItem(tag){
     console.log("Set Item tag", tag);
-    //this.props.filterByTag(tag);
+
+    this.props.toggleTag(tag);
     
   }
 
   renderPins(){
-    var obj = {};
+    var obj = {
+      ALLTAGS: "Show All"
+    };
     let allUsers = this.props.allUsers;    
      _.each(allUsers, (value, user) => {
       if (this.props.socket.id === user) {
