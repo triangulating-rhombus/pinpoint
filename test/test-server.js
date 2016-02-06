@@ -20,4 +20,20 @@ describe('Test server end points', function() {
         done();
       });
   });
+
+  it('should be able to sign up', function(done) {
+    chai.request(server)
+      .post('/signup')
+      .set('Content-Type', 'application/json')
+      .send({"username": "testtest1", "password": "12345"})
+      .end(function(err, res){
+        console.log(res.body);
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('token');
+        done();
+      });
+  });
+
 });
