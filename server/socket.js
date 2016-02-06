@@ -9,6 +9,7 @@ var Utils = require('./utils');
 // ---- Constants ----
 var MIN_VISIT_LENGTH = 3; // seconds stopped in one location to count as a visit
 var ALLOWED_DISTANCE = 10; // meters away from last position to count as continuing a visit
+var NUM_FAKE_USERS = 3; // used only if includeFakeUsers is true
 
 // ---- Global variables ----
 var serverSocket = null;
@@ -18,8 +19,13 @@ var serverSocket = null;
 var visitStarts = {};
 var currPositions = {};
 
-var generateFakeUser = function() {
-
+var generateSnapshots = function(fakeUsers) {
+  // for each fakeUser
+    // look up its last info in currPosition
+    // create a new snapshot
+      // with time equal to now
+      // with distance somewhere less than ALLOWED_DISTANCE * 3
+    // update currPosition with snapshot
 };
 
 module.exports = function(server, includeFakeUsers) {
