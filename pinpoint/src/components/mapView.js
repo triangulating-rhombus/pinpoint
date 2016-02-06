@@ -150,10 +150,15 @@ export default class Map extends Component {
   }
 
   onPress(e) {
+    // If you click on a marker (and possibly some other cases), Map doesn't return position data
+    if (!e.nativeEvent || !e.nativeEvent.coordinate) {
+      return;
+    }
+    
     const { latitude, longitude } = e.nativeEvent.coordinate;
     console.log('pressed map:', latitude, longitude);
 
-    this.props.setPoi({ latitude, longitude });
+    this.props.setPoi(latitude, longitude);
 
     // For some reason, TabBarIOS counts a press on the map as a press on the map icon
     // This sets the displayed tab to mapTab again, so we have to delay the change to statsTab

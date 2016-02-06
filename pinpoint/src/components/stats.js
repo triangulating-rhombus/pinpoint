@@ -5,34 +5,12 @@ import RNChart from 'react-native-chart';
 // import styles from '../styles/styles';
 
 export default class Stats extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentWillMount() {
-    const { latitude, longitude } = this.props.poi;
-    this.props.getStats({ 
-      lat: latitude,
-      lon: longitude,
-      tag: DEFAULT_TAG
-    });
-  }
-
-  componentWillUpdate() {
-    const { latitude, longitude } = this.props.poi;
-    this.props.getStats({ 
-      lat: latitude,
-      lon: longitude,
-      tag: DEFAULT_TAG
-    });
-  }
-
-  // Returns this.props.stats in format to be rendered by chart
-  // this.props.stats is an object returned by the server
+  // Returns this.props.poi.stats in format to be rendered by chart
+  // this.props.poi.stats is an object returned by the server
   //   of the form: { Sun: 10, Mon: 14, ... }
   getChartData() {
     const dayNames = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
-    const values = dayNames.map(dayName => this.props.stats[dayName]);
+    const values = dayNames.map(dayName => this.props.poi.stats[dayName] || 0);
     return [
       {
         name: 'BarChart',
@@ -47,22 +25,29 @@ export default class Stats extends Component {
   roundToNearestThousandth(float) {
     return Math.round(float * 1000) / 1000;
   }
+
   render() {
     const latitude = this.roundToNearestThousandth(this.props.poi.latitude);
     const longitude = this.roundToNearestThousandth(this.props.poi.longitude);
 
     // If address could not be resolved by server, response will be a string (rather than object)
-    if (typeof this.props.stats === 'string') {
+    if (typeof this.props.poi.stats === 'string') {
       return (
         <View style={styles.container}>
           <Text>{`Sorry! We could not resolve the address at ${latitude}, ${longitude}.`}</Text>
           <Text>Please try another location.</Text>
         </View>
       );
-    } else if (Object.keys(this.props.stats).length === 0) {
+    } else if (this.props.poi.stats === null) {
       return (
         <View style={styles.container}>
           <Text>{`Loading stats for ${latitude}, ${longitude}...`}</Text>
+        </View>
+      );
+    } else if (Object.keys(this.props.poi.stats).length === 0) {
+      return (
+        <View style={styles.container}>
+          <Text>No logged visits for this place! Try another?</Text>
         </View>
       );
     } else {
