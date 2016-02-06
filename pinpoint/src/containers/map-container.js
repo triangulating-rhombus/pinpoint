@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import MapView from '../components/mapView';
 import setPoi from '../actions/action_set_poi';
 
-
-function mapStateToProps({ user, socket, allUsers, hotSpotVisibility  }) {
+function mapStateToProps({ user, socket, allUsers, hotSpotVisibility }) {
   return { user, socket, allUsers, hotSpotVisibility };
 }
 

@@ -15,9 +15,6 @@ export const UPDATE_GEO_LOCATION = 'UPDATE_GEO_LOCATION';
 export const GET_SETTINGS = 'GET_SETTINGS';
 export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';
 
-// Stats
-export const GET_STATS = 'GET_STATS';
-
 // HotSpots
 export const TOGGLE_HOTSPOT = 'TOGGLE_HOTSPOT';
 

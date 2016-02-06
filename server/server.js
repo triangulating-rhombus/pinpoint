@@ -115,12 +115,10 @@ app.post('/stats', function(req, res){
 	var lat = req.body.lat;
 	var lon = req.body.lon;
 	var tag = req.body.tag;
-
 	console.log('got POST to /stats:', lat, lon, tag);
 
 	controller.visitStats(lat, lon, tag)
 	.then(function(result){
-		console.log('got POST to /stats:', lat, lon, tag);
 		res.json(result);
 	});
 });
