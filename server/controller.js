@@ -204,28 +204,38 @@ var findUserTags = function (userID) {
 
 var visitStats = function(lat, lon, tag){
   console.log({lat:lat, lon:lon});
-  var days = ["Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
+  var dayNames = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
 
-  return geocoder.reverse({lat:lat, lon:lon})
-    .then(function(loc){
-      console.log(loc);
+  return geocoder.reverse({ lat: lat, lon: lon })
+    .then(function(loc) {
       return model.Visits.findAll({ 
         where: { address: loc[0].formattedAddress },
-        include: [ {model: model.Tags, where: {name: tag}} ]
+        include: [ {
+          model: model.Tags,
+          where: { name: tag }}
+        ]
       });
     })
     .then(function(visits) {
-      var result = visits.map(function(visit){
-        return days[visit.dataValues.startTime.getDay()];
-      })
+      if (visits.length === 0) {
+        return { warning: 'NO_VISITS' };
+      }
 
-      return _.countBy(result, function(day) {
-        return day;
-      });
+      return _.reduce(visits, function(acc, visit) {
+        var dayOfVisit = dayNames[visit.dataValues.startTime.getDay()];
+        acc[dayOfVisit]++;
+        return acc;
+      }, { Sun: 0, Mon: 0, Tue: 0, Wed: 0, Thu: 0, Fri: 0, Sat: 0 });
     })
     .catch(function(error) {
-      console.log("Geocoder error:", error.message);
-      return "Geocoder error: " + error.message;
+      var errorMessage = 'UNKNOWN';
+      if (error.message.indexOf('OVER_QUERY_LIMIT') > -1) {
+        errorMessage = 'OVER_QUERY_LIMIT';
+      } else if (error.message.indexOf('ZERO_RESULTS') > -1) {
+        errorMessage = 'ZERO_RESULTS';
+      }
+      console.log(error.message);
+      return { error: errorMessage };
     });
 };
 

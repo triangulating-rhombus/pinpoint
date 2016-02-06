@@ -144,12 +144,12 @@ app.post('/stats', function(req, res){
 	var tag = req.body.tag;
 	console.log('got POST to /stats:', lat, lon, tag);
 
-	controller.visitStats(lat, lon, tag)
-	.then(function(result) {
-		if (typeof result === 'string') {
-			respondWithError(res, result);
+	controller.visitStats(lat, lon, tag) // returns the object to send to client
+	.then(function(responseBody) {
+		if (responseBody.error) {
+			respondWithError(res, responseBody.error);
 		} else {
-			res.json(result);
+			res.json(responseBody);
 		}
 	});
 });
