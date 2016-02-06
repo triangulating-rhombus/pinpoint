@@ -10,7 +10,7 @@ var Utils = require('./utils');
 // ---- Constants ----
 var MIN_VISIT_LENGTH = 3; // seconds stopped in one location to count as a visit
 var ALLOWED_DISTANCE = 10; // meters away from last position to count as continuing a visit
-var NUM_FAKE_USERS = 3; // used only if includeFakeUsers is true
+var NUM_FAKE_USERS = 10; // used only if includeFakeUsers is true
 const DEFAULT_FAKE_LATITUDE = 37.331177;
 const DEFAULT_FAKE_LONGITUDE = -122.031641;
 
@@ -30,8 +30,8 @@ var initializeFakeUsers = function() {
     fakeUsers.push(fakeUser);
     currPositions[fakeUser] = {
       socketID: fakeUser,
-      latitude: DEFAULT_FAKE_LATITUDE,
-      longitude: DEFAULT_FAKE_LONGITUDE,
+      latitude: Utils.getRandomNumberWithinRange(DEFAULT_FAKE_LATITUDE, 0.01),
+      longitude: Utils.getRandomNumberWithinRange(DEFAULT_FAKE_LONGITUDE, 0.01),
       time: new Date().valueOf() // now, in milliseconds since 1/1/1970
     };
   }
