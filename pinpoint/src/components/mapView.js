@@ -6,6 +6,7 @@ import React, {
   Text,
   Dimensions,
   TouchableOpacity,
+  TouchableHighlight,
   Animated,
   Platform, 
 } from 'react-native';
@@ -14,6 +15,8 @@ import image from '../assets/images/greenDot-small-whiteBorder.png';
 
 // import styles from '../styles/styles';
 import MapView from 'react-native-maps';
+var ListPopover = require('react-native-list-overlay');
+
 import _ from 'underscore';
 import initSocketListeners from '../socket/listeners.js';
 import { initialGeoLocation, updateGeoLocation } from '../socket/emitters';
@@ -31,6 +34,14 @@ var count = true;
 
 
 export default class Map extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isVisible: false
+    };
+  }
+
   componentDidUpdate(){
     // If component had updated because socket is now connected to the server run this code. Modified after code refactor.
     if(count && this.props.socket){
@@ -100,7 +111,7 @@ export default class Map extends Component {
 
     return _.map(allUsers, (value, user) => {
 
-      let tags = value.tags = '';
+      let tags = value.tags || '';
       
       if(tags){
         tags = tags.join(', ');
@@ -160,9 +171,56 @@ export default class Map extends Component {
 
     this.props.setPoi(latitude, longitude);
 
+
     // For some reason, TabBarIOS counts a press on the map as a press on the map icon
     // This sets the displayed tab to mapTab again, so we have to delay the change to statsTab
     setTimeout(()=>this.props.changeTab('statsTab'), 0);
+  }
+
+  showPopover() {
+      this.setState({isVisible: true});
+      console.log("show popover clicked")
+  }
+
+  closePopover() {
+      this.setState({isVisible: false});
+  }
+
+  setItem(tag){
+    console.log("Set Item tag", tag);
+    //this.props.filterByTag(tag);
+    
+  }
+
+  renderPins(){
+    var obj = {};
+    let allUsers = this.props.allUsers;    
+     _.each(allUsers, (value, user) => {
+      if (this.props.socket.id === user) {
+        // TODO: send tags back from server.js on initial connection because we're waiting instead for the update 
+        if(value.tags){
+          value.tags.forEach(function(tag){
+            obj[tag] = tag;
+          })
+        }
+      }
+      })
+    return obj;
+  }
+
+  renderFilterBar(){
+    return (
+      <View style={styles.overlay}>
+        <TouchableHighlight style={styles.button} onPress={this.showPopover.bind(this)}>
+          <Text style={styles.text}>Filter</Text>
+        </TouchableHighlight>
+        <ListPopover
+          list={this.renderPins.call(this)}
+          isVisible={this.state.isVisible}
+          onClick={this.setItem.bind(this)}
+          onClose={this.closePopover.bind(this)}/>
+      </View>
+    );
   }
 
   render() {
@@ -180,7 +238,7 @@ export default class Map extends Component {
 
         </MapView.Animated>
 
-
+        { this.props.socket ? this.renderFilterBar.call(this) : void 0 }
 
       </View>
     );
@@ -205,27 +263,29 @@ var styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
-  bubble: {
-    flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.7)',
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 20,
+  overlay: {
+    position: 'relative',
+    top: 20,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flex:1
   },
-  latlng: {
-    width: 200,
-    alignItems: 'stretch',
+  text: {
+    position: 'relative',
+    flex:0,
+    color:'white'
   },
+
   button: {
-    width: 80,
-    paddingHorizontal: 12,
-    alignItems: 'center',
-    marginHorizontal: 10,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    marginVertical: 20,
-    backgroundColor: 'transparent',
+    position: 'relative',
+    flex: 0,
+    borderRadius: 4,
+    padding: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: 'blue',
+    opacity:.4
   },
 });
 

@@ -1,4 +1,4 @@
-import {FILTER_BY_TAGS} '../constants/actionTypes';
+import {FILTER_BY_TAGS} from '../constants/actionTypes';
 
 
 const SERVER_URL = 'http://localhost:3000/tags';
@@ -21,6 +21,6 @@ export default function (data) {
     fetchFilteredTags(data).then(
       response => {
         const body = JSON.parse(response._bodyText);
-      } 
-    )
+      })
+  }
 }

@@ -52,6 +52,7 @@ export default function(state = {}, action) {
         longitude: longitude,
       })
 
+      debugger
       let tags = val.tags;
 
       // Push New Index

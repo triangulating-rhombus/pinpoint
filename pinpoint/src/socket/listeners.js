@@ -4,6 +4,7 @@ import updateAction from '../actions/action_update_geolocation.js';
 
 export default (socket) => {
   socket.on('refreshEvent', (data) => {
+    console.log('Data being streamed', data)
     store.dispatch(updateAction(data));    
   });
 
