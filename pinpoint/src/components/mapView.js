@@ -21,15 +21,6 @@ import _ from 'underscore';
 import initSocketListeners from '../socket/listeners.js';
 import { initialGeoLocation, updateGeoLocation } from '../socket/emitters';
 
-var getRandomColor = function() {
-   var letters = '0123456789ABCDEF'.split('');
-   var color = '#';
-   for (var i = 0; i < 6; i++ ) {
-       color += letters[Math.floor(Math.random() * 16)];
-   }
-   return color;
-}
-
 var count = true;
 
 export default class Map extends Component {
@@ -122,13 +113,11 @@ export default class Map extends Component {
           title={tags}
           key={user}
           coordinate={value.pastNewPins[0]}
-          pinColor={getRandomColor()}
         />
       );
 
     });
-
-  }
+  } 
 
   getRegion(){
     var socketId = this.props.socket.id;
@@ -143,9 +132,7 @@ export default class Map extends Component {
       var newRegion = {latitude, longitude };
       return newRegion;
       //return currentUser.pastNewPins[0].setValue(newRegion);
- 
     }
-
   }
 
   renderHotSpots(){
