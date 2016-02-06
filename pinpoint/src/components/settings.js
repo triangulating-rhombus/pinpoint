@@ -82,7 +82,7 @@ export default class Settings extends Component {
         <Switch
           onValueChange={(value) => this.props.toggleHotspot() }
           style={{marginBottom:10}}
-          value={this.state.renderHotspot}
+          value={this.props.hotSpotVisibility}
         />
 
         <Button text="Update settings" clickAction={this.onSubmit.bind(this)} />

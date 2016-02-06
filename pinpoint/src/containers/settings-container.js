@@ -6,8 +6,8 @@ import Settings from '../components/settings.js';
 import toggleHotspot from '../actions/action_toggle_hotspots.js';
 
 // Makes user state available to component
-function mapStateToProps({ user, settings }) {
-  return { user, settings };
+function mapStateToProps({ user, settings, hotSpotVisibility }) {
+  return { user, settings, hotSpotVisibility };
 }
 
 export default connect(mapStateToProps, { getSettings, updateSettings, toggleHotspot })(Settings);
