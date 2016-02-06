@@ -152,3 +152,5 @@ app.post('/stats', function(req, res){
 ***** */
 
 var serverSocket = require('./socket')(server, true); // true will include fake users
+
+module.exports = server
