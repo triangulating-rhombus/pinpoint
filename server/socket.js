@@ -146,7 +146,8 @@ var updateHandler = function(snapshot) {
     [snapshot.latitude, snapshot.longitude]
   );
   var timeDiff = Utils.getTimeDifference(prevSnapshot.time, snapshot.time);
-  
+  console.log("Test", distance);
+  console.log("time diff", timeDiff);
   // If user has left their last location
   if (distance >= ALLOWED_DISTANCE) {
     // Log visit to db if they had been there for at least MIN_VISIT_LENGTH seconds

@@ -207,7 +207,8 @@ export default class Map extends Component {
           list={this.renderPins.call(this)}
           isVisible={this.state.isVisible}
           onClick={this.setItem.bind(this)}
-          onClose={this.closePopover.bind(this)}/>
+          onClose={this.closePopover.bind(this)}
+        />
       </View>
     );
   }

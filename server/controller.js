@@ -53,7 +53,8 @@ var geocoderProvider = 'google';
 var httpAdapter = 'https';
 
 var extra = {
-    apiKey: 'AIzaSyCtsxXD-6Dl-dCzmvSDneXFvCknDYJ3GGA',
+    apiKey: /*'AIzaSyDZJzu5MvHz0s6PsokNcMWy03bRpoGiJ74'*/ 
+    "AIzaSyCtsxXD-6Dl-dCzmvSDneXFvCknDYJ3GGA",
     formatter: null
 };
 
@@ -66,6 +67,7 @@ var getHotSpots = function (tag, callback) {
     },
     include: [ model.Visits ]
   }).then(function(locations) {
+    console.log("Hotspots in Locations", locations)
     if (locations.length === 0){
       callback("no results")
     }
@@ -79,33 +81,24 @@ var getHotSpots = function (tag, callback) {
       return {latitude:latitude, longitude:longitude, address:address};
     });
 
-          result = _.countBy(visits, function(location) {
-            return location.address;
-          });
+    result = _.countBy(visits, function(location) {
+      return location.address;
+    });
 
-          result = _.map(result, function(count, address){
-            return {count: count, address: address}
-          }).sort(function(a, b){
-            return b.count - a.count;
-          }).slice(0, 10);
+    result = _.map(result, function(count, address){
+      return {count: count, address: address}
+    }).sort(function(a, b){
+      return b.count - a.count;
+    }).slice(0, 10);
 
-        async.map(result, geocoder.geocode.bind(geocoder), function(err, results){
-          var result = _.map(results, function(location){
-            return {lon:location[0].longitude, lat: location[0].latitude};
-          })
-          callback(result);
-        });
-
-
+  async.map(result, geocoder.geocode.bind(geocoder), function(err, results){
+    var result = _.map(results, function(location){
+      return {lon:location[0].longitude, lat: location[0].latitude};
+    })
+    callback(result);
+  });
   })
 };
-
-
-const geoCodeThis = () => {
-  geocoder.reverse({lat:37.782377, lon:-122.410168}, function(err, res) {
-      console.log(res[0].formattedAddress);
-  })
-}
 
 var addVisit = function (visit) {
   return geocoder.reverse({lat:visit.latitude, lon:visit.longitude})
@@ -137,6 +130,10 @@ return Promise.map(tags, function(tag) {
 
 
 var addTagsVisits = function(userID, visitID){
+<<<<<<< ac182957828a4e95fe13de2414a38a1cf11dea40
+=======
+  console.log("Test");
+>>>>>>> Still debugging server hotspots! Started login styling
   return model.Users.findAll({ 
     where: {
       id: userID
@@ -171,6 +168,7 @@ var addTagsUsers = function(tags, userID) {
 
 }
 
+// TODO 
 var findUserTags = function (userID) {
   return model.Users.findAll({ 
     where: {
@@ -178,7 +176,6 @@ var findUserTags = function (userID) {
     },
     include: [ model.Tags ]
   }).then(function(tags) {
-
       return (tags[0].dataValues.Tags.map(function(tag){
         return tag.dataValues.name;
       }))
@@ -186,7 +183,6 @@ var findUserTags = function (userID) {
 };
 
 var visitStats = function(lat, lon, tag){
-  console.log({lat:lat, lon:lon});
   var dayNames = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
 
   return geocoder.reverse({ lat: lat, lon: lon })
@@ -260,7 +256,6 @@ module.exports = {
   getHotSpots:getHotSpots,
   authenticateUser:authenticateUser,
   findUser:findUser,
-  geoCodeThis:geoCodeThis,
   findUserTags:findUserTags,
   setBroadcast:setBroadcast,
   visitStats:visitStats,
