@@ -16,7 +16,6 @@ export default class Signup extends Component {
     const { username, password } = this.state;
     this.props.signupUser(
       { username, password },
-      () => this.props.addSocket(() => {}),
       this.props.navigator
     );
   }

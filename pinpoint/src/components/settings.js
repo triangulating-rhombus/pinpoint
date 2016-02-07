@@ -6,16 +6,22 @@ export default class Settings extends Component {
   constructor(props) {
     super(props);
 
-    // Component level state simply holds the values currently entered in form
-    // These will be initialized to values from the settings store,
-    // or, if any fields are missing, hold these default values
     const { tag1, tag2, tag3, isBroadcasting } = this.props.settings;
     this.state = {
+      // Values displayed on form input elements
+      // Intialized to values from setting store
       tempTag1: tag1 || '',
       tempTag2: tag2 || '',
       tempTag3: tag3 || '',
       tempIsBroadcasting: isBroadcasting || false,
+
+      justSubmitted: false
     };
+  }
+
+  temporarilyShowSuccessMessage() {
+    this.setState({ justSubmitted: true });
+    setTimeout(() => this.setState({ justSubmitted: false }), 2000);
   }
 
   onSubmit() {
@@ -29,7 +35,7 @@ export default class Settings extends Component {
     this.props.updateSettings(
       settingsToSend,
       this.props.user.token,
-      this.props.navigator
+      () => this.temporarilyShowSuccessMessage()
     );
   }
 
@@ -77,6 +83,7 @@ export default class Settings extends Component {
         />
 
         <Button text="Update settings" clickAction={this.onSubmit.bind(this)} />
+        <Text style={styles.success}>{ this.state.justSubmitted ? 'Saved successfully!' : '' }</Text>
       </View>
     );
   }

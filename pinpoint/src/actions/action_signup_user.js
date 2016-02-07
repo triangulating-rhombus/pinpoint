@@ -24,6 +24,7 @@ export default (user, navigator) => {
           body.username = user.username;
           dispatch(addSocket());
           dispatch(getSettings(body.token));
+          console.log('hi');
           navigator.immediatelyResetRouteStack([{ name: 'Settings' }]);
         }
         dispatch(signupUser(body));
