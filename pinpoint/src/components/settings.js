@@ -21,7 +21,10 @@ export default class Settings extends Component {
 
   temporarilyShowSuccessMessage() {
     this.setState({ justSubmitted: true });
-    setTimeout(() => this.setState({ justSubmitted: false }), 2000);
+    setTimeout(() => {
+      this.setState({ justSubmitted: false });
+      this.props.navigator.immediatelyResetRouteStack([{ name: 'TabBar' }]);
+    }, 1000);
   }
 
   onSubmit() {
