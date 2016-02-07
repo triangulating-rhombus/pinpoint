@@ -53,7 +53,7 @@ var geocoderProvider = 'google';
 var httpAdapter = 'https';
 
 var extra = {
-    apiKey: 'AIzaSyDZJzu5MvHz0s6PsokNcMWy03bRpoGiJ74',
+    apiKey: 'AIzaSyCtsxXD-6Dl-dCzmvSDneXFvCknDYJ3GGA',
     formatter: null
 };
 
@@ -133,7 +133,6 @@ return Promise.map(tags, function(tag) {
 
 
 var addTagsVisits = function(userID, visitID){
-
   return model.Users.findAll({ 
     where: {
       id: userID
@@ -149,29 +148,6 @@ var addTagsVisits = function(userID, visitID){
 
   })
 
-
-  // var tagsList = visit.tags;
-  // for (var i = 0; i < tagsList.length; i++){
-  //   var tag = tagsList[i];
-  //   model.Tags.findOne({ where: {name: tag} }).then(function(project) {
-  //     var tagID = project.dataValues.id;
-
-  //     model.tags_visits.findOrCreate({where: {
-  //       tag_id: tagID,
-  //       visit_id: visitID
-  //     }})
-
-  //     // var visit_tag = model.tags_visits.build({
-  //     //   tag_id: tagID,
-  //     //   visit_id: visitID
-  //     // })
-
-  //     // visit_tag.save().then(function() {
-  //     //   console.log("saved: " + tagID);
-  //     // })
-
-  //   })
-  // }
 }
 
 var addTagsUsers = function(tags, userID) {
