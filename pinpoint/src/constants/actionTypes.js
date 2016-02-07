@@ -1,10 +1,8 @@
 // Signup
-export const SIGNUP_SUCCEEDED = 'SIGNUP_SUCCEEDED';
-export const SIGNUP_FAILED = 'SIGNUP_FAILED';
+export const SIGNUP_USER = 'SIGNUP_USER';
 
 // Login/Logout
-export const LOGIN_SUCCEEDED = 'LOGIN_SUCCEEDED';
-export const LOGIN_FAILED = 'LOGIN_FAILED';
+export const LOGIN_USER = 'LOGIN_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
 
 // Sockets
