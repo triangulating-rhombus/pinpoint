@@ -117,7 +117,7 @@ var updateHandler = function(snapshot) {
     snapshot.tags = tags;
     snapshot.userID = userID;
     currPositions[snapshot.socketID] = snapshot;
-    console.log("Current Tag Label:", snapshot.currentTagLabel);
+    //console.log("Current Tag Label:", snapshot.currentTagLabel);
     if (snapshot.currentTagLabel !== 'Show All') {
       var allUsersFilteredByTag = {};
       _.each(currPositions, function(val, user){
@@ -153,7 +153,7 @@ var updateHandler = function(snapshot) {
     if (timeDiff >= MIN_VISIT_LENGTH) {
       prevSnapshot.endTime = new Date();
       controller.addVisit(prevSnapshot).then(function(obj) {
-        controller.addTagsVisits(userID, obj[0].snapshotValues.id);
+        controller.addTagsVisits(userID, obj[0].dataValues.id);
       });
     }
 

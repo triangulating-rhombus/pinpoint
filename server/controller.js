@@ -53,7 +53,7 @@ var geocoderProvider = 'google';
 var httpAdapter = 'https';
 
 var extra = {
-    apiKey: 'AIzaSyDZJzu5MvHz0s6PsokNcMWy03bRpoGiJ74',
+    apiKey: 'AIzaSyCtsxXD-6Dl-dCzmvSDneXFvCknDYJ3GGA',
     formatter: null
 };
 
@@ -122,6 +122,10 @@ var addVisit = function (visit) {
 
 var addTag = function (tags) {
 
+var tags = _.map(_.filter(tags, function(tag){return tag !== "";}), function(tag){
+  return tag.toLowerCase();
+});
+
 return Promise.map(tags, function(tag) {
     // Promise.map awaits for returned promises as well.
     return model.Tags.findOrCreate({where: {name: tag}})
@@ -133,7 +137,6 @@ return Promise.map(tags, function(tag) {
 
 
 var addTagsVisits = function(userID, visitID){
-
   return model.Users.findAll({ 
     where: {
       id: userID
@@ -149,29 +152,6 @@ var addTagsVisits = function(userID, visitID){
 
   })
 
-
-  // var tagsList = visit.tags;
-  // for (var i = 0; i < tagsList.length; i++){
-  //   var tag = tagsList[i];
-  //   model.Tags.findOne({ where: {name: tag} }).then(function(project) {
-  //     var tagID = project.dataValues.id;
-
-  //     model.tags_visits.findOrCreate({where: {
-  //       tag_id: tagID,
-  //       visit_id: visitID
-  //     }})
-
-  //     // var visit_tag = model.tags_visits.build({
-  //     //   tag_id: tagID,
-  //     //   visit_id: visitID
-  //     // })
-
-  //     // visit_tag.save().then(function() {
-  //     //   console.log("saved: " + tagID);
-  //     // })
-
-  //   })
-  // }
 }
 
 var addTagsUsers = function(tags, userID) {
@@ -179,13 +159,16 @@ var addTagsUsers = function(tags, userID) {
     where: { user_id: userID }
   });
 
+  var promiseArr = [];
+
   for (var i = 0; i < tags.length; i++){
     var tagID = tags[i];
-      model.tags_users.findOrCreate({where: {
-        tag_id: tagID,
-        user_id: userID
-      }});
+      promiseArr.push(model.tags_users.findOrCreate({where: {tag_id: tagID,user_id: userID}}));
   }
+
+  return Promise.all(promiseArr);
+
+
 }
 
 var findUserTags = function (userID) {
