@@ -13,7 +13,8 @@ export default class Login extends Component {
     const { username, password } = this.state;
     this.props.loginUser(
       { username, password },
-      this.props.navigator
+      this.props.navigator,
+      navigator
     );
   }
 

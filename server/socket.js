@@ -25,15 +25,17 @@ var fakeUsers = [];
 
 // ---- Fake users ----
 var tagPool = ['cats', 'dogs', 'horses']
+
 var generateRandomTags = function() {
-  var tagIndex = Math.floor(Math.random()*tagPool.length);
-  return [tagPool[tagIndex]];
+  var results = [Utils.getRandomElement(tagPool)];
 };
 
 var initializeFakeUsers = function() {
   for (var i = 0; i < NUM_FAKE_USERS; i++) {
-    var fakeUserSocketID = '_fakeUser' + i.toString();
-    var fakeUser = {socketID:fakeUserSocketID, tags: generateRandomTags()};
+    var fakeUser = {
+      socketID: '_fakeSocketID' + i.toString();
+      tags: generateRandomTags()
+    };
     fakeUsers.push(fakeUser);
     currPositions[fakeUser.socketID] = {
       socketID: fakeUser.socketID,

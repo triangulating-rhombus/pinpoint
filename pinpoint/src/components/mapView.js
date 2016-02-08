@@ -18,60 +18,16 @@ import MapView from 'react-native-maps';
 var ListPopover = require('react-native-list-overlay');
 
 import _ from 'underscore';
-import initSocketListeners from '../socket/listeners.js';
-import { initialGeoLocation, updateGeoLocation } from '../socket/emitters';
 
 var count = true;
 
 export default class Map extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       isVisible: false,
       radius: 300
     };
-  }
-
-  componentDidUpdate(){
-    // If component had updated because socket is now connected to the server run this code. Modified after code refactor.
-    
-    
-    if(count && this.props.socket){
-      count = false;
-      this.setDefaults.call(this);
-    }
-  }
-
-  componentDidMount(){
-    if(this.props.socket){
-      this.setDefaults.call(this)
-    }
-  }
-
-  setDefaults(){
-
-    initSocketListeners(this.props.socket);
-    let properties = this.props;
-
-
-    let connect = (position) => {
-      initialGeoLocation(properties, position);
-    }
-
-    let error = (error) => {
-      console.log('ERROR', error);
-    };
-
-    let update = (position) => {
-      updateGeoLocation(this.props, position);
-    }
-
-    navigator.geolocation.getCurrentPosition(connect, error);
-
-    setInterval(function(){       
-      navigator.geolocation.getCurrentPosition(update, error)  
-    }, 5000); 
   }
 
   animateMarkers() {
