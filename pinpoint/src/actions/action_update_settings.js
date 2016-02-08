@@ -9,7 +9,7 @@ function getHotspots(tag){
     method: 'GET',
     headers: {
       'Content-Type' : 'application/json',
-      'x-access-token' : tag
+      'tag' : tag
     }
   });
 }
@@ -29,14 +29,16 @@ function updateSettings(settings) {
 // Thunk will run the function and then dispatch the appropriate vanilla action creator
 
 export default function submitSettings(settings, token, successCallback, store, navigator) {
+
   return (dispatch) => {
+
 
     if(store.hotSpotVisibility){
       let tag = store.me.tags[0];
       getHotspots(tag)
       .then(
         response => {
-          navigator.immediatelyResetRouteStack([{'name': 'TabBar'}]);          
+         console.log("I got the response", response);
         }
       );
     }

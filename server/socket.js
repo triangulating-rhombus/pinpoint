@@ -76,6 +76,7 @@ module.exports = function(server, includeFakeUsers) {
 }
 
 var connectHandler = function(snapshot) {
+  console.log("Server Connected");
   // Snapshots usually just contain socketID and position/time
   // On connection, the snapshot also includes the user's JWT token to authenticate them
   var username = JWT.decode(snapshot.token, "secret");
@@ -103,6 +104,7 @@ var connectHandler = function(snapshot) {
 };
 
 var updateHandler = function(snapshot) {
+  console.log("update called");
   // Ignore unauthenticated socketIDs
   if (!visitStarts[snapshot.socketID]) {
     console.log('Received update from unauthenticated socketID...');

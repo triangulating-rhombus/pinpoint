@@ -39,7 +39,8 @@ export default class Settings extends Component {
       settingsToSend,
       this.props.user.token,
       () => this.temporarilyShowSuccessMessage(),
-      this.props, 
+      this.props,
+      this.props.navigator 
     );
   }
 
