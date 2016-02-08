@@ -31,15 +31,15 @@ export default class Map extends Component {
   }
 
   animateMarkers() {
-    let allUsers = this.props.allUsers;
+    const { allUsers } = this.props;
     
     // console.log(_.map(allUsers, function(user, userKey) {
     //   return userKey + ':' + user.pastNewPins[0].latitude._value + ',';
     // }));
 
     _.each(allUsers, (value, user) => {
-      if(value.pastNewPins.length < 2 ){
-        return
+      if(value.pastNewPins.length < 2 || value.socketID){
+        return;
       } else {
         var oldLatLng = value.pastNewPins[0];
         var longitude = value.pastNewPins[1].longitude._value;
@@ -52,17 +52,10 @@ export default class Map extends Component {
 
   }
 
-  renderMarkers(){
-
-    let allUsers = this.props.allUsers;
-
+  renderMarkers() {
+    const { allUsers } = this.props;
     return _.map(allUsers, (value, user) => {
-
-      let tags = value.tags || '';
-      
-      if(tags){
-        tags = tags.join(', ');
-      }
+      const tags = value.tags.join(', ');
 
       return (
         <MapView.Marker.Animated
@@ -175,16 +168,18 @@ export default class Map extends Component {
 
   }
 
-  renderPins(){
-    var obj = {
+  getFilterOptions(){
+    var filterOptions = {
       ALLTAGS: "Show All"
     };
-    var meTags = this.props.me.tags;
-    meTags.forEach(function(val){
-      obj[val] = val;
+    const { tag1, tag2, tag3 } = this.props.settings;
+    _.forEach([ tag1, tag2, tag3 ], function(tag) {
+      if (tag) {
+        filterOptions[tag] = tag;
+      }
     });
 
-    return obj;
+    return filterOptions;
   }
 
   renderFilterBar(){
@@ -194,7 +189,7 @@ export default class Map extends Component {
           <Text style={styles.text}>Filter</Text>
         </TouchableHighlight>
         <ListPopover
-          list={this.renderPins.call(this)}
+          list={this.getFilterOptions.call(this)}
           isVisible={this.state.isVisible}
           onClick={this.setItem.bind(this)}
           onClose={this.closePopover.bind(this)}
@@ -230,7 +225,7 @@ export default class Map extends Component {
         
         </MapView.Animated>
 
-        { this.props.socket && this.props.me ? this.renderFilterBar.call(this) : void 0 }
+        { this.props.socket && this.props.settings ? this.renderFilterBar.call(this) : void 0 }
 
       </View>
     );

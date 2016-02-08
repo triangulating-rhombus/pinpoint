@@ -27,13 +27,13 @@ var fakeUsers = [];
 var tagPool = ['cats', 'dogs', 'horses']
 
 var generateRandomTags = function() {
-  var results = [Utils.getRandomElement(tagPool)];
+  return [Utils.getRandomElement(tagPool)];
 };
 
 var initializeFakeUsers = function() {
   for (var i = 0; i < NUM_FAKE_USERS; i++) {
     var fakeUser = {
-      socketID: '_fakeSocketID' + i.toString();
+      socketID: '_fakeSocketID' + i.toString(),
       tags: generateRandomTags()
     };
     fakeUsers.push(fakeUser);
@@ -97,7 +97,6 @@ var connectHandler = function(snapshot) {
         delete everybodyExceptMe[snapshot.socketID];
 
         serverSocket.emit('refreshEvent', everybodyExceptMe);
-        serverSocket.emit('foundAccount', currPositions[snapshot.socketID])
       });
     } else {
       serverSocket.emit('error', 'username not found');
@@ -121,23 +120,24 @@ var updateHandler = function(snapshot) {
     snapshot.tags = tags;
     snapshot.userID = userID;
     currPositions[snapshot.socketID] = snapshot;
-    //console.log("Current Tag Label:", snapshot.currentTagLabel);
-    if (snapshot.currentTagLabel !== 'Show All') {
-      var allUsersFilteredByTag = {};
-      _.each(currPositions, function(val, user){
-        if ( (val.tags.indexOf(snapshot.currentTagLabel) !== -1) && (snapshot.socketID !== user) ) {
-          
-          allUsersFilteredByTag[user] = val;
-        }
+
+    console.log("Current Tag Label:", snapshot.currentTagLabel);
+    
+    var senderSocketID = snapshot.socketID;
+    var filterTag = snapshot.currentTagLabel;
+    var filteredUsers = null;
+
+    if (filterTag !== 'Show All') {
+      filteredUsers = _.filter(currPositions, function(snapshot, socketID) {
+        return _.contains(snapshot.tags, filterTag) && snapshot.socketID !== senderSocketID;
       });
-      serverSocket.emit('refreshEvent', allUsersFilteredByTag);
+      serverSocket.emit('refreshEvent', filteredUsers);
     } else {
-
-      var everybodyExceptMe = _.extend({}, currPositions );
-      delete everybodyExceptMe[snapshot.socketID];
-
+      filteredUsers = _.filter(currPositions, function(snapshot, socketID) {
+        return snapshot.socketID !== senderSocketID;
+      });
       // Send current positions of all users back to clientSocket
-      serverSocket.emit('refreshEvent', everybodyExceptMe); 
+      serverSocket.emit('refreshEvent', filteredUsers); 
     }
 
 
