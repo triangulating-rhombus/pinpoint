@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var jwt = require('jwt-simple');
 var db = require('./db/dbModel');
 var controller = require('./controller');
+var _ = require('underscore');
 
 var app = express();
 
@@ -55,9 +56,10 @@ app.post('/signup', function(req, res){
 		if (user) {
 			res.status(401).json({error: 'user already exists!'});
 		} else {
-			controller.addUser(userObj);
-			var token = jwt.encode(username, 'secret');
-  		res.json({token:token})
+			controller.addUser(userObj).then(function(){
+				var token = jwt.encode(username, 'secret');
+	  		res.json({token:token})
+			});
 		}
 	});
 });
@@ -73,7 +75,7 @@ app.post('/settings', function (req, res) {
 	}
 	try {
 		var user = jwt.decode(token, 'secret');
-		var tagNames = [ req.body.tag1, req.body.tag2, req.body.tag3 ];
+		var tagNames = _.filter([ req.body.tag1, req.body.tag2, req.body.tag3 ], function(tag){return tag !== ""});
 		var isBroadcasting = req.body.isBroadcasting;
 
 		var userID = null;
@@ -86,8 +88,10 @@ app.post('/settings', function (req, res) {
 			var tagIDs = results.map(function(tag) {
 				return tag[0].dataValues.id;
 			});
-			controller.addTagsUsers(tagIDs, userID); // this doesn't return a promise
-			res.status(201).json({ success: 'Updated tags: ' + tagNames.join(', ') });
+			controller.addTagsUsers(tagIDs, userID).then(function(){
+				res.status(201).json({ success: 'Updated tags: ' + tagNames.join(', ') });
+			}); // this doesn't return a promise
+			
 		})
 		.catch(function(error) {
 			respondWithError(res, 'Invalid token: ' + error.message);

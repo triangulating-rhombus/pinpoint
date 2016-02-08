@@ -122,6 +122,10 @@ var addVisit = function (visit) {
 
 var addTag = function (tags) {
 
+var tags = _.map(_.filter(tags, function(tag){return tag !== "";}), function(tag){
+  return tag.toLowerCase();
+});
+
 return Promise.map(tags, function(tag) {
     // Promise.map awaits for returned promises as well.
     return model.Tags.findOrCreate({where: {name: tag}})
@@ -155,13 +159,16 @@ var addTagsUsers = function(tags, userID) {
     where: { user_id: userID }
   });
 
+  var promiseArr = [];
+
   for (var i = 0; i < tags.length; i++){
     var tagID = tags[i];
-      model.tags_users.findOrCreate({where: {
-        tag_id: tagID,
-        user_id: userID
-      }});
+      promiseArr.push(model.tags_users.findOrCreate({where: {tag_id: tagID,user_id: userID}}));
   }
+
+  return Promise.all(promiseArr);
+
+
 }
 
 var findUserTags = function (userID) {
