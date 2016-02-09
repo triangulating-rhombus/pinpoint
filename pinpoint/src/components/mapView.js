@@ -32,21 +32,17 @@ export default class Map extends Component {
 
   animateMarkers() {
     const { markers } = this.props;
-    
-    // console.log(_.map(markers, function(user, userKey) {
-    //   return userKey + ':' + user.pastNewPins[0].latitude._value + ',';
-    // }));
 
-    _.each(markers, (value, user) => {
-      if(value.pastNewPins.length < 2 || value.socketID){
-        return;
-      } else {
-        var oldLatLng = value.pastNewPins[0];
-        var longitude = value.pastNewPins[1].longitude._value;
-        var latitude = value.pastNewPins[1].latitude._value;
+    // Animate each marker, if it has a previous and current position
+    _.each(markers, (value) => {
+      if (value.pastNewPins.length === 2) {
+        var oldPosition = value.pastNewPins[0];
+        var newPosition = {
+          latitude: value.pastNewPins[1].latitude._value,
+          longitude: value.pastNewPins[1].longitude._value
+        };
 
-        // this should render each user's lat long on every prop update 
-        oldLatLng.timing({latitude, longitude}).start();       
+        oldPosition.timing(newPosition).start();       
       }
     }); 
 
@@ -54,33 +50,28 @@ export default class Map extends Component {
 
   renderMarkers() {
     const { markers } = this.props;
-    return _.map(markers, (value, user) => {
+    return _.map(markers, (value, socketID) => {
       const tags = value.tags.join(', ');
-
       return (
         <MapView.Marker.Animated
           image={image}
           title={tags}
-          key={user}
+          key={socketID}
           coordinate={value.pastNewPins[0]}
         />
       );
-
     });
   } 
 
   getRegion(){
-    var socketId = this.props.socket.id;
-    var currentUser = this.props.markers[socketId];
+    var socketID = this.props.socket.id;
+    var currentUser = this.props.markers[socketID];
 
-    if(currentUser === undefined){
-      return;
-    } else if(currentUser.pastNewPins.length === 2){
-
-      var longitude = currentUser.pastNewPins[1].longitude._value;
-      var latitude = currentUser.pastNewPins[1].latitude._value;
-      var newRegion = {latitude, longitude };
-      return newRegion;
+    if (currentUser && currentUser.pastNewPins.length === 2){
+      return {
+          latitude: currentUser.pastNewPins[1].latitude._value,
+          longitude: currentUser.pastNewPins[1].longitude._value
+        };
       //return currentUser.pastNewPins[0].setValue(newRegion);
     }
   }
