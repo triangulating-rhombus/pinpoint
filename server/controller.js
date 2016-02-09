@@ -130,10 +130,6 @@ return Promise.map(tags, function(tag) {
 
 
 var addTagsVisits = function(userID, visitID){
-<<<<<<< ac182957828a4e95fe13de2414a38a1cf11dea40
-=======
-  console.log("Test");
->>>>>>> Still debugging server hotspots! Started login styling
   return model.Users.findAll({ 
     where: {
       id: userID
