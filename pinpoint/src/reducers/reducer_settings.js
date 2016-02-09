@@ -7,7 +7,7 @@ const INITIAL_STATE = {
   isBroadcasting: null
 };
 
-export default function(state=INITIAL_STATE, action){
+export default function(state = INITIAL_STATE, action) {
 
   switch(action.type) {
     case GET_SETTINGS:

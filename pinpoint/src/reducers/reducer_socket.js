@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   updater: null
 };
 
-export default function(state=INITIAL_STATE, action){
+export default function(state = INITIAL_STATE, action) {
   switch(action.type) {
     case ADD_SOCKET:
       return action.payload;
