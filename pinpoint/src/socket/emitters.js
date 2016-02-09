@@ -17,7 +17,6 @@ export const initialGeoLocation = (props, data) => {
     longitude,
     currentTagLabel
   };
-  console.log("Connected", socket);
   socket.emit('connected', socketData );
 } 
 
@@ -36,6 +35,5 @@ export const updateGeoLocation = (props, data) => {
     socketID,
     currentTagLabel
   };
-  console.log("Updating", socket);
   socket.emit('update', socketData );
 }

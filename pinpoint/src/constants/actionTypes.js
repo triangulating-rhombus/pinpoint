@@ -25,3 +25,7 @@ export const SET_POI = 'SET_POI';
 export const FILTER_BY_TAGS = 'FILTER_BY_TAGS';
 export const FILTER_BY_SELECTED_TAG = 'FILTER_BY_SELECTED_TAG';
 
+
+// Hotspot Filtering
+export const DISPLAY_HOTSPOTS = 'DISPLAY_HOTSPOTS';
+

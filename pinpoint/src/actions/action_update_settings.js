@@ -1,4 +1,5 @@
 import { UPDATE_SETTINGS } from '../constants/actionTypes';
+import { DISPLAY_HOTSPOTS } from '../constants/actionTypes';
 import { sendRequest } from './utils';
 
 const SERVER_URL = 'http://localhost:3000/settings';
@@ -22,6 +23,13 @@ function updateSettings(settings) {
   }
 }
 
+function displayHotspots(data){
+  return {
+    type: DISPLAY_HOTSPOTS,
+    payload: data
+  }
+}
+
 
 
 // Async action creator, which uses thunk to handle the promise
@@ -38,7 +46,8 @@ export default function submitSettings(settings, token, successCallback, store, 
       getHotspots(tag)
       .then(
         response => {
-         console.log("I got the response", response);
+         const body = JSON.parse(response._bodyText);
+         dispatch(displayHotspots(body));
         }
       );
     }
