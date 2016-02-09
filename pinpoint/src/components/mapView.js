@@ -158,6 +158,26 @@ export default class Map extends Component {
     this.props.toggleTag(tag);
     const { socket } = this.props;
     socket.emit('changeFilterTag', { socketID: socket.id, filterTag: tag });
+
+    // ---- Copied from action_add_socket as a quick fix ----
+    function emitSnapshot(gpsData) {
+      var socketData = {
+        socketID: socket.id,
+        time: gpsData.timestamp,
+        latitude: gpsData.coords.latitude,
+        longitude: gpsData.coords.longitude,
+      };
+
+      socket.emit('update', socketData );
+    }
+
+    function logError(error) {
+      console.log('Navigator \'getCurrentPosition\' error:', error);
+    };
+
+    // Sends  snapshot to server
+    navigator.geolocation.getCurrentPosition(gpsData => emitSnapshot(gpsData), logError);
+    // ---- End copied code from action_add_socket ----
   }
 
   getFilterOptions(){
