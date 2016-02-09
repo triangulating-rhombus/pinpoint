@@ -146,19 +146,19 @@ export default class Map extends Component {
   }
 
   setItem(tag){
-    const { socket } = this.props;
-    socket.emit('changeFilterTag', { socketID: socket.id, filterTag: tag });
+    const { connection, id } = this.props.socket;
+    connection.emit('changeFilterTag', { socketID: id, filterTag: tag });
 
     // ---- Copied from action_add_socket as a quick fix ----
     function emitSnapshot(gpsData) {
       var socketData = {
-        socketID: socket.id,
+        socketID: id,
         time: gpsData.timestamp,
         latitude: gpsData.coords.latitude,
         longitude: gpsData.coords.longitude,
       };
 
-      socket.emit('update', socketData );
+      connection.emit('update', socketData );
     }
 
     function logError(error) {
@@ -224,7 +224,7 @@ export default class Map extends Component {
         
         </MapView.Animated>
 
-        { this.props.socket && this.props.settings ? this.renderFilterBar.call(this) : void 0 }
+        { this.props.socket.connection && this.props.settings ? this.renderFilterBar.call(this) : void 0 }
 
       </View>
     );
