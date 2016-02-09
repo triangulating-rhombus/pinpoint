@@ -181,8 +181,11 @@ var findUserTags = function (userID) {
 var visitStats = function(lat, lon, tag){
   var dayNames = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
 
+  console.log('about to resolve address for POST to /stats');
   return geocoder.reverse({ lat: lat, lon: lon })
     .then(function(loc) {
+      console.log('clicked on map location:', loc[0].formattedAddress);
+
       return model.Visits.findAll({ 
         where: { address: loc[0].formattedAddress },
         include: [ {
