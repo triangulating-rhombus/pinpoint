@@ -13,6 +13,7 @@ export const UPDATE_MARKERS = 'UPDATE_MARKERS';
 // Settings
 export const GET_SETTINGS = 'GET_SETTINGS';
 export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';
+export const CLEAR_SETTINGS = 'CLEAR_SETTINGS';
 
 // HotSpots
 export const TOGGLE_HOTSPOT = 'TOGGLE_HOTSPOT';
