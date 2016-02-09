@@ -98,7 +98,7 @@ var connectHandler = function(snapshot) {
         snapshot.userID = user.id;
         visitStarts[snapshot.socketID] = snapshot;
         currPositions[snapshot.socketID] = snapshot;
-        filterTags[snapshot.socketID] = 'Show All'; //default
+        filterTags[snapshot.socketID] = null; //will default to show all
         var everybodyExceptMe = _.extend({}, currPositions );
         delete everybodyExceptMe[snapshot.socketID];
 
@@ -128,21 +128,23 @@ var updateHandler = function(snapshot) {
     currPositions[snapshot.socketID] = snapshot;
     
     var senderSocketID = snapshot.socketID;
-    var filterTag = filterTags[snapshot.socketID];
+    var filterTag = (filterTags[snapshot.socketID] === null) ?
+      null :
+      filterTags[snapshot.socketID].toLowerCase();
     var filteredUsers = null;
 
-    if (filterTag !== 'Show All') {
+    if (filterTag) {
       filteredUsers = _.filter(currPositions, function(snapshot, socketID) {
         return _.contains(snapshot.tags, filterTag) && snapshot.socketID !== senderSocketID;
       });
-      serverSocket.emit('refreshEvent', filteredUsers);
     } else {
       filteredUsers = _.filter(currPositions, function(snapshot, socketID) {
         return snapshot.socketID !== senderSocketID;
       });
-      // Send current positions of all users back to clientSocket
-      serverSocket.emit('refreshEvent', filteredUsers); 
     }
+    console.log('sending back', filteredUsers.length, 'users');
+    // Send current positions of all users back to clientSocket
+    serverSocket.emit('refreshEvent', filteredUsers); 
   });
   
   var prevSnapshot = visitStarts[snapshot.socketID];
@@ -170,7 +172,7 @@ var updateHandler = function(snapshot) {
 
 var changeFilterTagHandler = function(data) {
   console.log('Received changeFilterTag event:', data);
-  filterTags[data.socketID] = data.filterTag;
+  filterTags[data.socketID] = data.filterTag === 'Show All' ? null : data.filterTag;
 }
 var disconnectHandler = function(snapshot) {
   delete currPositions[snapshot.userID];

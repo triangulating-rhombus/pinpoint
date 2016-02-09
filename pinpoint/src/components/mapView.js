@@ -158,9 +158,6 @@ export default class Map extends Component {
     this.props.toggleTag(tag);
     const { socket } = this.props;
     socket.emit('changeFilterTag', { socketID: socket.id, filterTag: tag });
-    let error = (error) => {
-      console.log('ERROR', error);
-    };
   }
 
   getFilterOptions(){

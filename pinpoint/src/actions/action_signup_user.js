@@ -14,7 +14,7 @@ function signupUser(userInfo) {
 // Async action creator, which uses thunk to handle the promise
 // This returns a FUNCTION, which thunk will automatically intercept
 // Thunk will run the function and dispatch the appropriate vanilla action creator(s)
-export default (user, navigator) => {
+export default (user, navigator, geoNavigator) => {
   return (dispatch) => {
     sendRequest('POST', '/signup', user)
     .then(
@@ -22,9 +22,8 @@ export default (user, navigator) => {
         const body = JSON.parse(response._bodyText);
         if (response.status === 200) {
           body.username = user.username;
-          dispatch(addSocket());
+          dispatch(addSocket(body.token, geoNavigator));
           dispatch(getSettings(body.token));
-          console.log('hi');
           navigator.immediatelyResetRouteStack([{ name: 'Settings' }]);
         }
         dispatch(signupUser(body));
