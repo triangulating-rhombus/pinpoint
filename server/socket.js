@@ -75,19 +75,19 @@ module.exports = function(server, includeFakeUsers) {
 
   serverSocket = SocketIO.listen(server);
   serverSocket.on('connection', function(clientSocket) {
-    clientSocket.on("connected", connectHandler);
-    clientSocket.on("update", updateHandler);
-    clientSocket.on("changeFilterTag", changeFilterTagHandler);
-    clientSocket.on("disconnected", disconnectHandler);
+    clientSocket.on('connected', connectHandler);
+    clientSocket.on('update', updateHandler);
+    clientSocket.on('changeFilterTag', changeFilterTagHandler);
+    clientSocket.on('disconnected', disconnectHandler);
   });
   return serverSocket;
 }
 
 var connectHandler = function(snapshot) {
-  console.log("Server Connected");
+  console.log('Client socket connected:', snapshot);
   // Snapshots usually just contain socketID and position/time
   // On connection, the snapshot also includes the user's JWT token to authenticate them
-  var username = JWT.decode(snapshot.token, "secret");
+  var username = JWT.decode(snapshot.token, 'secret');
   controller.findUser({ username: username })
   .then(function(user) {
     if (user) {
@@ -111,7 +111,6 @@ var connectHandler = function(snapshot) {
 };
 
 var updateHandler = function(snapshot) {
-  console.log("update called");
   // Ignore unauthenticated socketIDs
   if (!visitStarts[snapshot.socketID]) {
     console.log('Received update from unauthenticated socketID...');
@@ -119,6 +118,7 @@ var updateHandler = function(snapshot) {
     return;
   }
 
+  // console.log('Client socket updated:', snapshot);
   var userID = visitStarts[snapshot.socketID].userID;
   controller.findUserTags(userID)
   .then(function(tags) {
@@ -153,8 +153,8 @@ var updateHandler = function(snapshot) {
     [snapshot.latitude, snapshot.longitude]
   );
   var timeDiff = Utils.getTimeDifference(prevSnapshot.time, snapshot.time);
-  console.log("Test", distance);
-  console.log("time diff", timeDiff);
+  // console.log('Test', distance);
+  // console.log('time diff', timeDiff);
   // If user has left their last location
   if (distance >= ALLOWED_DISTANCE) {
     // Log visit to db if they had been there for at least MIN_VISIT_LENGTH seconds
@@ -171,11 +171,13 @@ var updateHandler = function(snapshot) {
 };
 
 var changeFilterTagHandler = function(data) {
-  console.log('Received changeFilterTag event:', data);
+  console.log('Client socket changed filter tag:', data);
   filterTags[data.socketID] = data.filterTag === 'Show All' ? null : data.filterTag;
 }
+
 var disconnectHandler = function(snapshot) {
-  delete currPositions[snapshot.userID];
-  delete visitStarts[snapshot.userID];
+  console.log('Client socket disconnected:', snapshot);
+  delete currPositions[snapshot.socketID];
+  delete visitStarts[snapshot.socketID];
   serverSocket.emit('refreshEvent', visitStarts);
 };
