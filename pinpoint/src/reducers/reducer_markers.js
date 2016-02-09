@@ -1,7 +1,5 @@
-import UpdatePins from '../actions/action_update_geolocation';
-import { UPDATE_GEO_LOCATION } from '../constants/actionTypes';
 import _ from 'underscore';
-
+import { UPDATE_MARKERS } from '../constants/actionTypes';
 
 import React, {
   PropTypes,
@@ -71,7 +69,7 @@ export default function(state = {}, action) {
 
 
   switch(action.type){
-    case UPDATE_GEO_LOCATION:
+    case UPDATE_MARKERS:
       return test(state, action.payload);
     default:
       return state

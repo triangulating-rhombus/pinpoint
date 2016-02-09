@@ -31,13 +31,13 @@ export default class Map extends Component {
   }
 
   animateMarkers() {
-    const { allUsers } = this.props;
+    const { markers } = this.props;
     
-    // console.log(_.map(allUsers, function(user, userKey) {
+    // console.log(_.map(markers, function(user, userKey) {
     //   return userKey + ':' + user.pastNewPins[0].latitude._value + ',';
     // }));
 
-    _.each(allUsers, (value, user) => {
+    _.each(markers, (value, user) => {
       if(value.pastNewPins.length < 2 || value.socketID){
         return;
       } else {
@@ -53,8 +53,8 @@ export default class Map extends Component {
   }
 
   renderMarkers() {
-    const { allUsers } = this.props;
-    return _.map(allUsers, (value, user) => {
+    const { markers } = this.props;
+    return _.map(markers, (value, user) => {
       const tags = value.tags.join(', ');
 
       return (
@@ -71,7 +71,7 @@ export default class Map extends Component {
 
   getRegion(){
     var socketId = this.props.socket.id;
-    var currentUser = this.props.allUsers[socketId];
+    var currentUser = this.props.markers[socketId];
 
     if(currentUser === undefined){
       return;
@@ -231,8 +231,8 @@ export default class Map extends Component {
 
         
         { this.props.hotSpotPins.length !== 0 ? this.renderHotSpots.call(this) : void 0 }
-        { Object.keys(this.props.allUsers).length !== 0 ? this.renderMarkers.call(this) : void 0 }
-        { Object.keys(this.props.allUsers).length !== 0 ? this.animateMarkers.call(this) : void 0 }
+        { Object.keys(this.props.markers).length !== 0 ? this.renderMarkers.call(this) : void 0 }
+        { Object.keys(this.props.markers).length !== 0 ? this.animateMarkers.call(this) : void 0 }
         
         </MapView.Animated>
 
