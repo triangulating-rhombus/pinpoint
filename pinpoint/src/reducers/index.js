@@ -7,10 +7,6 @@ import toggleHotspot from './reducer_toggle_hotspots';
 import hotSpotPins from './reducer_hotspot_data';
 import PoiReducer from './reducer_poi';
 
-// This will help us acheieve filtering on mapView
-import FilterBySelectedTagName from './reducer_filter_tag_name';
-
-
 const rootReducer = combineReducers({
   user: UserReducer,
   socket: SocketReducer,
@@ -19,9 +15,6 @@ const rootReducer = combineReducers({
   hotSpotVisibility: toggleHotspot,
   poi: PoiReducer,
   hotSpotPins: hotSpotPins,
-  // Store now knows what current Tag we are filtering by!
-  currentTagLabel: FilterBySelectedTagName,
-
 });
 
 export default rootReducer;

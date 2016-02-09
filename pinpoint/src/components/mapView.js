@@ -155,7 +155,6 @@ export default class Map extends Component {
   }
 
   setItem(tag){
-    this.props.toggleTag(tag);
     const { socket } = this.props;
     socket.emit('changeFilterTag', { socketID: socket.id, filterTag: tag });
 
