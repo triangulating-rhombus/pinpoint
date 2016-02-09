@@ -21,19 +21,26 @@ var serverSocket = null;
 //   value: snapshot (object with socketID, latitude, longitude, and time)
 var visitStarts = {};
 var currPositions = {};
-var fakeUsers = [];
+
+// Stores the current filter that each user wants to display
+//   key: socketID
+//   value: tag name (all lower-case)
+var filterTags = {};
 
 // ---- Fake users ----
 var tagPool = ['cats', 'dogs', 'horses']
+
+var fakeUsers = [];
 var generateRandomTags = function() {
-  var tagIndex = Math.floor(Math.random()*tagPool.length);
-  return [tagPool[tagIndex]];
+  return [Utils.getRandomElement(tagPool)];
 };
 
 var initializeFakeUsers = function() {
   for (var i = 0; i < NUM_FAKE_USERS; i++) {
-    var fakeUserSocketID = '_fakeUser' + i.toString();
-    var fakeUser = {socketID:fakeUserSocketID, tags: generateRandomTags()};
+    var fakeUser = {
+      socketID: '_fakeSocketID' + i.toString(),
+      tags: generateRandomTags()
+    };
     fakeUsers.push(fakeUser);
     currPositions[fakeUser.socketID] = {
       socketID: fakeUser.socketID,
@@ -70,6 +77,7 @@ module.exports = function(server, includeFakeUsers) {
   serverSocket.on('connection', function(clientSocket) {
     clientSocket.on("connected", connectHandler);
     clientSocket.on("update", updateHandler);
+    clientSocket.on("changeFilterTag", changeFilterTagHandler);
     clientSocket.on("disconnected", disconnectHandler);
   });
   return serverSocket;
@@ -90,12 +98,11 @@ var connectHandler = function(snapshot) {
         snapshot.userID = user.id;
         visitStarts[snapshot.socketID] = snapshot;
         currPositions[snapshot.socketID] = snapshot;
-
+        filterTags[snapshot.socketID] = null; //will default to show all
         var everybodyExceptMe = _.extend({}, currPositions );
         delete everybodyExceptMe[snapshot.socketID];
 
         serverSocket.emit('refreshEvent', everybodyExceptMe);
-        serverSocket.emit('foundAccount', currPositions[snapshot.socketID])
       });
     } else {
       serverSocket.emit('error', 'username not found');
@@ -119,27 +126,25 @@ var updateHandler = function(snapshot) {
     snapshot.tags = tags;
     snapshot.userID = userID;
     currPositions[snapshot.socketID] = snapshot;
-    //console.log("Current Tag Label:", snapshot.currentTagLabel);
-    if (snapshot.currentTagLabel !== 'Show All') {
-      var allUsersFilteredByTag = {};
-      _.each(currPositions, function(val, user){
-        if ( (val.tags.indexOf(snapshot.currentTagLabel) !== -1) && (snapshot.socketID !== user) ) {
-          
-          allUsersFilteredByTag[user] = val;
-        }
+    
+    var senderSocketID = snapshot.socketID;
+    var filterTag = (filterTags[snapshot.socketID] === null) ?
+      null :
+      filterTags[snapshot.socketID].toLowerCase();
+    var filteredUsers = null;
+
+    if (filterTag) {
+      filteredUsers = _.filter(currPositions, function(snapshot, socketID) {
+        return _.contains(snapshot.tags, filterTag) && snapshot.socketID !== senderSocketID;
       });
-      serverSocket.emit('refreshEvent', allUsersFilteredByTag);
     } else {
-
-      var everybodyExceptMe = _.extend({}, currPositions );
-      delete everybodyExceptMe[snapshot.socketID];
-
-      // Send current positions of all users back to clientSocket
-      serverSocket.emit('refreshEvent', everybodyExceptMe); 
+      filteredUsers = _.filter(currPositions, function(snapshot, socketID) {
+        return snapshot.socketID !== senderSocketID;
+      });
     }
-
-
-
+    // console.log('sending back', filteredUsers.length, 'users');
+    // Send current positions of all users back to clientSocket
+    serverSocket.emit('refreshEvent', filteredUsers); 
   });
   
   var prevSnapshot = visitStarts[snapshot.socketID];
@@ -165,6 +170,10 @@ var updateHandler = function(snapshot) {
   }
 };
 
+var changeFilterTagHandler = function(data) {
+  console.log('Received changeFilterTag event:', data);
+  filterTags[data.socketID] = data.filterTag === 'Show All' ? null : data.filterTag;
+}
 var disconnectHandler = function(snapshot) {
   delete currPositions[snapshot.userID];
   delete visitStarts[snapshot.userID];

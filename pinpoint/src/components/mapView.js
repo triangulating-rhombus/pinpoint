@@ -18,13 +18,10 @@ import MapView from 'react-native-maps';
 var ListPopover = require('react-native-list-overlay');
 
 import _ from 'underscore';
-import initSocketListeners from '../socket/listeners.js';
-import { initialGeoLocation, updateGeoLocation } from '../socket/emitters';
 
 var count = true;
 
 export default class Map extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -33,57 +30,16 @@ export default class Map extends Component {
     };
   }
 
-  componentDidUpdate(){
-    // If component had updated because socket is now connected to the server run this code. Modified after code refactor.
-    
-    
-    if(count && this.props.socket){
-      count = false;
-      this.setDefaults.call(this);
-    }
-  }
-
-  componentDidMount(){
-    if(this.props.socket){
-      this.setDefaults.call(this)
-    }
-  }
-
-  setDefaults(){
-
-    initSocketListeners(this.props.socket);
-    let properties = this.props;
-
-
-    let connect = (position) => {
-      initialGeoLocation(properties, position);
-    }
-
-    let error = (error) => {
-      console.log('ERROR', error);
-    };
-
-    let update = (position) => {
-      updateGeoLocation(this.props, position);
-    }
-
-    navigator.geolocation.getCurrentPosition(connect, error);
-
-    setInterval(function(){       
-      navigator.geolocation.getCurrentPosition(update, error)  
-    }, 5000); 
-  }
-
   animateMarkers() {
-    let allUsers = this.props.allUsers;
+    const { allUsers } = this.props;
     
     // console.log(_.map(allUsers, function(user, userKey) {
     //   return userKey + ':' + user.pastNewPins[0].latitude._value + ',';
     // }));
 
     _.each(allUsers, (value, user) => {
-      if(value.pastNewPins.length < 2 ){
-        return
+      if(value.pastNewPins.length < 2 || value.socketID){
+        return;
       } else {
         var oldLatLng = value.pastNewPins[0];
         var longitude = value.pastNewPins[1].longitude._value;
@@ -96,17 +52,10 @@ export default class Map extends Component {
 
   }
 
-  renderMarkers(){
-
-    let allUsers = this.props.allUsers;
-
+  renderMarkers() {
+    const { allUsers } = this.props;
     return _.map(allUsers, (value, user) => {
-
-      let tags = value.tags || '';
-      
-      if(tags){
-        tags = tags.join(', ');
-      }
+      const tags = value.tags.join(', ');
 
       return (
         <MapView.Marker.Animated
@@ -207,28 +156,22 @@ export default class Map extends Component {
 
   setItem(tag){
     this.props.toggleTag(tag);
-    let update = (position) => {
-      updateGeoLocation(this.props, position);
-    };
-
-    let error = (error) => {
-      console.log('ERROR', error);
-    };
-    
-    navigator.geolocation.getCurrentPosition(update, error);  
-
+    const { socket } = this.props;
+    socket.emit('changeFilterTag', { socketID: socket.id, filterTag: tag });
   }
 
-  renderPins(){
-    var obj = {
+  getFilterOptions(){
+    var filterOptions = {
       ALLTAGS: "Show All"
     };
-    var meTags = this.props.me.tags;
-    meTags.forEach(function(val){
-      obj[val] = val;
+    const { tag1, tag2, tag3 } = this.props.settings;
+    _.forEach([ tag1, tag2, tag3 ], function(tag) {
+      if (tag) {
+        filterOptions[tag] = tag;
+      }
     });
 
-    return obj;
+    return filterOptions;
   }
 
   renderFilterBar(){
@@ -238,7 +181,7 @@ export default class Map extends Component {
           <Text style={styles.text}>Filter</Text>
         </TouchableHighlight>
         <ListPopover
-          list={this.renderPins.call(this)}
+          list={this.getFilterOptions.call(this)}
           isVisible={this.state.isVisible}
           onClick={this.setItem.bind(this)}
           onClose={this.closePopover.bind(this)}
@@ -274,7 +217,7 @@ export default class Map extends Component {
         
         </MapView.Animated>
 
-        { this.props.socket && this.props.me ? this.renderFilterBar.call(this) : void 0 }
+        { this.props.socket && this.props.settings ? this.renderFilterBar.call(this) : void 0 }
 
       </View>
     );

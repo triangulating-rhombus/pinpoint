@@ -16,3 +16,8 @@ exports.getTimeDifference = function(time1, time2){
 exports.getRandomNumberWithinRange = function(number, range) {
   return number + (Math.random() * range * 2) - range;
 };
+
+exports.getRandomElement = function(arr) {
+  var randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}

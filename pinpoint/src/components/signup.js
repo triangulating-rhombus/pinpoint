@@ -16,7 +16,8 @@ export default class Signup extends Component {
     const { username, password } = this.state;
     this.props.signupUser(
       { username, password },
-      this.props.navigator
+      this.props.navigator,
+      navigator
     );
   }
 
