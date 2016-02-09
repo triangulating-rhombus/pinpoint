@@ -33,10 +33,10 @@ export default class Signup extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-
-
+       <Image style={styles.backgroundImage} source={{uri:"http://i.imgur.com/1fyRRNK.jpg"}} resizeMode='cover'>
         <Image style={styles.logo} source={logo} resizeMode='contain'/>
+        <View style={styles.textWrapper}>
+        <View style={styles.border}>
         <TextInput 
           style={styles.inputStyle} 
           value={this.state.username}
@@ -44,8 +44,8 @@ export default class Signup extends Component {
           placeholderTextColor="white"
           placeholder="username" 
         />
-
-       
+        </View>
+        <View style={styles.border}>
         <TextInput 
           style={styles.inputStyle} 
           value={this.state.password}
@@ -54,13 +54,14 @@ export default class Signup extends Component {
           placeholderTextColor="white"
           placeholder="password"
         />
-
+        </View>
         <Text style={styles.formLabel}>{this.state.errorMessage}</Text>
         <Button text="Signup" clickAction={this.onSubmit.bind(this)} />
 
         <Button text="Back to Login" clickAction={this.backToLogin.bind(this)} />
         <Text style={styles.errorMessage}>{this.showError.call(this)}</Text>
       </View>
+      </Image>
     );
   }
 }

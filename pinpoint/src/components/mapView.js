@@ -19,15 +19,57 @@ var ListPopover = require('react-native-list-overlay');
 
 import _ from 'underscore';
 
+
 var count = true;
 
 export default class Map extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
       isVisible: false,
-      radius: 300
     };
+  }
+
+  componentDidUpdate(){
+    // If component had updated because socket is now connected to the server run this code. Modified after code refactor.
+    
+    
+    if(count && this.props.socket){
+      count = false;
+      this.setDefaults.call(this);
+    }
+  }
+
+  componentDidMount(){
+    if(this.props.socket){
+      this.setDefaults.call(this)
+    }
+  }
+
+  setDefaults(){
+
+    initSocketListeners(this.props.socket);
+    let properties = this.props;
+
+
+    let connect = (position) => {
+      initialGeoLocation(properties, position);
+    }
+
+    let error = (error) => {
+      console.log('ERROR', error);
+    };
+
+    let update = (position) => {
+      updateGeoLocation(this.props, position);
+    }
+
+    navigator.geolocation.getCurrentPosition(connect, error);
+
+    setInterval(function(){       
+      navigator.geolocation.getCurrentPosition(update, error)  
+    }, 5000); 
   }
 
   animateMarkers() {
@@ -41,17 +83,16 @@ export default class Map extends Component {
           latitude: value.pastNewPins[1].latitude._value,
           longitude: value.pastNewPins[1].longitude._value
         };
-
         oldPosition.timing(newPosition).start();       
       }
     }); 
-
   }
 
   renderMarkers() {
     const { markers } = this.props;
     return _.map(markers, (value, socketID) => {
       const tags = value.tags.join(', ');
+  
       return (
         <MapView.Marker.Animated
           image={image}
@@ -76,49 +117,16 @@ export default class Map extends Component {
     }
   }
 
-  adjustMapScale(data){
-    var lat = data.latitudeDelta;
-
-    if(lat > 2){
-      radius = 100000;
-      console.log('I at n > 2');
-    }
-    if(lat > 1 && lat < 2){
-      radius = 3000;
-      console.log('I at 1 - 2');
-    }
-    if( lat > .1 && lat < 1) {
-      console.log("I at .1 - 1");
-      radius = 1000;
-    }
-    if(lat > 0.04 && lat < .1){
-      console.log('I at .04 - .1');
-      radius = 10000;
-    } 
-    if(lat < 0.04){
-      console.log('I at .04 > n');
-      radius=200;
-    }
-
-    // console.log('latitudeDelta', data.latitudeDelta);
-    // console.log('Radius', radius);
-    this.setState({radius:radius})
-  }
-
   renderHotSpots(){
-    return this.props.hotSpotPins.map((hotSpots) => {
-    
-      return (
-        <MapView.Circle 
-          center={hotSpots}
-          radius={40}
-          strokeColor='rgba(200, 0, 0, 0.5)'
-          fillColor='rgba(200, 0, 0, 0.5)'
-        />
-      );
-    });
+    return (
+      <MapView.Circle 
+        center={ {latitude:37.331177, longitude:-122.031641} }
+        radius={300}
+        strokeColor='rgba(200, 0, 0, 0.5)'
+        fillColor='rgba(200, 0, 0, 0.5)'
+      /> 
+    );
   }
-
 
   onPress(e) {
     // If you click on a marker (and possibly some other cases), Map doesn't return position data
@@ -164,24 +172,21 @@ export default class Map extends Component {
     function logError(error) {
       console.log('Navigator \'getCurrentPosition\' error:', error);
     };
-
     // Sends  snapshot to server
     navigator.geolocation.getCurrentPosition(gpsData => emitSnapshot(gpsData), logError);
     // ---- End copied code from action_add_socket ----
   }
 
-  getFilterOptions(){
-    var filterOptions = {
+  renderPins(){
+    var obj = {
       ALLTAGS: "Show All"
     };
-    const { tag1, tag2, tag3 } = this.props.settings;
-    _.forEach([ tag1, tag2, tag3 ], function(tag) {
-      if (tag) {
-        filterOptions[tag] = tag;
-      }
+    var meTags = this.props.me.tags;
+    meTags.forEach(function(val){
+      obj[val] = val;
     });
 
-    return filterOptions;
+    return obj;
   }
 
   renderFilterBar(){
@@ -191,30 +196,21 @@ export default class Map extends Component {
           <Text style={styles.text}>Filter</Text>
         </TouchableHighlight>
         <ListPopover
-          list={this.getFilterOptions.call(this)}
+          list={this.renderPins.call(this)}
           isVisible={this.state.isVisible}
           onClick={this.setItem.bind(this)}
-          onClose={this.closePopover.bind(this)}
-        />
+          onClose={this.closePopover.bind(this)}/>
       </View>
     );
   }
 
   render() {
-     //<MapView.Circle 
-          // center={{longitude: -122.026484, latitude: 37.330041}}
-          //radius={this.state.radius}
-          //strokeColor='rgba(200, 0, 0, 0.5)'
-          //fillColor='rgba(200, 0, 0, 0.5)'
-        ///>
- 
     return (
       <View style={styles.container}>
         <MapView.Animated
           style={styles.map}
           showsUserLocation={true}
           followUserLocation={true}
-          onRegionChangeComplete={this.adjustMapScale.bind(this)}
           onPress={(e) => this.onPress(e)}
         >
 
@@ -225,6 +221,7 @@ export default class Map extends Component {
         </MapView.Animated>
 
         { this.props.socket.connection && this.props.settings ? this.renderFilterBar.call(this) : void 0 }
+
 
       </View>
     );
