@@ -10,13 +10,13 @@ function createAction(socket) {
   }
 }
 
-export default function(token, geoNavigator, filterTag) {
+export default function(token, geoNavigator) {
   return (dispatch) => {
     const socket = createSocketConnection();
 
     // Add socket listeners and emitters
     addListeners(dispatch, socket, (socketID) => {
-      addEmitters(socket, token, geoNavigator, filterTag, socketID);
+      addEmitters(socket, token, geoNavigator, socketID);
     });
     // emitters will be set up in MapView, by attaching them to MapView's own navigator
   };
@@ -39,20 +39,18 @@ function addListeners(dispatch, socket, callback) {
   });
 }
 
-function addEmitters(socket, token, geoNavigator, filterTag, socketID) {
+function addEmitters(socket, token, geoNavigator, socketID) {
   function emitSnapshot(gpsData, isInitialSnapshot) {
     var socketData = {
       socketID,
       time: gpsData.timestamp,
       latitude: gpsData.coords.latitude,
       longitude: gpsData.coords.longitude,
-      currentTagLabel: filterTag
     };
 
     if (isInitialSnapshot) {
       socketData.token = token;
       socket.emit('connected', socketData);
-      console.log('emitted connected with data:', socketData);
     } else {
       socket.emit('update', socketData );
     }
@@ -66,7 +64,7 @@ function addEmitters(socket, token, geoNavigator, filterTag, socketID) {
   navigator.geolocation.getCurrentPosition(gpsData => emitSnapshot(gpsData, true), logError);
 
   // Sends periodic snapshots to server
-  setInterval(function() {       
+  setInterval(function() {
     navigator.geolocation.getCurrentPosition(gpsData => emitSnapshot(gpsData, false), logError)  
   }, 5000);
 }

@@ -21,11 +21,16 @@ var serverSocket = null;
 //   value: snapshot (object with socketID, latitude, longitude, and time)
 var visitStarts = {};
 var currPositions = {};
-var fakeUsers = [];
+
+// Stores the current filter that each user wants to display
+//   key: socketID
+//   value: tag name (all lower-case)
+var filterTags = {};
 
 // ---- Fake users ----
 var tagPool = ['cats', 'dogs', 'horses']
 
+var fakeUsers = [];
 var generateRandomTags = function() {
   return [Utils.getRandomElement(tagPool)];
 };
@@ -72,6 +77,7 @@ module.exports = function(server, includeFakeUsers) {
   serverSocket.on('connection', function(clientSocket) {
     clientSocket.on("connected", connectHandler);
     clientSocket.on("update", updateHandler);
+    clientSocket.on("changeFilterTag", changeFilterTagHandler);
     clientSocket.on("disconnected", disconnectHandler);
   });
   return serverSocket;
@@ -92,7 +98,7 @@ var connectHandler = function(snapshot) {
         snapshot.userID = user.id;
         visitStarts[snapshot.socketID] = snapshot;
         currPositions[snapshot.socketID] = snapshot;
-
+        filterTags[snapshot.socketID] = 'Show All'; //default
         var everybodyExceptMe = _.extend({}, currPositions );
         delete everybodyExceptMe[snapshot.socketID];
 
@@ -120,11 +126,9 @@ var updateHandler = function(snapshot) {
     snapshot.tags = tags;
     snapshot.userID = userID;
     currPositions[snapshot.socketID] = snapshot;
-
-    console.log("Current Tag Label:", snapshot.currentTagLabel);
     
     var senderSocketID = snapshot.socketID;
-    var filterTag = snapshot.currentTagLabel;
+    var filterTag = filterTags[snapshot.socketID];
     var filteredUsers = null;
 
     if (filterTag !== 'Show All') {
@@ -139,9 +143,6 @@ var updateHandler = function(snapshot) {
       // Send current positions of all users back to clientSocket
       serverSocket.emit('refreshEvent', filteredUsers); 
     }
-
-
-
   });
   
   var prevSnapshot = visitStarts[snapshot.socketID];
@@ -167,6 +168,10 @@ var updateHandler = function(snapshot) {
   }
 };
 
+var changeFilterTagHandler = function(data) {
+  console.log('Received changeFilterTag event:', data);
+  filterTags[data.socketID] = data.filterTag;
+}
 var disconnectHandler = function(snapshot) {
   delete currPositions[snapshot.userID];
   delete visitStarts[snapshot.userID];

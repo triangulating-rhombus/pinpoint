@@ -156,16 +156,11 @@ export default class Map extends Component {
 
   setItem(tag){
     this.props.toggleTag(tag);
-    let update = (position) => {
-      updateGeoLocation(this.props, position);
-    };
-
+    const { socket } = this.props;
+    socket.emit('changeFilterTag', { socketID: socket.id, filterTag: tag });
     let error = (error) => {
       console.log('ERROR', error);
     };
-    
-    navigator.geolocation.getCurrentPosition(update, error);  
-
   }
 
   getFilterOptions(){
