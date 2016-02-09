@@ -28,7 +28,7 @@ var currPositions = {};
 var filterTags = {};
 
 // ---- Fake users ----
-var tagPool = ['cats', 'dogs', 'horses']
+var tagPool = ['cats', 'dogs', 'horses'];
 
 var fakeUsers = [];
 var generateRandomTags = function() {

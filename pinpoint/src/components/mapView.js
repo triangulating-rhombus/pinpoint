@@ -31,56 +31,47 @@ export default class Map extends Component {
   }
 
   animateMarkers() {
-    const { allUsers } = this.props;
-    
-    // console.log(_.map(allUsers, function(user, userKey) {
-    //   return userKey + ':' + user.pastNewPins[0].latitude._value + ',';
-    // }));
+    const { markers } = this.props;
 
-    _.each(allUsers, (value, user) => {
-      if(value.pastNewPins.length < 2 || value.socketID){
-        return;
-      } else {
-        var oldLatLng = value.pastNewPins[0];
-        var longitude = value.pastNewPins[1].longitude._value;
-        var latitude = value.pastNewPins[1].latitude._value;
+    // Animate each marker, if it has a previous and current position
+    _.each(markers, (value) => {
+      if (value.pastNewPins.length === 2) {
+        var oldPosition = value.pastNewPins[0];
+        var newPosition = {
+          latitude: value.pastNewPins[1].latitude._value,
+          longitude: value.pastNewPins[1].longitude._value
+        };
 
-        // this should render each user's lat long on every prop update 
-        oldLatLng.timing({latitude, longitude}).start();       
+        oldPosition.timing(newPosition).start();       
       }
     }); 
 
   }
 
   renderMarkers() {
-    const { allUsers } = this.props;
-    return _.map(allUsers, (value, user) => {
+    const { markers } = this.props;
+    return _.map(markers, (value, socketID) => {
       const tags = value.tags.join(', ');
-
       return (
         <MapView.Marker.Animated
           image={image}
           title={tags}
-          key={user}
+          key={socketID}
           coordinate={value.pastNewPins[0]}
         />
       );
-
     });
   } 
 
   getRegion(){
-    var socketId = this.props.socket.id;
-    var currentUser = this.props.allUsers[socketId];
+    var socketID = this.props.socket.id;
+    var currentUser = this.props.markers[socketID];
 
-    if(currentUser === undefined){
-      return;
-    } else if(currentUser.pastNewPins.length === 2){
-
-      var longitude = currentUser.pastNewPins[1].longitude._value;
-      var latitude = currentUser.pastNewPins[1].latitude._value;
-      var newRegion = {latitude, longitude };
-      return newRegion;
+    if (currentUser && currentUser.pastNewPins.length === 2){
+      return {
+          latitude: currentUser.pastNewPins[1].latitude._value,
+          longitude: currentUser.pastNewPins[1].longitude._value
+        };
       //return currentUser.pastNewPins[0].setValue(newRegion);
     }
   }
@@ -155,9 +146,28 @@ export default class Map extends Component {
   }
 
   setItem(tag){
-    this.props.toggleTag(tag);
     const { socket } = this.props;
     socket.emit('changeFilterTag', { socketID: socket.id, filterTag: tag });
+
+    // ---- Copied from action_add_socket as a quick fix ----
+    function emitSnapshot(gpsData) {
+      var socketData = {
+        socketID: socket.id,
+        time: gpsData.timestamp,
+        latitude: gpsData.coords.latitude,
+        longitude: gpsData.coords.longitude,
+      };
+
+      socket.emit('update', socketData );
+    }
+
+    function logError(error) {
+      console.log('Navigator \'getCurrentPosition\' error:', error);
+    };
+
+    // Sends  snapshot to server
+    navigator.geolocation.getCurrentPosition(gpsData => emitSnapshot(gpsData), logError);
+    // ---- End copied code from action_add_socket ----
   }
 
   getFilterOptions(){
@@ -191,7 +201,6 @@ export default class Map extends Component {
   }
 
   render() {
-
      //<MapView.Circle 
           // center={{longitude: -122.026484, latitude: 37.330041}}
           //radius={this.state.radius}
@@ -209,11 +218,9 @@ export default class Map extends Component {
           onPress={(e) => this.onPress(e)}
         >
 
-
-        
         { this.props.hotSpotPins.length !== 0 ? this.renderHotSpots.call(this) : void 0 }
-        { Object.keys(this.props.allUsers).length !== 0 ? this.renderMarkers.call(this) : void 0 }
-        { Object.keys(this.props.allUsers).length !== 0 ? this.animateMarkers.call(this) : void 0 }
+        { Object.keys(this.props.markers).length !== 0 ? this.renderMarkers.call(this) : void 0 }
+        { Object.keys(this.props.markers).length !== 0 ? this.animateMarkers.call(this) : void 0 }
         
         </MapView.Animated>
 
@@ -222,7 +229,6 @@ export default class Map extends Component {
       </View>
     );
   }
-
 };
 
 var styles = StyleSheet.create({

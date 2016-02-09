@@ -42,7 +42,7 @@ export default function submitSettings(settings, token, successCallback, store, 
 
 
     if(store.hotSpotVisibility){
-      let tag = store.me.tags[0];
+      let tag = settings.tag1;
       getHotspots(tag)
       .then(
         response => {

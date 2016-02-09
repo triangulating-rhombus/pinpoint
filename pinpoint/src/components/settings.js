@@ -23,7 +23,11 @@ export default class Settings extends Component {
     this.setState({ justSubmitted: true });
     setTimeout(() => {
       this.setState({ justSubmitted: false });
-      this.props.navigator.immediatelyResetRouteStack([{ name: 'TabBar' }]);
+      if (this.props.changeTab) {
+        this.props.changeTab('mapTab');
+      } else {
+        this.props.navigator.immediatelyResetRouteStack([{ name: 'TabBar' }]);
+      }
     }, 1000);
   }
 

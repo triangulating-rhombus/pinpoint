@@ -1,7 +1,7 @@
 import { ADD_SOCKET } from '../constants/actionTypes';
 import { createSocketConnection } from './utils';
 
-import updateAction from './action_update_geolocation';
+import updateAction from './action_update_markers';
 
 function createAction(socket) {
   return {
