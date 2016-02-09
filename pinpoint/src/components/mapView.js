@@ -210,7 +210,6 @@ export default class Map extends Component {
   }
 
   render() {
-
      //<MapView.Circle 
           // center={{longitude: -122.026484, latitude: 37.330041}}
           //radius={this.state.radius}
@@ -228,8 +227,6 @@ export default class Map extends Component {
           onPress={(e) => this.onPress(e)}
         >
 
-
-        
         { this.props.hotSpotPins.length !== 0 ? this.renderHotSpots.call(this) : void 0 }
         { Object.keys(this.props.markers).length !== 0 ? this.renderMarkers.call(this) : void 0 }
         { Object.keys(this.props.markers).length !== 0 ? this.animateMarkers.call(this) : void 0 }
@@ -241,7 +238,6 @@ export default class Map extends Component {
       </View>
     );
   }
-
 };
 
 var styles = StyleSheet.create({

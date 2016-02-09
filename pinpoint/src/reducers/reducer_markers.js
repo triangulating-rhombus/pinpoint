@@ -10,68 +10,47 @@ import React, {
   Platform, 
 } from 'react-native';
 
-
-
 // const INITIAL_STATE = {
 //   socketID : {
 //     pastNewPins: [{latitude:0, longitude:0, tags:[]},{latitude:0, longitude:0}]
-//     tags:['candy','dogs','women']
+//     tags: ['candy','dogs','women']
 //   }
 // }
 
+function generateNewState(oldState, currSnapshots) {
+  var results = {};
+
+  _.each(currSnapshots, (snapshot, socketID) => {
+
+    var oldDataCopy = [];
+    if (oldState[socketID]) {
+      oldDataCopy = oldState[socketID].pastNewPins.concat([]);   
+      if(oldDataCopy.length > 1) {
+        oldDataCopy.shift();
+      }
+    }
+
+    const { latitude, longitude, tags } = snapshot;
+    const newPins = new Animated.Region({ latitude, longitude });
+
+    oldDataCopy.push(newPins);
+    
+    const data = {
+      pastNewPins: oldDataCopy,
+      tags
+    };
+
+    results[socketID] = data;
+  });
+
+  return results;
+}
 
 export default function(state = {}, action) {
-
-  var test = function(oldstate, data){
-
-    var obj = {};
-
-    _.each(data, (val, user) => {
-
-      // [{},{}]  Same spot in memory
-      if(oldstate[user]){
-        var oldDataNewArray = oldstate[user].pastNewPins.concat([])      
-        
-        // Different spot in memory. Now a new Array. Pop Off first index
-        if(oldDataNewArray.length > 1){
-          oldDataNewArray.shift();
-        }
-
-      } else {
-        var oldDataNewArray = [];
-      }
-
-
-      let longitude = val.longitude;
-      let latitude = val.latitude;
-
-      let newPins = new Animated.Region({
-        latitude: latitude,
-        longitude: longitude,
-      })
-      let tags = val.tags;
-
-      // Push New Index
-      oldDataNewArray.push(newPins);
-      
-      
-      let data = {
-        pastNewPins:oldDataNewArray,
-        tags:tags
-      }
-
-      obj[user] = data;
-    });
-
-    return obj;
-  };
-
-
-
-  switch(action.type){
+  switch(action.type) {
     case UPDATE_MARKERS:
-      return test(state, action.payload);
+      return generateNewState(state, action.payload);
     default:
-      return state
+      return state;
   }
 }
