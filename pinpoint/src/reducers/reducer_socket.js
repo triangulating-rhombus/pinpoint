@@ -11,6 +11,8 @@ export default function(state=INITIAL_STATE, action){
     case ADD_SOCKET:
       return action.payload;
     case REMOVE_SOCKET:
+      clearInterval(state.updater); // stop sending periodic updates through this connection
+      state.connection.emit('disconnect', { socketID: state.id }); // end connection with server
       return INITIAL_STATE;
     default:
       return state;

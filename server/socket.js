@@ -78,7 +78,7 @@ module.exports = function(server, includeFakeUsers) {
     clientSocket.on("connected", connectHandler);
     clientSocket.on("update", updateHandler);
     clientSocket.on("changeFilterTag", changeFilterTagHandler);
-    clientSocket.on("disconnected", disconnectHandler);
+    clientSocket.on("disconnect", disconnectHandler);
   });
   return serverSocket;
 }
@@ -174,8 +174,9 @@ var changeFilterTagHandler = function(data) {
   console.log('Received changeFilterTag event:', data);
   filterTags[data.socketID] = data.filterTag === 'Show All' ? null : data.filterTag;
 }
+
 var disconnectHandler = function(snapshot) {
-  delete currPositions[snapshot.userID];
-  delete visitStarts[snapshot.userID];
+  delete currPositions[snapshot.socketID];
+  delete visitStarts[snapshot.socketID];
   serverSocket.emit('refreshEvent', visitStarts);
 };
