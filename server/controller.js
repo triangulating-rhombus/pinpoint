@@ -132,6 +132,9 @@ return Promise.map(tags, function(tag) {
 
 
 var addTagsVisits = function(userID, visitID){
+
+  console.log("addTagsVisits ", userID, " ", visitID);
+
   return model.Users.findAll({ 
     where: {
       id: userID
@@ -140,6 +143,7 @@ var addTagsVisits = function(userID, visitID){
   }).then(function(tags) {
     console.log(tags);
     var tagIDs = tags[0].Tags.map(function(obj){return obj.dataValues.id});
+    console.log(tagIDs);
 
   return Promise.map(tagIDs, function(tag) {
       // Promise.map awaits for returned promises as well.
@@ -151,6 +155,7 @@ var addTagsVisits = function(userID, visitID){
 }
 
 var addTagsUsers = function(tags, userID) {
+  console.log("addTagsUsers ", tags, userID);
   model.tags_users.destroy({
     where: { user_id: userID }
   });
