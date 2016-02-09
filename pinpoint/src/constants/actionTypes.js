@@ -7,6 +7,7 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 
 // Sockets
 export const ADD_SOCKET = 'ADD_SOCKET';
+export const REMOVE_SOCKET = 'REMOVE_SOCKET';
 export const UPDATE_MARKERS = 'UPDATE_MARKERS';
 
 // Settings
