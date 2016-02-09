@@ -1,4 +1,4 @@
-import React, { Component, View, Text, TextInput } from 'react-native';
+import React, { Component, View, Text, TextInput, Image } from 'react-native';
 import styles from '../styles/styles';
 import Button from "./button.js";
 
@@ -27,8 +27,7 @@ export default class Login extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-
+      <Image style={styles.container} source={{uri:'http://images7.alphacoders.com/361/361917.jpg'}} >
         <Text style={styles.formLabel}>Username</Text>
         <TextInput 
           style={styles.inputStyle} 
@@ -51,7 +50,7 @@ export default class Login extends Component {
         <Button text="Signup" clickAction={() => this.redirectTo('Signup') } />
 
         <Text>{this.showError.call(this)}</Text>
-      </View>
+      </Image>
     );
   }
 }

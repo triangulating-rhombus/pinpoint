@@ -4,6 +4,7 @@ import SocketReducer from './reducer_socket';
 import SettingsReducer from './reducer_settings';
 import allUsers from './reducer_updatePins';
 import toggleHotspot from './reducer_toggle_hotspots';
+import hotSpotPins from './reducer_hotspot_data';
 import PoiReducer from './reducer_poi';
 import AccountSetupReducer from './reducer_account_setup';
 
@@ -18,7 +19,7 @@ const rootReducer = combineReducers({
   allUsers: allUsers,
   hotSpotVisibility: toggleHotspot,
   poi: PoiReducer,
-
+  hotSpotPins: hotSpotPins,
   // Store now knows what current Tag we are filtering by!
   currentTagLabel: FilterBySelectedTagName,
   me: AccountSetupReducer

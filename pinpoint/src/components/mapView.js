@@ -29,6 +29,7 @@ export default class Map extends Component {
     super(props);
     this.state = {
       isVisible: false,
+      radius: 300
     };
   }
 
@@ -135,16 +136,49 @@ export default class Map extends Component {
     }
   }
 
-  renderHotSpots(){
-    return (
-      <MapView.Circle 
-        center={ {latitude:37.331177, longitude:-122.031641} }
-        radius={300}
-        strokeColor='rgba(200, 0, 0, 0.5)'
-        fillColor='rgba(200, 0, 0, 0.5)'
-      /> 
-    );
+  adjustMapScale(data){
+    var lat = data.latitudeDelta;
+
+    if(lat > 2){
+      radius = 100000;
+      console.log('I at n > 2');
+    }
+    if(lat > 1 && lat < 2){
+      radius = 3000;
+      console.log('I at 1 - 2');
+    }
+    if( lat > .1 && lat < 1) {
+      console.log("I at .1 - 1");
+      radius = 1000;
+    }
+    if(lat > 0.04 && lat < .1){
+      console.log('I at .04 - .1');
+      radius = 10000;
+    } 
+    if(lat < 0.04){
+      console.log('I at .04 > n');
+      radius=200;
+    }
+
+    // console.log('latitudeDelta', data.latitudeDelta);
+    // console.log('Radius', radius);
+    this.setState({radius:radius})
   }
+
+  renderHotSpots(){
+    return this.props.hotSpotPins.map((hotSpots) => {
+    
+      return (
+        <MapView.Circle 
+          center={hotSpots}
+          radius={40}
+          strokeColor='rgba(200, 0, 0, 0.5)'
+          fillColor='rgba(200, 0, 0, 0.5)'
+        />
+      );
+    });
+  }
+
 
   onPress(e) {
     // If you click on a marker (and possibly some other cases), Map doesn't return position data
@@ -207,24 +241,37 @@ export default class Map extends Component {
           list={this.renderPins.call(this)}
           isVisible={this.state.isVisible}
           onClick={this.setItem.bind(this)}
-          onClose={this.closePopover.bind(this)}/>
+          onClose={this.closePopover.bind(this)}
+        />
       </View>
     );
   }
 
   render() {
+
+     //<MapView.Circle 
+          // center={{longitude: -122.026484, latitude: 37.330041}}
+          //radius={this.state.radius}
+          //strokeColor='rgba(200, 0, 0, 0.5)'
+          //fillColor='rgba(200, 0, 0, 0.5)'
+        ///>
+ 
     return (
       <View style={styles.container}>
         <MapView.Animated
           style={styles.map}
           showsUserLocation={true}
           followUserLocation={true}
+          onRegionChangeComplete={this.adjustMapScale.bind(this)}
           onPress={(e) => this.onPress(e)}
         >
-        { this.props.hotSpotVisibility ? this.renderHotSpots.call(this) : void 0 }
+
+
+        
+        { this.props.hotSpotPins.length !== 0 ? this.renderHotSpots.call(this) : void 0 }
         { Object.keys(this.props.allUsers).length !== 0 ? this.renderMarkers.call(this) : void 0 }
         { Object.keys(this.props.allUsers).length !== 0 ? this.animateMarkers.call(this) : void 0 }
-
+        
         </MapView.Animated>
 
         { this.props.socket && this.props.me ? this.renderFilterBar.call(this) : void 0 }

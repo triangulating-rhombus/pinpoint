@@ -38,7 +38,9 @@ export default class Settings extends Component {
     this.props.updateSettings(
       settingsToSend,
       this.props.user.token,
-      () => this.temporarilyShowSuccessMessage()
+      () => this.temporarilyShowSuccessMessage(),
+      this.props,
+      this.props.navigator 
     );
   }
 
@@ -82,7 +84,7 @@ export default class Settings extends Component {
         <Switch
           onValueChange={(value) => this.props.toggleHotspot() }
           style={{marginBottom:10}}
-          value={this.state.renderHotspot}
+          value={this.props.hotSpotVisibility}
         />
 
         <Button text="Update settings" clickAction={this.onSubmit.bind(this)} />
