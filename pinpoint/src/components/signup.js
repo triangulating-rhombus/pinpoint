@@ -1,6 +1,8 @@
-import React, { Component, View, Text, TextInput } from 'react-native';
+import React, { Component, View, Image, Text, TextInput } from 'react-native';
 import styles from '../styles/styles';
 import Button from "./button.js";
+import logo from '../assets/images/pinpointlogo.png'
+
 
 export default class Signup extends Component {
   constructor(props) {
@@ -33,28 +35,31 @@ export default class Signup extends Component {
     return (
       <View style={styles.container}>
 
-        <Text style={styles.formLabel}>Username</Text>
+
+        <Image style={styles.logo} source={logo} resizeMode='contain'/>
         <TextInput 
           style={styles.inputStyle} 
           value={this.state.username}
           onChangeText={ username => this.setState({ username }) }
-          placeholder="Enter your username" 
+          placeholderTextColor="white"
+          placeholder="username" 
         />
 
-        <Text style={styles.formLabel}>Password:</Text>
+       
         <TextInput 
           style={styles.inputStyle} 
           value={this.state.password}
           secureTextEntry={true}
           onChangeText={ password => this.setState({ password }) }  
-          placeholder="Enter your password"
+          placeholderTextColor="white"
+          placeholder="password"
         />
 
         <Text style={styles.formLabel}>{this.state.errorMessage}</Text>
         <Button text="Signup" clickAction={this.onSubmit.bind(this)} />
 
-        <Text>{this.showError.call(this)}</Text>
         <Button text="Back to Login" clickAction={this.backToLogin.bind(this)} />
+        <Text style={styles.errorMessage}>{this.showError.call(this)}</Text>
       </View>
     );
   }

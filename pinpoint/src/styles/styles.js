@@ -8,34 +8,49 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center', // vertical align
     alignItems: 'center', // horizontal align
-    backgroundColor: 'white'
+    backgroundColor: '#222'
   },
+  logo:{
+    width:150,
+    height:150
+  },
+
   inputStyle: {
     height: 40,
-    padding: 5,
-    borderRadius: 5,
-    borderColor: 'gray',
+    padding: 10,
     alignSelf: 'center',
-    marginBottom: 10,
-    borderWidth: 1,
-    width: 300
+    marginBottom: 5,
+    width: 300,
+    color: 'white',
+    borderTopColor: '#fff',
+    borderWidth:1,
+    borderTopWidth:1,
   },
   formLabel: {
-    fontSize: 20
+    fontSize: 20,
+    color:'white',
+    marginBottom:5
   },
   buttonLabel: {
     marginTop: 40,
-    fontSize: 25
+    fontSize: 25,
+    color:'white',
+    opacity:.9
   },
   button: {
-    borderColor: '#222',
-    borderRadius: 10,
-    borderWidth: 1,
-    padding: 5,
-    backgroundColor: '#ccc'
+    padding:12,
+    backgroundColor: '#00B0F2',
+    flexWrap:'wrap',
+    alignSelf:'center',
+    width:500,
+    height:50,
+    marginBottom:10
   },
   buttonText: {
-    fontSize: 20
+    fontSize: 20,
+    alignSelf:'center',
+    color:'white',
+    opacity:.9
   },
   map: {
     flex: 1,
@@ -45,5 +60,9 @@ export default StyleSheet.create({
   success: {
     marginTop: 10,
     backgroundColor: '#dff0d8'
+  },
+  errorMessage: {
+    marginTop:5,
+    color:'red'
   }
 });
