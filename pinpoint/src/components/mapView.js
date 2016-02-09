@@ -129,7 +129,7 @@ export default class Map extends Component {
     const { latitude, longitude } = e.nativeEvent.coordinate;
     console.log('pressed map:', latitude, longitude);
 
-    this.props.setPoi(latitude, longitude);
+    this.props.setPoi(latitude, longitude, this.props.settings.tag1);
 
 
     // For some reason, TabBarIOS counts a press on the map as a press on the map icon

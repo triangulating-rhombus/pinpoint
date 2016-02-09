@@ -179,7 +179,7 @@ var findUserTags = function (userID) {
 };
 
 var visitStats = function(lat, lon, tag){
-  var dayNames = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
+  var dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   console.log('about to resolve address for POST to /stats');
   return geocoder.reverse({ lat: lat, lon: lon })
@@ -199,11 +199,16 @@ var visitStats = function(lat, lon, tag){
         return { warning: 'NO_VISITS' };
       }
 
+      var frequencyByDay = _.reduce(dayNames, function(acc, dayName) {
+        acc[dayName] = 0;
+        return acc;
+      }, {});
+      
       return _.reduce(visits, function(acc, visit) {
         var dayOfVisit = dayNames[visit.dataValues.startTime.getDay()];
         acc[dayOfVisit]++;
         return acc;
-      }, { Sun: 0, Mon: 0, Tue: 0, Wed: 0, Thu: 0, Fri: 0, Sat: 0 });
+      }, frequencyByDay);
     })
     .catch(function(error) {
       var errorMessage = 'UNKNOWN';

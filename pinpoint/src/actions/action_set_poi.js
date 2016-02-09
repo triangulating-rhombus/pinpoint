@@ -27,29 +27,30 @@ function setPoi(poi) {
 // Async action creator, which uses thunk to handle the promise
 // This returns a FUNCTION, which thunk will automatically intercept
 // Thunk will run the function and then dispatch the appropriate vanilla action creator
-export default function (latitude, longitude) {
+export default function (latitude, longitude, tag) {
   return (dispatch) => {
     sendRequest('POST', '/stats', {
       lat: latitude,
       lon: longitude,
-      tag: 'Tennis'
+      tag
     })
     .then(
       response => {
         const stats = JSON.parse(response._bodyText);
+        console.log('response from stats:', stats);
         if (stats.error || stats.warning) {
           stats.friendlyExplanation = getFriendlyExplanation(stats.error || stats.warning);
         }
         dispatch(setPoi({
           latitude,
           longitude,
-          tag: 'Tennis',
+          tag,
           stats
         }));
         // successCallback();
       },
       error => {
-        console.log('error');
+        console.log('error from stats:', error);
         // successCallback();
       }
     );

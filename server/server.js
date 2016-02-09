@@ -150,6 +150,7 @@ app.post('/stats', function(req, res){
 
 	controller.visitStats(lat, lon, tag) // returns the object to send to client
 	.then(function(responseBody) {
+		console.log('responseBody from visitStats:', responseBody);
 		if (responseBody.error) {
 			respondWithError(res, responseBody.error);
 		} else {
@@ -158,25 +159,25 @@ app.post('/stats', function(req, res){
 	});
 });
 
-setInterval(function(){
-	for (var i = 0; i < 5; i++){
+// setInterval(function(){
+// 	for (var i = 0; i < 5; i++){
 
-	      var sign = Math.random() > 0.5? -1: 1;
-	      var lon = -122.031641 + sign * Math.random() * .002;
-	      sign = Math.random() > 0.5? -1: 1;
-	      var lat = 37.331177 + sign * Math.random() * .002;
-	      var time = new Date();
-	      time.setDate(time.getDate() + Math.floor(Math.random() * (7)));
+// 	      var sign = Math.random() > 0.5? -1: 1;
+// 	      var lon = -122.031641 + sign * Math.random() * .002;
+// 	      sign = Math.random() > 0.5? -1: 1;
+// 	      var lat = 37.331177 + sign * Math.random() * .002;
+// 	      var time = new Date();
+// 	      time.setDate(time.getDate() + Math.floor(Math.random() * (7)));
 
-	      var random = {token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IndheW5lIg.66Qxc0MBJv_cJyvP8WfiEUCZZ4X1BXBSghVQVuAgBTA', 
-	      socketID: null, longitude: lon, latitude: lat, time: time, endTime: time};
+// 	      var random = {token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IndheW5lIg.66Qxc0MBJv_cJyvP8WfiEUCZZ4X1BXBSghVQVuAgBTA', 
+// 	      socketID: null, longitude: lon, latitude: lat, time: time, endTime: time};
 
-	      controller.addVisit(random).then(function(obj){
+// 	      controller.addVisit(random).then(function(obj){
 	        
-	        controller.addTagsVisits(1, obj[0].dataValues.id);
-	      });
-	}
-}, 1500)
+// 	        controller.addTagsVisits(1, obj[0].dataValues.id);
+// 	      });
+// 	}
+// }, 1500)
 
 
 /* ***** 
