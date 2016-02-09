@@ -142,7 +142,7 @@ var updateHandler = function(snapshot) {
         return snapshot.socketID !== senderSocketID;
       });
     }
-    console.log('sending back', filteredUsers.length, 'users');
+    // console.log('sending back', filteredUsers.length, 'users');
     // Send current positions of all users back to clientSocket
     serverSocket.emit('refreshEvent', filteredUsers); 
   });

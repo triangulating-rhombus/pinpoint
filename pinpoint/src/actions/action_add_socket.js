@@ -18,7 +18,6 @@ export default function(token, geoNavigator) {
     addListeners(dispatch, socket, (socketID) => {
       addEmitters(socket, token, geoNavigator, socketID);
     });
-    // emitters will be set up in MapView, by attaching them to MapView's own navigator
   };
 };
 
