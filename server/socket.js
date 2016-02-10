@@ -84,7 +84,6 @@ module.exports = function(server, includeFakeUsers) {
 }
 
 var connectHandler = function(snapshot) {
-  console.log('Client socket connected:', snapshot);
   // Snapshots usually just contain socketID and position/time
   // On connection, the snapshot also includes the user's JWT token to authenticate them
   var username = JWT.decode(snapshot.token, 'secret');
@@ -171,7 +170,7 @@ var updateHandler = function(snapshot) {
 };
 
 var changeFilterTagHandler = function(data) {
-  console.log('Client socket changed filter tag:', data);
+  
   filterTags[data.socketID] = data.filterTag === 'Show All' ? null : data.filterTag;
 }
 

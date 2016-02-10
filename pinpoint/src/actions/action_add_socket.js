@@ -36,6 +36,7 @@ function addListeners(dispatch, socketConnection, callback) {
   });
 
   socketConnection.on('refreshEvent', (data) => {
+    console.log("Data received from the backend update: ", data)
     dispatch(updateAction(data));    
   });
 

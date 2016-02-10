@@ -96,7 +96,7 @@ var getHotSpots = function (tag, callback) {
     var result = _.map(results, function(location){
       return {longitude:location[0].longitude, latitude: location[0].latitude};
     })
-    console.log("HOT SPOT RESULTS:", result)
+
     callback(result);
   });
   })
@@ -186,7 +186,6 @@ var visitStats = function(lat, lon, tag){
   console.log('about to resolve address for POST to /stats');
   return geocoder.reverse({ lat: lat, lon: lon })
     .then(function(loc) {
-      console.log('clicked on map location:', loc[0].formattedAddress);
 
       return model.Visits.findAll({ 
         where: { address: loc[0].formattedAddress },

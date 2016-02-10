@@ -29,11 +29,12 @@ export default class TabBar extends Component {
   }
 
   changeTab(tabName, data) {
-    if (tabName === 'logoutTab') {
-      this.props.logoutUser(this.props.navigator);
-    } else {
+    // if (tabName === 'logoutTab') {
+    //   // this.props.logoutUser(this.props.navigator);
+    //   this.renderScene('Settings')
+    // } else {
       this.setState({ selectedTab: tabName, data });
-    }
+    // }
   }
   
   renderScene(routeName) {
@@ -81,13 +82,6 @@ export default class TabBar extends Component {
           selected={this.state.selectedTab === 'settingsTab'}
           onPress={() => this.changeTab('settingsTab') }>
           {this.renderScene('Settings')}
-        </Icon.TabBarItem>
-        <Icon.TabBarItem
-          title="Logout"
-          iconName="android-exit"
-          selectedIconName="android-exit"
-          selected={this.state.selectedTab === 'logoutTab'}
-          onPress={() => this.changeTab('logoutTab') }>
         </Icon.TabBarItem>
       </TabBarIOS>
     );

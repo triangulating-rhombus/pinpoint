@@ -1,4 +1,4 @@
-import React, { Component, View, TextInput, Text, Switch } from 'react-native';
+import React, { Component, View, TextInput, Text, Switch, TouchableHighlight } from 'react-native';
 import Button from './button';
 import styles from '../styles/styles';
 
@@ -48,6 +48,10 @@ export default class Settings extends Component {
     );
   }
 
+  logout() {
+    this.props.logoutAction(this.props.navigator);
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -93,6 +97,9 @@ export default class Settings extends Component {
 
         <Button text="Update settings" clickAction={this.onSubmit.bind(this)} />
         <Text style={styles.success}>{ this.state.justSubmitted ? 'Saved successfully!' : '' }</Text>
+        
+        <Button text='Logout' clickAction={this.logout.bind(this)} ></Button>
+
       </View>
     );
   }

@@ -133,7 +133,6 @@ app.get('/hotspot', function (req, res) {
 	var tag = req.headers['tag']; 
 
 	controller.getHotSpots(tag, function(result){
-		console.log("JSON results back for hotspots are: ", result)
 		res.json(result);
 	})
 
@@ -149,11 +148,9 @@ app.post('/stats', function(req, res){
 	var lat = req.body.lat;
 	var lon = req.body.lon;
 	var tag = req.body.tag;
-	console.log('got POST to /stats:', lat, lon, tag);
-
+	
 	controller.visitStats(lat, lon, tag) // returns the object to send to client
 	.then(function(responseBody) {
-		console.log('responseBody from visitStats:', responseBody);
 		if (responseBody.error) {
 			respondWithError(res, responseBody.error);
 		} else {
@@ -187,6 +184,6 @@ app.post('/stats', function(req, res){
 	Socket for user geolocation updates
 ***** */
 
-var serverSocket = require('./socket')(server, true); // true will include fake users
+var serverSocket = require('./socket')(server, false); // true will include fake users
 
 module.exports = server
