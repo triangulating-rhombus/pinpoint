@@ -56,7 +56,6 @@ var extra = {
     apiKey: /*'AIzaSyDZJzu5MvHz0s6PsokNcMWy03bRpoGiJ74' */
     /*"AIzaSyCtsxXD-6Dl-dCzmvSDneXFvCknDYJ3GGA"*/
     'AIzaSyAzos97uZL22RDdvapJ4UdIci4nk3sRwBA',
-
     formatter: null
 };
 
@@ -138,6 +137,7 @@ var addTagsVisits = function(userID, visitID){
     },
     include: [ model.Tags ]
   }).then(function(tags) {
+    console.log(tags);
     var tagIDs = tags[0].Tags.map(function(obj){return obj.dataValues.id});
 
   return Promise.map(tagIDs, function(tag) {
@@ -187,13 +187,22 @@ var visitStats = function(lat, lon, tag){
   return geocoder.reverse({ lat: lat, lon: lon })
     .then(function(loc) {
 
-      return model.Visits.findAll({ 
-        where: { address: loc[0].formattedAddress },
-        include: [ {
-          model: model.Tags,
-          where: { name: tag }}
-        ]
-      });
+      if (tag === undefined){
+        return model.Visits.findAll({ 
+          where: { address: loc[0].formattedAddress },
+          include: [ {
+            model: model.Tags}
+          ]
+        });
+      }else{
+        return model.Visits.findAll({ 
+          where: { address: loc[0].formattedAddress },
+          include: [ {
+            model: model.Tags,
+            where: { name: tag }}
+          ]
+        });
+      }
     })
     .then(function(visits) {
       if (visits.length === 0) {

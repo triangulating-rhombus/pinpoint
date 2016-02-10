@@ -160,24 +160,24 @@ app.post('/stats', function(req, res){
 });
 
 // setInterval(function(){
-// 	for (var i = 0; i < 5; i++){
+// 	for (var i = 1; i < 4; i++){
 
 // 	      var sign = Math.random() > 0.5? -1: 1;
-// 	      var lon = -122.031641 + sign * Math.random() * .002;
+// 	      var lon = -122.4089664 + sign * Math.random() * .002;
 // 	      sign = Math.random() > 0.5? -1: 1;
-// 	      var lat = 37.331177 + sign * Math.random() * .002;
+// 	      var lat = 37.7836966 + sign * Math.random() * .002;
 // 	      var time = new Date();
 // 	      time.setDate(time.getDate() + Math.floor(Math.random() * (7)));
 
 // 	      var random = {token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IndheW5lIg.66Qxc0MBJv_cJyvP8WfiEUCZZ4X1BXBSghVQVuAgBTA', 
-// 	      socketID: null, longitude: lon, latitude: lat, time: time, endTime: time};
+// 	      socketID: null, longitude: -122.4089664, latitude: 37.7836966, time: time, endTime: time};
 
 // 	      controller.addVisit(random).then(function(obj){
-	        
-// 	        controller.addTagsVisits(1, obj[0].dataValues.id);
+// 	        controller.addTagsVisits(17, obj[0].dataValues.id);
 // 	      });
 // 	}
 // }, 1500)
+
 
 
 /* ***** 
