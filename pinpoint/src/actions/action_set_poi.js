@@ -1,6 +1,8 @@
 import { SET_POI } from '../constants/actionTypes';
 import { sendRequest } from './utils';
 
+import showStats from './action_show_stats';
+
 function getFriendlyExplanation(errorOrWarningName) {
   switch(errorOrWarningName) {
     case 'NOT_LOADED':
@@ -40,6 +42,7 @@ export default function (latitude, longitude, tag) {
     // First update state to indicate that stats are loading
     const unloadedStats = { error: 'NOT_LOADED' };
     dispatch(setPoi({ latitude, longitude, tag, stats: unloadedStats }));
+    dispatch(showStats());
 
     // Upon request completion, update state with response
     sendRequest('POST', '/stats', {
@@ -52,10 +55,12 @@ export default function (latitude, longitude, tag) {
         const stats = JSON.parse(response._bodyText);
         console.log('response from stats:', stats);
         dispatch(setPoi({ latitude, longitude, tag, stats }));
+        dispatch(showStats());
       },
       error => {
         const stats = { error };
         dispatch(setPoi({ latitude, longitude, tag, stats }));
+        dispatch(showStats());
       }
     );
   }

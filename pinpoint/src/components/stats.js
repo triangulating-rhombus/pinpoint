@@ -1,8 +1,18 @@
-import React, { Component, View, Text, StyleSheet } from 'react-native';
+import React, { Component, View, Text, StyleSheet, Modal } from 'react-native';
 import RNChart from 'react-native-chart';
 // import styles from '../styles/styles';
 
+import Button from './button';
+
 export default class Stats extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      animated: true,
+      transparent: true
+    }
+  }
+
   // Returns this.props.poi.stats in format to be rendered by chart
   // this.props.poi.stats is an object returned by the server
   //   of the form: { Sun: 10, Mon: 14, ... }
@@ -20,6 +30,10 @@ export default class Stats extends Component {
     ];
   }
 
+  _setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
   roundToNearestThousandth(float) {
     return Math.round(float * 1000) / 1000;
   }
@@ -29,25 +43,65 @@ export default class Stats extends Component {
     const longitude = this.roundToNearestThousandth(this.props.poi.longitude);
     const { error, warning, friendlyExplanation } = this.props.poi.stats;
     if (error || warning) {
+      var modalBackgroundStyle = {
+        backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
+      };
+      var innerContainerTransparentStyle = this.state.transparent
+        ? {backgroundColor: '#fff', padding: 20}
+        : null;
+
       return (
-        <View style={styles.container}>
-          <Text>{friendlyExplanation}</Text>
-        </View>
+        <Modal
+          animated={this.state.animated}
+          transparent={this.state.transparent}
+          visible={this.props.statsVisibility}>
+          <View style={[modalStyles.container, modalBackgroundStyle]}>
+            <View style={[modalStyles.innerContainer, innerContainerTransparentStyle]}>
+              <Button
+                clickAction={() => this.props.hideStats()}
+                style={modalStyles.modalButton}>
+                Close
+              </Button>
+              <Text>{friendlyExplanation}</Text>
+              
+            </View>
+          </View>
+        </Modal>
       );
     } else {
+
+      var modalBackgroundStyle = {
+        backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
+      };
+      var innerContainerTransparentStyle = this.state.transparent
+        ? {backgroundColor: '#fff', padding: 20}
+        : null;
+
       return (
-        <View style={styles.container}>
-          <Text style={styles.formLabel}>By Day</Text>
-          <RNChart style={styles.chart}
-            chartTitle={`Visits by ${this.props.settings.tag1} people @ (${latitude}, ${longitude})`}
-            chartTitleColor='black'
-            labelTextColor='black'
-            labelFontSize={15}
-            chartData={this.getChartData()}
-            verticalGridStep={5}
-            xLabels={xLabels}
-          />
-        </View>
+        <Modal
+          animated={this.state.animated}
+          transparent={this.state.transparent}
+          visible={this.props.statsVisibility}>
+          <View style={[modalStyles.container, modalBackgroundStyle]}>
+            <View style={[modalStyles.innerContainer, innerContainerTransparentStyle]}>
+              <Button
+                clickAction={() => this.props.hideStats()}
+                style={modalStyles.modalButton}>
+                Close
+              </Button>
+              <RNChart style={styles.chart}
+                chartTitle={`Visits by ${this.props.settings.tag1} people @ (${latitude}, ${longitude})`}
+                chartTitleColor='black'
+                labelTextColor='black'
+                labelFontSize={15}
+                chartData={this.getChartData()}
+                verticalGridStep={5}
+                xLabels={xLabels}
+              />
+              
+            </View>
+          </View>
+        </Modal>
       );
     }
   }
@@ -70,3 +124,43 @@ const styles = StyleSheet.create({
 });
 
 const xLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+
+var modalStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+  },
+  innerContainer: {
+    borderRadius: 10,
+    alignItems: 'center',
+    height: 300
+  },
+  row: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  rowTitle: {
+    flex: 1,
+    fontWeight: 'bold',
+  },
+  button: {
+    borderRadius: 5,
+    flex: 1,
+    height: 44,
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  buttonText: {
+    fontSize: 18,
+    margin: 5,
+    textAlign: 'center',
+  },
+  modalButton: {
+    marginTop: 10,
+  },
+});

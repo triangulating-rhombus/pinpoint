@@ -6,6 +6,7 @@ import PoiReducer from './reducer_poi';
 import MarkersReducer from './reducer_markers';
 import toggleHotspot from './reducer_toggle_hotspots';
 import hotSpotPins from './reducer_hotspot_data';
+import StatsVisibilityReducer from './reducer_stats_visibility';
 
 const rootReducer = combineReducers({
   user: UserReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   poi: PoiReducer,
   markers: MarkersReducer,
   hotSpotVisibility: toggleHotspot,
-  hotSpotPins: hotSpotPins
+  hotSpotPins: hotSpotPins,
+  statsVisibility: StatsVisibilityReducer
 });
 
 export default rootReducer;

@@ -8,12 +8,14 @@ import React, {
   TouchableOpacity,
   TouchableHighlight,
   Animated,
-  Platform, 
+  Platform,
+  Modal
 } from 'react-native';
 
 import image from '../assets/images/greenDot-small-whiteBorder.png';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomCallout from './customCallout';
+import StatsModal from '../containers/stats-container';
 
 var {height, width} = Dimensions.get('window');
 
@@ -144,10 +146,9 @@ export default class Map extends Component {
 
     this.props.setPoi(latitude, longitude, this.props.settings.tag1);
 
-
     // For some reason, TabBarIOS counts a press on the map as a press on the map icon
     // This sets the displayed tab to mapTab again, so we have to delay the change to statsTab
-    setTimeout(()=>this.props.changeTab('statsTab'), 0);
+    // setTimeout(()=>this.props.changeTab('statsTab'), 0);
   }
 
   showPopover() {
@@ -235,7 +236,7 @@ export default class Map extends Component {
 
         { this.props.socket.connection && this.props.settings ? this.renderFilterBar.call(this) : void 0 }
 
-
+        <StatsModal modalVisible={this.state.modalVisible}></StatsModal>
 
       </View>
     );
