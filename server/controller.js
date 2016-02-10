@@ -187,7 +187,7 @@ var visitStats = function(lat, lon, tag){
   return geocoder.reverse({ lat: lat, lon: lon })
     .then(function(loc) {
 
-      if (tag === undefined || tag === ""){
+      if (!tag){
         return model.Visits.findAll({ 
           where: { address: loc[0].formattedAddress },
           include: [ {
