@@ -133,6 +133,7 @@ app.get('/hotspot', function (req, res) {
 	var tag = req.headers['tag']; 
 
 	controller.getHotSpots(tag, function(result){
+		console.log("JSON results back for hotspots are: ", result)
 		res.json(result);
 	})
 
