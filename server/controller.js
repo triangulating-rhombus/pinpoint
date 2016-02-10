@@ -56,7 +56,6 @@ var extra = {
     apiKey: /*'AIzaSyDZJzu5MvHz0s6PsokNcMWy03bRpoGiJ74' */
     /*"AIzaSyCtsxXD-6Dl-dCzmvSDneXFvCknDYJ3GGA"*/
     'AIzaSyAzos97uZL22RDdvapJ4UdIci4nk3sRwBA',
-
     formatter: null
 };
 
@@ -138,6 +137,7 @@ var addTagsVisits = function(userID, visitID){
     },
     include: [ model.Tags ]
   }).then(function(tags) {
+    console.log(tags);
     var tagIDs = tags[0].Tags.map(function(obj){return obj.dataValues.id});
 
   return Promise.map(tagIDs, function(tag) {
