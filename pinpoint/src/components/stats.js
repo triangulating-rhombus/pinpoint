@@ -46,12 +46,12 @@ export default class Stats extends Component {
     } else {
       const { latitude, longitude } = this.props.stats.poi;
       return (<RNChart style={styles.chart}
-                chartTitle={`Visits by ${this.props.tag} people @ (${latitude}, ${longitude})`}
+                chartTitle={`Tag: ${this.props.tag} @ (${latitude}, ${longitude})`}
                 chartTitleColor='black'
                 labelTextColor='black'
-                labelFontSize={15}
+                labelFontSize={12}
                 chartData={this.getChartData()}
-                verticalGridStep={5}
+                verticalGridStep={2} // number of grids y axis is cut into
                 xLabels={xLabels}
               />);
     }
@@ -76,11 +76,10 @@ export default class Stats extends Component {
           <View style={[modalStyles.innerContainer, innerContainerTransparentStyle]}>
             <Button
               clickAction={() => this.props.hideStats()}
-              style={modalStyles.modalButton}>
-              Close
-            </Button>
+              style={modalStyles.modalButton}
+              text='Back to Map'
+            />
             {this.renderContent()}
-            
           </View>
         </View>
       </Modal>
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     position: 'absolute', 
     top: 70, 
     left: 4, 
-    bottom: 70,
+    bottom: 30,
     right: 16,
   }
 });
@@ -116,7 +115,7 @@ var modalStyles = StyleSheet.create({
   innerContainer: {
     borderRadius: 10,
     alignItems: 'center',
-    height: 300
+    height: 500
   },
   row: {
     alignItems: 'center',
