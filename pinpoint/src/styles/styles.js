@@ -4,13 +4,13 @@ export default StyleSheet.create({
   basicContainer: {
     flex: 1
   },
-  // container: {
-  //   flex: 1,
-  //   justifyContent: 'center', // vertical align
-  //   alignItems: 'center', // horizontal align
-  //   backgroundColor: 'black',
-  //   opacity:.6
-  // },
+  container: {
+    flex: 1,
+    justifyContent: 'center', // vertical align
+    alignItems: 'center', // horizontal align
+    backgroundColor: 'black',
+    opacity:.6
+  },
   logo:{
     width:150,
     height:150,
@@ -31,6 +31,16 @@ export default StyleSheet.create({
     marginBottom: 7,
     width: 300,
     color: 'white',
+  },
+  settingsInput: {
+    height: 40,
+    padding: 6,
+    alignSelf: 'center',
+    marginBottom: 7,
+    width: 300,
+    color: 'white',
+    borderColor:'white',
+    borderWidth:1
   },
   backgroundImage: {
     flex: 1,

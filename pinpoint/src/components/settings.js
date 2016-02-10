@@ -54,21 +54,21 @@ export default class Settings extends Component {
 
         <Text style={styles.formLabel}>Tags</Text>
         <TextInput 
-          style={styles.inputStyle} 
+          style={styles.settingsInput} 
           value={this.state.tempTag1}
           onChangeText={ tempTag1 => this.setState({ tempTag1 }) }
           placeholder="Enter first tag" 
         />
 
         <TextInput 
-          style={styles.inputStyle} 
+          style={styles.settingsInput} 
           value={this.state.tempTag2}
           onChangeText={ tempTag2 => this.setState({ tempTag2 }) }
           placeholder="Enter second tag (optional)" 
         />
 
         <TextInput 
-          style={styles.inputStyle} 
+          style={styles.settingsInput} 
           value={this.state.tempTag3}
           onChangeText={ tempTag3 => this.setState({ tempTag3 }) }
           placeholder="Enter third tag (optional)" 
