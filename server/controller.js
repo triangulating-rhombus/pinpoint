@@ -187,13 +187,22 @@ var visitStats = function(lat, lon, tag){
   return geocoder.reverse({ lat: lat, lon: lon })
     .then(function(loc) {
 
-      return model.Visits.findAll({ 
-        where: { address: loc[0].formattedAddress },
-        include: [ {
-          model: model.Tags,
-          where: { name: tag }}
-        ]
-      });
+      if (tag === undefined){
+        return model.Visits.findAll({ 
+          where: { address: loc[0].formattedAddress },
+          include: [ {
+            model: model.Tags}
+          ]
+        });
+      }else{
+        return model.Visits.findAll({ 
+          where: { address: loc[0].formattedAddress },
+          include: [ {
+            model: model.Tags,
+            where: { name: tag }}
+          ]
+        });
+      }
     })
     .then(function(visits) {
       if (visits.length === 0) {
