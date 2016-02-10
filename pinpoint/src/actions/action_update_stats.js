@@ -23,11 +23,7 @@ export default function getStats(latitude, longitude, tag) {
     dispatch(showStats());
 
     // Upon request completion, update state with response
-    sendRequest('POST', '/stats', {
-      lat: latitude,
-      lon: longitude,
-      tag
-    })
+    sendRequest('POST', '/stats', { latitude, longitude, tag })
     .then(
       response => {
         const responseBody = JSON.parse(response._bodyText);

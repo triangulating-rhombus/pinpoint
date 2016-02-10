@@ -180,11 +180,11 @@ var findUserTags = function (userID) {
   })
 };
 
-var visitStats = function(lat, lon, tag){
+var visitStats = function(latitude, longitude, tag){
   var dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   console.log('getting stats for tag:', tag);
-  return geocoder.reverse({ lat: lat, lon: lon })
+  return geocoder.reverse({ lat: latitude, lon: longitude }) // geocoder requires properties to be lat/lon
     .then(function(loc) {
 
       if (!tag){
