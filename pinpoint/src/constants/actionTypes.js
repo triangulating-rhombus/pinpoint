@@ -19,7 +19,7 @@ export const CLEAR_SETTINGS = 'CLEAR_SETTINGS';
 export const TOGGLE_HOTSPOT = 'TOGGLE_HOTSPOT';
 
 // Stats
-export const SET_POI = 'SET_POI';
+export const UPDATE_STATS = 'UPDATE_STATS';
 export const SHOW_STATS = 'SHOW_STATS';
 export const HIDE_STATS = 'HIDE_STATS';
 

@@ -13,12 +13,12 @@ export default class Stats extends Component {
     }
   }
 
-  // Returns this.props.poi.stats in format to be rendered by chart
-  // this.props.poi.stats is an object returned by the server
+  // Returns this.props.stats.visitsByDay in format to be rendered by chart
+  // this.props.stats.visitsByDay is an object returned by the server
   //   of the form: { Sun: 10, Mon: 14, ... }
   getChartData() {
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const values = dayNames.map(dayName => this.props.poi.stats[dayName] || 0);
+    const values = dayNames.map(dayName => this.props.stats.visitsByDay[dayName] || 0);
     return [
       {
         name: 'BarChart',
@@ -39,9 +39,9 @@ export default class Stats extends Component {
   }
 
   render() {
-    const latitude = this.roundToNearestThousandth(this.props.poi.latitude);
-    const longitude = this.roundToNearestThousandth(this.props.poi.longitude);
-    const { error, warning, friendlyExplanation } = this.props.poi.stats;
+    const latitude = this.roundToNearestThousandth(this.props.stats.poi.latitude);
+    const longitude = this.roundToNearestThousandth(this.props.stats.poi.longitude);
+    const { error, warning, friendlyExplanation } = this.props.stats;
     if (error || warning) {
       var modalBackgroundStyle = {
         backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
@@ -54,7 +54,7 @@ export default class Stats extends Component {
         <Modal
           animated={this.state.animated}
           transparent={this.state.transparent}
-          visible={this.props.statsVisibility}>
+          visible={this.props.stats.isVisible}>
           <View style={[modalStyles.container, modalBackgroundStyle]}>
             <View style={[modalStyles.innerContainer, innerContainerTransparentStyle]}>
               <Button
@@ -81,7 +81,7 @@ export default class Stats extends Component {
         <Modal
           animated={this.state.animated}
           transparent={this.state.transparent}
-          visible={this.props.statsVisibility}>
+          visible={this.props.stats.isVisible}>
           <View style={[modalStyles.container, modalBackgroundStyle]}>
             <View style={[modalStyles.innerContainer, innerContainerTransparentStyle]}>
               <Button

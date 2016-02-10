@@ -1,4 +1,4 @@
-import { SET_POI } from '../constants/actionTypes';
+import { UPDATE_STATS } from '../constants/actionTypes';
 import { sendRequest } from './utils';
 
 import showStats from './action_show_stats';
@@ -19,30 +19,29 @@ function getFriendlyExplanation(errorOrWarningName) {
 }
 
 // Vanilla action creator
-function setPoi(poi) {
+function updateStats(statsInfo) {
   // Augment stats with friendlyExplanation based on error/warning
-  const { stats } = poi;
-  if (stats.error || stats.warning) {
-    stats.friendlyExplanation = getFriendlyExplanation(stats.error || stats.warning);
+  const { error, warning } = statsInfo;
+  if (error || warning) {
+    statsInfo.friendlyExplanation = getFriendlyExplanation(error || warning);
   }
 
   // Send action
   return {
-    type: SET_POI,
-    payload: poi
+    type: UPDATE_STATS,
+    payload: statsInfo
   }
 };
 
 // Async action creator, which uses thunk to handle the promise
 // This returns a FUNCTION, which thunk will automatically intercept
 // Thunk will run the function and then dispatch the appropriate action creators
-export default function (latitude, longitude, tag) {
+export default function getStats(latitude, longitude, tag) {
   return (dispatch) => {
-
-    console.log('setting poi to use tag:', tag);
+    const poi = { latitude, longitude };
+    
     // First update state to indicate that stats are loading
-    const unloadedStats = { error: 'NOT_LOADED' };
-    dispatch(setPoi({ latitude, longitude, tag, stats: unloadedStats }));
+    dispatch(updateStats({ poi, error: 'NOT_LOADED' }));
     dispatch(showStats());
 
     // Upon request completion, update state with response
@@ -53,14 +52,19 @@ export default function (latitude, longitude, tag) {
     })
     .then(
       response => {
-        const stats = JSON.parse(response._bodyText);
-        console.log('response from stats:', stats);
-        dispatch(setPoi({ latitude, longitude, tag, stats }));
+        const responseBody = JSON.parse(response._bodyText);
+        console.log('response from stats:', responseBody);
+        if (responseBody.error) {
+          dispatch(updateStats({ error: responseBody.error }));
+        } else if (responseBody.warning) {
+          dispatch(updateStats({ error: null, warning: responseBody.warning }));
+        } else {
+          dispatch(updateStats({ visitsByDay: responseBody, error: null, warning: null }));
+        }
         dispatch(showStats());
       },
       error => {
-        const stats = { error };
-        dispatch(setPoi({ latitude, longitude, tag, stats }));
+        dispatch(updateStats({ error }));
         dispatch(showStats());
       }
     );
