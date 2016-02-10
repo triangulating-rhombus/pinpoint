@@ -54,8 +54,8 @@ var httpAdapter = 'https';
 
 var extra = {
     apiKey: /*'AIzaSyDZJzu5MvHz0s6PsokNcMWy03bRpoGiJ74' */
-    /*"AIzaSyCtsxXD-6Dl-dCzmvSDneXFvCknDYJ3GGA"*/
-    'AIzaSyAzos97uZL22RDdvapJ4UdIci4nk3sRwBA',
+    "AIzaSyCtsxXD-6Dl-dCzmvSDneXFvCknDYJ3GGA",
+    // 'AIzaSyAzos97uZL22RDdvapJ4UdIci4nk3sRwBA',
     formatter: null
 };
 
@@ -187,7 +187,7 @@ var visitStats = function(lat, lon, tag){
   return geocoder.reverse({ lat: lat, lon: lon })
     .then(function(loc) {
 
-      if (tag === undefined){
+      if (!tag){
         return model.Visits.findAll({ 
           where: { address: loc[0].formattedAddress },
           include: [ {
