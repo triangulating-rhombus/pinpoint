@@ -18,7 +18,8 @@ export default class Stats extends Component {
   //   of the form: { Sun: 10, Mon: 14, ... }
   getChartData() {
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const values = dayNames.map(dayName => this.props.stats.visitsByDay[dayName] || 0);
+    const { visitsByDay } = this.props.stats;
+    const values = dayNames.map(dayName => visitsByDay[dayName] || 0);
     return [
       {
         name: 'BarChart',
@@ -38,58 +39,15 @@ export default class Stats extends Component {
     return Math.round(float * 1000) / 1000;
   }
 
-  render() {
-    const latitude = this.roundToNearestThousandth(this.props.stats.poi.latitude);
-    const longitude = this.roundToNearestThousandth(this.props.stats.poi.longitude);
-    const { error, warning, friendlyExplanation } = this.props.stats;
-    if (error || warning) {
-      var modalBackgroundStyle = {
-        backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
-      };
-      var innerContainerTransparentStyle = this.state.transparent
-        ? {backgroundColor: '#fff', padding: 20}
-        : null;
-
-      return (
-        <Modal
-          animated={this.state.animated}
-          transparent={this.state.transparent}
-          visible={this.props.stats.isVisible}>
-          <View style={[modalStyles.container, modalBackgroundStyle]}>
-            <View style={[modalStyles.innerContainer, innerContainerTransparentStyle]}>
-              <Button
-                clickAction={() => this.props.hideStats()}
-                style={modalStyles.modalButton}>
-                Close
-              </Button>
-              <Text>{friendlyExplanation}</Text>
-              
-            </View>
-          </View>
-        </Modal>
-      );
+  renderContent() {
+    console.log('rendering content');
+    const { explanation } = this.props.stats;
+    if (explanation) {
+      return (<Text>{explanation}</Text>);
     } else {
-
-      var modalBackgroundStyle = {
-        backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
-      };
-      var innerContainerTransparentStyle = this.state.transparent
-        ? {backgroundColor: '#fff', padding: 20}
-        : null;
-
-      return (
-        <Modal
-          animated={this.state.animated}
-          transparent={this.state.transparent}
-          visible={this.props.stats.isVisible}>
-          <View style={[modalStyles.container, modalBackgroundStyle]}>
-            <View style={[modalStyles.innerContainer, innerContainerTransparentStyle]}>
-              <Button
-                clickAction={() => this.props.hideStats()}
-                style={modalStyles.modalButton}>
-                Close
-              </Button>
-              <RNChart style={styles.chart}
+      console.log('rendering chart:', this.getChartData());
+      const { latitude, longitude } = this.props.stats.poi;
+      return (<RNChart style={styles.chart}
                 chartTitle={`Visits by ${this.props.tag} people @ (${latitude}, ${longitude})`}
                 chartTitleColor='black'
                 labelTextColor='black'
@@ -97,13 +55,38 @@ export default class Stats extends Component {
                 chartData={this.getChartData()}
                 verticalGridStep={5}
                 xLabels={xLabels}
-              />
-              
-            </View>
-          </View>
-        </Modal>
-      );
+              />);
     }
+  }
+  render() {
+    const latitude = this.roundToNearestThousandth(this.props.stats.poi.latitude);
+    const longitude = this.roundToNearestThousandth(this.props.stats.poi.longitude);
+
+    var modalBackgroundStyle = {
+      backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
+    };
+    var innerContainerTransparentStyle = this.state.transparent
+      ? {backgroundColor: '#fff', padding: 20}
+      : null;
+
+    return (
+      <Modal
+        animated={this.state.animated}
+        transparent={this.state.transparent}
+        visible={this.props.stats.isVisible}>
+        <View style={[modalStyles.container, modalBackgroundStyle]}>
+          <View style={[modalStyles.innerContainer, innerContainerTransparentStyle]}>
+            <Button
+              clickAction={() => this.props.hideStats()}
+              style={modalStyles.modalButton}>
+              Close
+            </Button>
+            {this.renderContent()}
+            
+          </View>
+        </View>
+      </Modal>
+    );
   }
 }
 

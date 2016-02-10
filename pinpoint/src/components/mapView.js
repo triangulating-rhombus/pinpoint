@@ -236,7 +236,7 @@ export default class Map extends Component {
 
         { this.props.socket.connection && this.props.settings ? this.renderFilterBar.call(this) : void 0 }
 
-        <StatsModal modalVisible={this.state.modalVisible}></StatsModal>
+        <StatsModal />
 
       </View>
     );
