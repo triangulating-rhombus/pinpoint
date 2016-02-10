@@ -183,42 +183,47 @@ var findUserTags = function (userID) {
 var visitStats = function(latitude, longitude, tag){
   var dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  console.log('getting stats for tag:', tag);
+  // console.log('getting stats for tag:', tag);
+  var address = null;
   return geocoder.reverse({ lat: latitude, lon: longitude }) // geocoder requires properties to be lat/lon
     .then(function(loc) {
-
-      if (!tag){
+      address = loc[0].formattedAddress;
+      if (!tag) {
         return model.Visits.findAll({ 
-          where: { address: loc[0].formattedAddress },
-          include: [ {
-            model: model.Tags}
-          ]
+          where: { address: address },
+          include: [{
+            model: model.Tags
+          }]
         });
-      }else{
+      } else {
         return model.Visits.findAll({ 
-          where: { address: loc[0].formattedAddress },
-          include: [ {
+          where: { address: address },
+          include: [{
             model: model.Tags,
-            where: { name: tag }}
-          ]
+            where: { name: tag }
+          }]
         });
       }
     })
     .then(function(visits) {
       if (visits.length === 0) {
-        return { warning: 'NO_VISITS' };
+        return { address: address, warning: 'NO_VISITS' };
       }
 
-      var frequencyByDay = _.reduce(dayNames, function(acc, dayName) {
+      // initialize empty visitsByDay object
+      var visitsByDay = _.reduce(dayNames, function(acc, dayName) {
         acc[dayName] = 0;
         return acc;
       }, {});
       
-      return _.reduce(visits, function(acc, visit) {
+      // populate it with frequencies
+      visitsByDay = _.reduce(visits, function(acc, visit) {
         var dayOfVisit = dayNames[visit.dataValues.startTime.getDay()];
         acc[dayOfVisit]++;
         return acc;
-      }, frequencyByDay);
+      }, visitsByDay);
+
+      return { address: address, visitsByDay: visitsByDay };
     })
     .catch(function(error) {
       var errorMessage = 'UNKNOWN';

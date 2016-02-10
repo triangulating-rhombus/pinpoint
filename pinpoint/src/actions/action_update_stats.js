@@ -27,14 +27,9 @@ export default function getStats(latitude, longitude, tag) {
     .then(
       response => {
         const responseBody = JSON.parse(response._bodyText);
-        console.log('response from stats:', responseBody);
-        if (responseBody.error) {
-          dispatch(updateStats({ visitsByDay: null, error: responseBody.error, warning: null }));
-        } else if (responseBody.warning) {
-          dispatch(updateStats({ visitsByDay: null, error: null, warning: responseBody.warning }));
-        } else {
-          dispatch(updateStats({ visitsByDay: responseBody, error: null, warning: null }));
-        }
+        // console.log('response from stats:', responseBody);
+        const { visitsByDay, address, error, warning } = responseBody;
+        dispatch(updateStats({ address, visitsByDay, error, warning }));
         dispatch(showStats());
       },
       error => {

@@ -45,21 +45,25 @@ export default class Stats extends Component {
       return (<Text>{explanation}</Text>);
     } else {
       const { latitude, longitude } = this.props.stats.poi;
-      return (<RNChart style={styles.chart}
-                chartTitle={`Tag: ${this.props.tag} @ (${latitude}, ${longitude})`}
-                chartTitleColor='black'
-                labelTextColor='black'
-                labelFontSize={12}
-                chartData={this.getChartData()}
-                verticalGridStep={2} // number of grids y axis is cut into
-                xLabels={xLabels}
-              />);
+      return (
+          <RNChart
+            style={styles.chart}
+            // chartTitle={`Tag: ${tag}\n${address}`}
+            // chartTitleColor='black'
+            labelTextColor='black'
+            labelFontSize={12}
+            chartData={this.getChartData()}
+            verticalGridStep={1} // number of grids y axis is cut into
+            xLabels={xLabels}
+          />
+      );
     }
   }
   render() {
     const latitude = this.roundToNearestThousandth(this.props.stats.poi.latitude);
     const longitude = this.roundToNearestThousandth(this.props.stats.poi.longitude);
-
+    const tag = this.props.tag || 'any';
+    const address = this.props.stats.address || 'Unknown Address';
     var modalBackgroundStyle = {
       backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
     };
@@ -79,6 +83,7 @@ export default class Stats extends Component {
               style={modalStyles.modalButton}
               text='Back to Map'
             />
+            <Text>{`Tag: ${tag}\n${address}`}</Text>
             {this.renderContent()}
           </View>
         </View>
@@ -96,7 +101,7 @@ const styles = StyleSheet.create({
   },
   chart: {
     position: 'absolute', 
-    top: 70, 
+    top: 100, 
     left: 4, 
     bottom: 30,
     right: 16,

@@ -13,6 +13,7 @@ import { UPDATE_STATS, SHOW_STATS, HIDE_STATS } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
   poi: { latitude: DEFAULT_LATITUDE, longitude: DEFAULT_LONGITUDE },
+  address: null,
   visitsByDay: {},
   error: null,
   warning: 'NOT_LOADED',

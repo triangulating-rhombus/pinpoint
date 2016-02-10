@@ -142,9 +142,9 @@ export default class Map extends Component {
     }
     
     const { latitude, longitude } = e.nativeEvent.coordinate;
+    const tag = (this.props.tag === 'Show All') ? null : this.props.tag;
     console.log('pressed map:', latitude, longitude);
-
-    this.props.updateStats(latitude, longitude, this.props.tag);
+    this.props.updateStats(latitude, longitude, tag);
 
     // For some reason, TabBarIOS counts a press on the map as a press on the map icon
     // This sets the displayed tab to mapTab again, so we have to delay the change to statsTab
