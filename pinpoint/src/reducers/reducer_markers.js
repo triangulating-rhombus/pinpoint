@@ -49,6 +49,7 @@ function generateNewState(oldState, currSnapshots) {
 export default function(state = {}, action) {
   switch(action.type) {
     case UPDATE_MARKERS:
+    console.log("Updating Markers being called in reducer and the action is:", action)
       return generateNewState(state, action.payload);
     default:
       return state;

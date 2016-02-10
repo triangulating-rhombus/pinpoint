@@ -13,6 +13,7 @@ import React, {
 
 import image from '../assets/images/greenDot-small-whiteBorder.png';
 import Icon from 'react-native-vector-icons/Ionicons';
+import CustomCallout from './customCallout';
 
 var {height, width} = Dimensions.get('window');
 
@@ -55,14 +56,22 @@ export default class Map extends Component {
   renderMarkers() {
     const { markers } = this.props;
     return _.map(markers, (value, socketID) => {
+      
       const tags = value.tags.join(', ');
       return (
+
         <MapView.Marker.Animated
           image={image}
-          title={tags}
           key={socketID}
           coordinate={value.pastNewPins[0]}
-        />
+        >
+          <MapView.Callout tooltip>
+            <CustomCallout>
+              <Text style={{ color: 'white' }}>{tags}</Text>
+            </CustomCallout>
+          </MapView.Callout>
+
+        </MapView.Marker.Animated>
       );
     });
   } 
@@ -215,11 +224,10 @@ export default class Map extends Component {
           style={styles.map}
           showsUserLocation={true}
           followUserLocation={true}
-          onRegionChangeComplete={this.adjustMapScale.bind(this)}
           onPress={(e) => this.onPress(e)}
         >
 
-        { this.props.hotSpotPins.length !== 0 ? this.renderHotSpots.call(this) : void 0 }
+        { this.props.hotSpotVisibility && this.props.hotSpotPins.length !== 0 ? this.renderHotSpots.call(this) : void 0 }
         { Object.keys(this.props.markers).length !== 0 ? this.renderMarkers.call(this) : void 0 }
         { Object.keys(this.props.markers).length !== 0 ? this.animateMarkers.call(this) : void 0 }
         
