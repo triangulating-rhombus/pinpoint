@@ -390,3 +390,12 @@
 {"v":0,"level":30,"name":"newrelic","hostname":"r","pid":16673,"time":"2016-02-10T00:26:16.336Z","msg":"Starting New Relic for Node.js connection process."}
 {"v":0,"level":30,"name":"newrelic","hostname":"r","pid":16673,"time":"2016-02-10T00:26:19.330Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/1236438/applications/17533141","component":"new_relic_response"}
 {"v":0,"level":30,"name":"newrelic","hostname":"r","pid":16673,"time":"2016-02-10T00:26:19.331Z","msg":"Connected to collector-151.newrelic.com:443 with agent run ID 75304276650563805.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"r","pid":16673,"time":"2016-02-10T00:27:39.462Z","msg":"not collecting slow-query because transaction_tracer.record_sql was set to off","component":"query_tracer"}
+{"v":0,"level":30,"name":"newrelic","hostname":"r","pid":16673,"time":"2016-02-10T00:28:34.235Z","msg":"not collecting slow-query because transaction_tracer.record_sql was set to off","component":"query_tracer"}
+{"v":0,"level":30,"name":"newrelic","hostname":"r","pid":16673,"time":"2016-02-10T00:29:25.903Z","msg":"not collecting slow-query because transaction_tracer.record_sql was set to off","component":"query_tracer"}
+{"v":0,"level":30,"name":"newrelic","hostname":"r","pid":16673,"time":"2016-02-10T00:29:57.533Z","msg":"not collecting slow-query because transaction_tracer.record_sql was set to off","component":"query_tracer"}
+{"v":0,"level":30,"name":"newrelic","hostname":"r","pid":16673,"time":"2016-02-10T00:30:02.795Z","msg":"not collecting slow-query because transaction_tracer.record_sql was set to off","component":"query_tracer"}
+{"v":0,"level":30,"name":"newrelic","hostname":"r","pid":16825,"time":"2016-02-10T00:31:07.868Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"r","pid":16825,"time":"2016-02-10T00:31:12.711Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/1236438/applications/17533141","component":"new_relic_response"}
+{"v":0,"level":30,"name":"newrelic","hostname":"r","pid":16825,"time":"2016-02-10T00:31:12.712Z","msg":"Connected to collector-151.newrelic.com:443 with agent run ID 75304276650576664.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"r","pid":16825,"time":"2016-02-10T00:31:56.284Z","msg":"not collecting slow-query because transaction_tracer.record_sql was set to off","component":"query_tracer"}

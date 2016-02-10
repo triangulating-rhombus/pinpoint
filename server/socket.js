@@ -11,8 +11,8 @@ var Utils = require('./utils');
 var MIN_VISIT_LENGTH = 3; // seconds stopped in one location to count as a visit
 var ALLOWED_DISTANCE = 10; // meters away from last position to count as continuing a visit
 var NUM_FAKE_USERS = 10; // used only if includeFakeUsers is true
-const DEFAULT_FAKE_LATITUDE = 37.331177;
-const DEFAULT_FAKE_LONGITUDE = -122.031641;
+const DEFAULT_FAKE_LATITUDE = 37.783697;
+const DEFAULT_FAKE_LONGITUDE = -122.408966;
 
 // ---- Global variables ----
 var serverSocket = null;
