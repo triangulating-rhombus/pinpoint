@@ -35,7 +35,7 @@ function setPoi(poi) {
 
 // Async action creator, which uses thunk to handle the promise
 // This returns a FUNCTION, which thunk will automatically intercept
-// Thunk will run the function and then dispatch the appropriate vanilla action creator
+// Thunk will run the function and then dispatch the appropriate action creators
 export default function (latitude, longitude, tag) {
   return (dispatch) => {
 
