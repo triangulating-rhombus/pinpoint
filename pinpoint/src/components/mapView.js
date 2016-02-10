@@ -144,7 +144,7 @@ export default class Map extends Component {
     const { latitude, longitude } = e.nativeEvent.coordinate;
     console.log('pressed map:', latitude, longitude);
 
-    this.props.setPoi(latitude, longitude, this.props.settings.tag1);
+    this.props.setPoi(latitude, longitude, this.props.tag);
 
     // For some reason, TabBarIOS counts a press on the map as a press on the map icon
     // This sets the displayed tab to mapTab again, so we have to delay the change to statsTab
@@ -162,7 +162,7 @@ export default class Map extends Component {
   setItem(tag){
     const { connection, id } = this.props.socket;
     connection.emit('changeFilterTag', { socketID: id, filterTag: tag });
-
+    this.props.setTag(tag);
     // ---- Copied from action_add_socket as a quick fix ----
     function emitSnapshot(gpsData) {
       var socketData = {

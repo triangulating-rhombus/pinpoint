@@ -23,6 +23,9 @@ export const SET_POI = 'SET_POI';
 export const SHOW_STATS = 'SHOW_STATS';
 export const HIDE_STATS = 'HIDE_STATS';
 
+// Active Tag
+export const SET_TAG = 'SET_TAG';
+
 // Hotspot Filtering
 export const DISPLAY_HOTSPOTS = 'DISPLAY_HOTSPOTS';
 

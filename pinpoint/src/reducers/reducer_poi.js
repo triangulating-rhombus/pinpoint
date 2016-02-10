@@ -13,9 +13,9 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch(action.type) {
-  case SET_POI:
-    return action.payload;
-  default:
-    return state;
+    case SET_POI:
+      return action.payload;
+    default:
+      return state;
   }
 }

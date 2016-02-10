@@ -90,7 +90,7 @@ export default class Stats extends Component {
                 Close
               </Button>
               <RNChart style={styles.chart}
-                chartTitle={`Visits by ${this.props.settings.tag1} people @ (${latitude}, ${longitude})`}
+                chartTitle={`Visits by ${this.props.tag} people @ (${latitude}, ${longitude})`}
                 chartTitleColor='black'
                 labelTextColor='black'
                 labelFontSize={15}

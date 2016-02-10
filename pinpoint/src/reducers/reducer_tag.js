@@ -1,10 +1,10 @@
-import { REDIRECT_PAGE } from '../constants/actionTypes';
+import { SET_TAG } from '../constants/actionTypes';
 
 export default (state = null, action) => {
   switch(action.type) {
-    case REDIRECT_PAGE:
+    case SET_TAG:
       return action.payload;
     default:
       return state;
   }
-};
+}

@@ -39,6 +39,7 @@ function setPoi(poi) {
 export default function (latitude, longitude, tag) {
   return (dispatch) => {
 
+    console.log('setting poi to use tag:', tag);
     // First update state to indicate that stats are loading
     const unloadedStats = { error: 'NOT_LOADED' };
     dispatch(setPoi({ latitude, longitude, tag, stats: unloadedStats }));
