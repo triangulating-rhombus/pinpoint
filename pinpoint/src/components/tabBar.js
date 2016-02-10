@@ -50,8 +50,8 @@ export default class TabBar extends Component {
   render() {
     return (
       <TabBarIOS
-        tintColor="white"
-        barTintColor="#000064">
+        tintColor="black"
+        barTintColor="white">
         <Icon.TabBarItem
           title="Statistics"
           iconName="stats-bars"

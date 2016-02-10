@@ -1,6 +1,8 @@
 import React, { Component, View, Text, TextInput, Image } from 'react-native';
 import styles from '../styles/styles';
 import Button from "./button.js";
+import logo from '../assets/images/pinpointlogo.png'
+import backgroundPic from '../assets/images/backgroundImage.png'
 
 export default class Login extends Component {
   constructor(props) {
@@ -29,29 +31,41 @@ export default class Login extends Component {
 
   render() {
     return (
-      <Image style={styles.container} source={{uri:'http://images7.alphacoders.com/361/361917.jpg'}} >
-        <Text style={styles.formLabel}>Username</Text>
-        <TextInput 
-          style={styles.inputStyle} 
-          value={this.state.username}
-          onChangeText={ username => this.setState({ username }) }
-          placeholder="Enter your username" 
-        />
 
-        <Text style={styles.formLabel}>Password:</Text>
-        <TextInput 
-          style={styles.inputStyle} 
-          value={this.state.password}
-          secureTextEntry={true}
-          onChangeText={ password => this.setState({ password }) }  
-          placeholder="Enter your password"
-        />
+      <Image style={styles.backgroundImage} source={{uri:"http://i.imgur.com/VQx0ife.jpg"}} resizeMode='cover'>
+          <Image style={styles.logo} source={logo} resizeMode='contain'/>
+          
+          <View style={styles.textWrapper}>
+            <View style={styles.border}>
+              <TextInput 
+                style={styles.inputStyle} 
+                value={this.state.username}
+                onChangeText={ username => this.setState({ username }) }
+                placeholderTextColor="white"
+                placeholder="username" 
+              />
+            </View>
+            
+            <View style={styles.border}>
+              <TextInput 
+                style={styles.inputStyle} 
+                value={this.state.password}
+                secureTextEntry={true}
+                onChangeText={ password => this.setState({ password }) }  
+                placeholderTextColor="white"
+                placeholder="password"
+              />
+            </View>
+          </View>
 
-        <Button text="Login" clickAction={this.onSubmit.bind(this)} />
-        <Text style={styles.buttonLabel}>Don't have an account?</Text>
-        <Button text="Signup" clickAction={() => this.redirectTo('Signup') } />
+          <View style={styles.loginButtons}>
+            <Button text="Login" clickAction={this.onSubmit.bind(this)} />
+            <Text style={styles.buttonLabel}>Don't have an account?</Text>
+            <Button text="Signup" clickAction={() => this.redirectTo('Signup') } />
+          </View>
 
-        <Text>{this.showError.call(this)}</Text>
+          <Text style={styles.errorMessage}>{this.showError.call(this)}</Text>
+
       </Image>
     );
   }

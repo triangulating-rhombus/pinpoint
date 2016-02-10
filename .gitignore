@@ -4,6 +4,7 @@
 
 # Logfile
 logfile
+newrelic_agent.log
 
 # Xcode
 #

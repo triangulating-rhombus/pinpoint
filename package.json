@@ -17,6 +17,7 @@
     "express": "^4.13.4",
     "geolib": "^2.0.18",
     "jwt-simple": "^0.4.1",
+    "newrelic": "^1.25.1",
     "node-geocoder": "^3.6.2",
     "nodemon": "^1.8.1",
     "pg": "^4.4.3",

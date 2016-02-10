@@ -12,6 +12,10 @@ import React, {
 } from 'react-native';
 
 import image from '../assets/images/greenDot-small-whiteBorder.png';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+var {height, width} = Dimensions.get('window');
+
 
 // import styles from '../styles/styles';
 import MapView from 'react-native-maps';
@@ -107,7 +111,7 @@ export default class Map extends Component {
 
   renderHotSpots(){
     return this.props.hotSpotPins.map((hotSpots) => {
-    
+      console.log('Hotspots are:', hotSpots)
       return (
         <MapView.Circle 
           center={hotSpots}
@@ -183,13 +187,17 @@ export default class Map extends Component {
 
     return filterOptions;
   }
-
+        // <TouchableHighlight style={styles.button} onPress={this.showPopover.bind(this)}>
+        //   <Text style={styles.text}>Filter</Text>
+        // </TouchableHighlight>
   renderFilterBar(){
     return (
       <View style={styles.overlay}>
-        <TouchableHighlight style={styles.button} onPress={this.showPopover.bind(this)}>
-          <Text style={styles.text}>Filter</Text>
-        </TouchableHighlight>
+      <TouchableHighlight style={styles.wrapper} underlayColor='#FFE' onPress={this.showPopover.bind(this)}>
+        <Icon name="ios-pricetags" size={25} style={styles.filterIcon} >
+          <Text style={styles.button}></Text>
+        </Icon>
+      </TouchableHighlight>
         <ListPopover
           list={this.getFilterOptions.call(this)}
           isVisible={this.state.isVisible}
@@ -201,13 +209,6 @@ export default class Map extends Component {
   }
 
   render() {
-     //<MapView.Circle 
-          // center={{longitude: -122.026484, latitude: 37.330041}}
-          //radius={this.state.radius}
-          //strokeColor='rgba(200, 0, 0, 0.5)'
-          //fillColor='rgba(200, 0, 0, 0.5)'
-        ///>
- 
     return (
       <View style={styles.container}>
         <MapView.Animated
@@ -226,20 +227,21 @@ export default class Map extends Component {
 
         { this.props.socket.connection && this.props.settings ? this.renderFilterBar.call(this) : void 0 }
 
+
+
       </View>
     );
   }
 };
-
 var styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 0,
+    top: 20,
     left: 0,
     right: 0,
     bottom: 0,
     justifyContent: 'flex-end',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   map: {
     position: 'absolute',
@@ -248,28 +250,40 @@ var styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
+  wrapper: {
+    borderRadius:5,
+    marginLeft:10,
+    width:50,
+    borderWidth:1.5,
+    padding:3,
+    backgroundColor:'white',
+    shadowRadius:10,
+    borderColor:'black'
+  },
   overlay: {
     position: 'relative',
     top: 20,
     left: 0,
     right: 0,
     bottom: 0,
-    flex:1
+    flex:1,
   },
   text: {
-    position: 'relative',
-    flex:0,
-    color:'white'
+    position:'relative',
+    color:'white',
+    textAlign:'center'
+  },
+
+  filterIcon:{
+    alignSelf:"center"
   },
 
   button: {
     position: 'relative',
-    flex: 0,
-    borderRadius: 4,
     padding: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    backgroundColor: 'blue',
+    marginLeft:5,
+    borderRadius:5,
+    backgroundColor: '#222',
     opacity:.4
   },
 });

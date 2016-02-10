@@ -43,6 +43,7 @@ export default function submitSettings(settings, token, successCallback, store, 
 
     if(store.hotSpotVisibility){
       let tag = settings.tag1;
+      console.log("What we are sending back to Backend", tag)
       getHotspots(tag)
       .then(
         response => {
