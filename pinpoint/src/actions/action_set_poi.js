@@ -18,6 +18,13 @@ function getFriendlyExplanation(errorOrWarningName) {
 
 // Vanilla action creator
 function setPoi(poi) {
+  // Augment stats with friendlyExplanation based on error/warning
+  const { stats } = poi;
+  if (stats.error || stats.warning) {
+    stats.friendlyExplanation = getFriendlyExplanation(stats.error || stats.warning);
+  }
+
+  // Send action
   return {
     type: SET_POI,
     payload: poi
@@ -27,30 +34,28 @@ function setPoi(poi) {
 // Async action creator, which uses thunk to handle the promise
 // This returns a FUNCTION, which thunk will automatically intercept
 // Thunk will run the function and then dispatch the appropriate vanilla action creator
-export default function (latitude, longitude) {
+export default function (latitude, longitude, tag) {
   return (dispatch) => {
+
+    // First update state to indicate that stats are loading
+    const unloadedStats = { error: 'NOT_LOADED' };
+    dispatch(setPoi({ latitude, longitude, tag, stats: unloadedStats }));
+
+    // Upon request completion, update state with response
     sendRequest('POST', '/stats', {
       lat: latitude,
       lon: longitude,
-      tag: 'Tennis'
+      tag
     })
     .then(
       response => {
         const stats = JSON.parse(response._bodyText);
-        if (stats.error || stats.warning) {
-          stats.friendlyExplanation = getFriendlyExplanation(stats.error || stats.warning);
-        }
-        dispatch(setPoi({
-          latitude,
-          longitude,
-          tag: 'Tennis',
-          stats
-        }));
-        // successCallback();
+        console.log('response from stats:', stats);
+        dispatch(setPoi({ latitude, longitude, tag, stats }));
       },
       error => {
-        console.log('error');
-        // successCallback();
+        const stats = { error };
+        dispatch(setPoi({ latitude, longitude, tag, stats }));
       }
     );
   }

@@ -1,5 +1,3 @@
-const DEFAULT_TAG = 'Tennis';
-
 import React, { Component, View, Text, StyleSheet } from 'react-native';
 import RNChart from 'react-native-chart';
 // import styles from '../styles/styles';
@@ -9,7 +7,7 @@ export default class Stats extends Component {
   // this.props.poi.stats is an object returned by the server
   //   of the form: { Sun: 10, Mon: 14, ... }
   getChartData() {
-    const dayNames = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const values = dayNames.map(dayName => this.props.poi.stats[dayName] || 0);
     return [
       {
@@ -41,7 +39,7 @@ export default class Stats extends Component {
         <View style={styles.container}>
           <Text style={styles.formLabel}>By Day</Text>
           <RNChart style={styles.chart}
-            chartTitle={`Visits by ${DEFAULT_TAG} people @ (${latitude}, ${longitude})`}
+            chartTitle={`Visits by ${this.props.settings.tag1} people @ (${latitude}, ${longitude})`}
             chartTitleColor='black'
             labelTextColor='black'
             labelFontSize={15}

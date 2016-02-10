@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import Stats from '../components/stats.js';
 
 // Makes user state available to component
-function mapStateToProps({ user, poi }) {
-  return { user, poi };
+function mapStateToProps({ user, poi, settings }) {
+  return { user, poi, settings };
 }
 
 export default connect(mapStateToProps)(Stats);

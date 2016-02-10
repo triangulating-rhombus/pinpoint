@@ -150,6 +150,7 @@ app.post('/stats', function(req, res){
 
 	controller.visitStats(lat, lon, tag) // returns the object to send to client
 	.then(function(responseBody) {
+		console.log('responseBody from visitStats:', responseBody);
 		if (responseBody.error) {
 			respondWithError(res, responseBody.error);
 		} else {
