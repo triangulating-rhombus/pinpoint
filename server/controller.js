@@ -183,7 +183,7 @@ var findUserTags = function (userID) {
 var visitStats = function(lat, lon, tag){
   var dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  console.log('about to resolve address for POST to /stats');
+  console.log('getting stats for tag:', tag);
   return geocoder.reverse({ lat: lat, lon: lon })
     .then(function(loc) {
 

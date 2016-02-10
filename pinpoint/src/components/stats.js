@@ -40,12 +40,10 @@ export default class Stats extends Component {
   }
 
   renderContent() {
-    console.log('rendering content');
     const { explanation } = this.props.stats;
     if (explanation) {
       return (<Text>{explanation}</Text>);
     } else {
-      console.log('rendering chart:', this.getChartData());
       const { latitude, longitude } = this.props.stats.poi;
       return (<RNChart style={styles.chart}
                 chartTitle={`Visits by ${this.props.tag} people @ (${latitude}, ${longitude})`}
