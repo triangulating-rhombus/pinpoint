@@ -1,15 +1,8 @@
 var Sequelize = require('sequelize');
-<<<<<<< f4c099d497958338fd58a22a50ace333d902f2ba
 
-
-
-=======
->>>>>>> getstats works without tag
 // var sequelize = process.env.DATABASE_URL ?
 //   new Sequelize(process.env.DATABASE_URL) :
 //   new Sequelize(process.env.ENV_DB || 'pinpointdb', 'postgres', '', { dialect: 'postgres', logging: false });
-
-<<<<<<< f4c099d497958338fd58a22a50ace333d902f2ba
 
 var sequelize = new Sequelize("postgres://xcjdlmsnudlseg:6V2Hd0n_ICoe-ZhVlYx2jCSDk5@ec2-54-225-199-245.compute-1.amazonaws.com:5432/df5pdun0nqbaat", {
   dialect: 'postgres',
@@ -17,21 +10,6 @@ var sequelize = new Sequelize("postgres://xcjdlmsnudlseg:6V2Hd0n_ICoe-ZhVlYx2jCS
     ssl: true
   }
 });
-
-// var sequelize = new Sequelize("postgres://xcjdlmsnudlseg:6V2Hd0n_ICoe-ZhVlYx2jCSDk5@ec2-54-225-199-245.compute-1.amazonaws.com:5432/df5pdun0nqbaat", {
-//  dialect: 'postgres',
-//  dialectOptions: {
-//    ssl: true
-//  }
-// });
-=======
-var sequelize = new Sequelize("postgres://xcjdlmsnudlseg:6V2Hd0n_ICoe-ZhVlYx2jCSDk5@ec2-54-225-199-245.compute-1.amazonaws.com:5432/df5pdun0nqbaat", {
- dialect: 'postgres',
- dialectOptions: {
-   ssl: true
- }
-});
->>>>>>> getstats works without tag
 
 var Visits = sequelize.define('Visits', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
