@@ -53,8 +53,8 @@ var geocoderProvider = 'google';
 var httpAdapter = 'https';
 
 var extra = {
-    apiKey: /*'AIzaSyDZJzu5MvHz0s6PsokNcMWy03bRpoGiJ74', */
-    "AIzaSyCtsxXD-6Dl-dCzmvSDneXFvCknDYJ3GGA",
+    apiKey: 'AIzaSyDZJzu5MvHz0s6PsokNcMWy03bRpoGiJ74', 
+    // "AIzaSyCtsxXD-6Dl-dCzmvSDneXFvCknDYJ3GGA",
     // 'AIzaSyAzos97uZL22RDdvapJ4UdIci4nk3sRwBA',
     formatter: null
 };
@@ -69,7 +69,8 @@ var getHotSpots = function (tag, callback) {
     include: [ model.Visits ]
   }).then(function(locations) {
     if (locations.length === 0){
-      callback("no results")
+      callback({ warning: 'NO_HOTSPOTS' });
+      return;
     }
 
     var visits = locations[0].dataValues.Visits;
@@ -93,10 +94,10 @@ var getHotSpots = function (tag, callback) {
 
   async.map(result, geocoder.geocode.bind(geocoder), function(err, results){
     var result = _.map(results, function(location){
-      return {longitude:location[0].longitude, latitude: location[0].latitude};
+      return {longitude: location[0].longitude, latitude: location[0].latitude};
     })
 
-    callback(result);
+    callback({ data: result });
   });
   })
 };

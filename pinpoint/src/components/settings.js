@@ -31,6 +31,14 @@ export default class Settings extends Component {
     }, 1000);
   }
 
+  updateHotspotsVisibility(isVisible) {
+    if (isVisible) {
+      this.props.showHotspots();
+    } else {
+      this.props.hideHotspots();
+    }
+  }
+
   onSubmit() {
     const settingsToSend = {
       tag1: this.state.tempTag1,
@@ -42,10 +50,11 @@ export default class Settings extends Component {
     this.props.updateSettings(
       settingsToSend,
       this.props.user.token,
-      () => this.temporarilyShowSuccessMessage(),
-      this.props,
-      this.props.navigator 
+      () => this.temporarilyShowSuccessMessage()
     );
+    if (this.props.hotspots.isVisible) {
+      this.props.updateHotspots(this.props.tag);
+    }
   }
 
   logout() {
@@ -87,12 +96,12 @@ export default class Settings extends Component {
         />
 
 
-        <Text style={styles.formLabel}>Showcase Hotspots</Text>
+        <Text style={styles.formLabel}>Show Hotspots</Text>
 
         <Switch
-          onValueChange={(value) => this.props.toggleHotspot() }
+          onValueChange={ this.updateHotspotsVisibility.bind(this) }
           style={{marginBottom:10}}
-          value={this.props.hotSpotVisibility}
+          value={this.props.hotspots.isVisible}
         />
 
         <Button text="Update settings" clickAction={this.onSubmit.bind(this)} />

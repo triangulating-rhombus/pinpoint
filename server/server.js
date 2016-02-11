@@ -129,7 +129,7 @@ app.get('/settings', function (req, res) {
 	Hotspots
 ***** */
 
-app.get('/hotspot', function (req, res) {
+app.get('/hotspots', function (req, res) {
 	var tag = req.headers['tag']; 
 
 	controller.getHotSpots(tag, function(result){

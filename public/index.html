@@ -98,7 +98,11 @@
             <td rowspan="2">/hotspot</td>
             <td rowspan="2">{ tag: String }</td>
             <td class="success">200</td>
-            <td class="success">[<br>&nbsp;&nbsp;{ lat: Number, lon: Number },<br>&nbsp;&nbsp;{ lat: Number, lon: Number },<br>&nbsp;&nbsp;etc.<br>]</td>
+            <td class="success">
+              { data: [<br>&nbsp;&nbsp;{ lat: Number, lon: Number },<br>&nbsp;&nbsp;{ lat: Number, lon: Number },<br>&nbsp;&nbsp;etc.<br>]}<br>
+              OR<br>
+              { warning: String }
+              </td>
           </tr>
           <tr>
             <td class="danger">None</td>
