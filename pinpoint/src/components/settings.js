@@ -87,7 +87,7 @@ export default class Settings extends Component {
         />
 
 
-        <Text style={styles.formLabel}>Showcase Hotspots</Text>
+        <Text style={styles.formLabel}>Show Hotspots</Text>
 
         <Switch
           onValueChange={(value) => this.props.toggleHotspot() }

@@ -27,5 +27,5 @@ export const HIDE_STATS = 'HIDE_STATS';
 export const SET_TAG = 'SET_TAG';
 
 // Hotspot Filtering
-export const DISPLAY_HOTSPOTS = 'DISPLAY_HOTSPOTS';
+export const UPDATE_HOTSPOTS = 'UPDATE_HOTSPOTS';
 

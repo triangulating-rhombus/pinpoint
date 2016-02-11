@@ -24,6 +24,7 @@ export default (user, navigator, geoNavigator) => {
           body.username = user.username;
           dispatch(addSocket(body.token, geoNavigator));
           dispatch(getSettings(body.token));
+          console.log('hi', response.status);
           navigator.immediatelyResetRouteStack([{ name: 'TabBar' }]);
         }
         dispatch(loginUser(body));

@@ -14,7 +14,7 @@ function getSettings(settings) {
 // Thunk will run the function and then dispatch the appropriate vanilla action creator
 export default function requestSettings(token) {
   return (dispatch) => {
-    sendRequest('GET', '/settings', null, token)
+    sendRequest('GET', '/settings', null, { 'x-access-token': token })
     .then(
       response => {
         const body = JSON.parse(response._bodyText);

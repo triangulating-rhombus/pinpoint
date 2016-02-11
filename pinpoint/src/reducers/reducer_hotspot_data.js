@@ -1,8 +1,13 @@
-import { DISPLAY_HOTSPOTS } from '../constants/actionTypes';
+import { UPDATE_HOTSPOTS } from '../constants/actionTypes';
+
+const INITIAL_STATE = {
+  data: [],
+  isVisible: false
+};
 
 export default function(state = [], action) {
-  switch(action.type){
-    case DISPLAY_HOTSPOTS:
+  switch(action.type) {
+    case UPDATE_HOTSPOTS:
       return action.payload;
     default:
       return state;
