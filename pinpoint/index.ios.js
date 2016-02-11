@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
 import rootReducer from './src/reducers';
-import Router from './src/router/router.js';
+import Router from './src/components/router';
 
 // Applies thunk middleware to handle more complex action dispatching
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
@@ -27,7 +27,7 @@ var store = createStoreWithMiddleware(rootReducer);
 
 
 class Pinpoint extends Component {
-  // Provider will pass down the application state to all components that navigation requires.
+  // Makes store accessible to all components
   render() {
     return (
       <Provider store={store}>
