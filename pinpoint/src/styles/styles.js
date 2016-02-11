@@ -11,6 +11,12 @@ export default StyleSheet.create({
     backgroundColor: 'black',
     opacity:.6
   },
+   formContainer: {
+    flex: 1,
+    justifyContent: 'center', // vertical align
+    alignItems: 'center', // horizontal align
+    backgroundColor:'#464646'
+  },
   logo:{
     width:150,
     height:150,
@@ -35,12 +41,13 @@ export default StyleSheet.create({
   settingsInput: {
     height: 40,
     padding: 6,
+    paddingLeft:10,
     alignSelf: 'center',
-    marginBottom: 7,
+    marginBottom: 14,
     width: 300,
     color: 'white',
     borderColor:'white',
-    borderWidth:1
+    borderWidth:1.5,
   },
   backgroundImage: {
     flex: 1,
