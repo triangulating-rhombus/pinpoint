@@ -21,9 +21,9 @@ export const HIDE_HOTSPOTS = 'HIDE_HOTSPOTS';
 export const UPDATE_HOTSPOTS = 'UPDATE_HOTSPOTS';
 
 // Stats
-export const UPDATE_STATS = 'UPDATE_STATS';
 export const SHOW_STATS = 'SHOW_STATS';
 export const HIDE_STATS = 'HIDE_STATS';
+export const UPDATE_STATS = 'UPDATE_STATS';
 
-// Active Tag
+// Tag
 export const SET_TAG = 'SET_TAG';

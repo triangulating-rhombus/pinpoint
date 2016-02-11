@@ -1,4 +1,4 @@
-import { UPDATE_STATS } from '../constants/actionTypes';
+import { UPDATE_STATS } from './constants';
 import { sendRequest } from './utils';
 
 import showStats from './action_show_stats';

@@ -1,4 +1,4 @@
-import { REDIRECT_PAGE } from '../constants/actionTypes';
+import { REDIRECT_PAGE } from './constants';
 
 export default function (navigator, routeId) {
   navigator.push({id: routeId});

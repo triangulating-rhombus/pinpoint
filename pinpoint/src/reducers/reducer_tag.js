@@ -1,4 +1,4 @@
-import { SET_TAG } from '../constants/actionTypes';
+import { SET_TAG } from '../actions/constants';
 
 export default (state = null, action) => {
   switch(action.type) {

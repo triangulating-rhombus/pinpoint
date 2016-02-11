@@ -1,4 +1,4 @@
-import { SIGNUP_USER, LOGIN_USER, LOGOUT_USER } from '../constants/actionTypes';
+import { SIGNUP_USER, LOGIN_USER, LOGOUT_USER } from '../actions/constants';
 
 const INITIAL_STATE = {
   username: null,

@@ -1,4 +1,4 @@
-import { SHOW_HOTSPOTS } from '../constants/actionTypes';
+import { SHOW_HOTSPOTS } from './constants';
 
 export default function showHotspots() {
   return {

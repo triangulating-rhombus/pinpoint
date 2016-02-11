@@ -1,4 +1,4 @@
-import { ADD_SOCKET } from '../constants/actionTypes';
+import { ADD_SOCKET } from './constants';
 import { createSocketConnection } from './utils';
 
 import updateAction from './action_update_markers';

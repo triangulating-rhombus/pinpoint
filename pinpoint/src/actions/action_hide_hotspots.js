@@ -1,4 +1,4 @@
-import { HIDE_HOTSPOTS } from '../constants/actionTypes';
+import { HIDE_HOTSPOTS } from './constants';
 
 export default function hideHotspots() {
   return {

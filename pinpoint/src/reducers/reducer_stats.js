@@ -9,7 +9,7 @@ const explanations = {
   'ZERO_RESULTS': 'Sorry - we couldn\'t quite figure out that address. Try another spot?'
 }
 
-import { UPDATE_STATS, SHOW_STATS, HIDE_STATS } from '../constants/actionTypes';
+import { UPDATE_STATS, SHOW_STATS, HIDE_STATS } from '../actions/constants';
 
 const INITIAL_STATE = {
   poi: { latitude: DEFAULT_LATITUDE, longitude: DEFAULT_LONGITUDE },

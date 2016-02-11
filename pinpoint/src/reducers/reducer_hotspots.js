@@ -1,4 +1,4 @@
-import { UPDATE_HOTSPOTS, SHOW_HOTSPOTS, HIDE_HOTSPOTS } from '../constants/actionTypes';
+import { UPDATE_HOTSPOTS, SHOW_HOTSPOTS, HIDE_HOTSPOTS } from '../actions/constants';
 
 const INITIAL_STATE = {
   data: [],

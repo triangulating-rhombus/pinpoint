@@ -1,4 +1,4 @@
-import { LOGIN_USER } from '../constants/actionTypes';
+import { LOGIN_USER } from './constants';
 import { sendRequest } from './utils';
 
 import addSocket from './action_add_socket';

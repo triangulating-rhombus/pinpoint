@@ -1,4 +1,4 @@
-import { CLEAR_SETTINGS } from '../constants/actionTypes';
+import { CLEAR_SETTINGS } from './constants';
 
 export default function clearSettings() {
   return {

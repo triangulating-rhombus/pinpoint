@@ -1,4 +1,4 @@
-import { SHOW_STATS } from '../constants/actionTypes';
+import { SHOW_STATS } from './constants';
 
 export default function showStats() {
   return {

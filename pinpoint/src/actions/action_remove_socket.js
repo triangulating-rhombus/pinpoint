@@ -1,4 +1,4 @@
-import { REMOVE_SOCKET } from '../constants/actionTypes';
+import { REMOVE_SOCKET } from './constants';
 
 export default function removeSocket() {
   return {

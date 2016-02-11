@@ -1,4 +1,4 @@
-import { GET_SETTINGS } from '../constants/actionTypes';
+import { GET_SETTINGS } from './constants';
 import { sendRequest } from './utils';
 
 // Vanilla action creators
