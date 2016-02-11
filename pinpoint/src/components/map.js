@@ -172,12 +172,24 @@ export default class Map extends Component {
     );
   }
 
+  changeToRegion(data){
+
+    var newLocation = {
+      longitudeDelta: data.longitudeDelta,
+      latitude: data.latitude,
+      longitude: data.longitude,
+      latitudeDelta: data.latitudeDelta  
+    };
+
+    this.setState({location: newLocation })
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <MapView.Animated
-          style={styles.map}
-          region={{longitudeDelta: 0.05000044296161832, latitude: 37.77644419981398, longitude: -122.4142810713981, latitudeDelta: 0.0636722351829988}}
+          style={styles.map}          
+          initialRegion={{longitudeDelta: 0.05000044296161832, latitude: 37.77644419981398,longitude: -122.4142810713981, latitudeDelta: 0.0636722351829988  }}
           showsUserLocation={true}
           followUserLocation={true}
           onPress={(e) => this.onPress(e)}
