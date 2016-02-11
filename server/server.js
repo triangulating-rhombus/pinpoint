@@ -184,6 +184,6 @@ app.post('/stats', function(req, res){
 	Socket for user geolocation updates
 ***** */
 
-var serverSocket = require('./socket')(server, false); // true will include fake users
+var serverSocket = require('./socket')(server, true); // true will include fake users
 
 module.exports = server

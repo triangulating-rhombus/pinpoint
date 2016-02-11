@@ -87,7 +87,7 @@ var connectHandler = function(snapshot) {
   var self = this;
   // Snapshots usually just contain socketID and position/time
   // On connection, the snapshot also includes the user's JWT token to authenticate them
-  console.log("Client connected with socketID: ", snapshot.socketID)
+
   var username = JWT.decode(snapshot.token, 'secret');
   controller.findUser({ username: username })
   .then(function(user) {
