@@ -18,9 +18,9 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 // Connects reducers to store
 var store = createStoreWithMiddleware(rootReducer);
 
-store.subscribe( () => {
-  console.log('Markers:', store.getState().markers);
-});
+// store.subscribe( () => {
+//   console.log('Markers:', store.getState().markers);
+// });
 
 // This should actually be called after login
 // But we put it here for now for testing

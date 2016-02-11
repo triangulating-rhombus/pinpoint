@@ -9,6 +9,8 @@ const INITIAL_STATE = {
 export default function(state = INITIAL_STATE, action) {
   switch(action.type) {
     case UPDATE_HOTSPOTS:
+      console.log('hotspots payload:', action.payload);
+      console.log('new hotspots state:', {...state, ...action.payload});
       return { ...state, ...action.payload };
     case SHOW_HOTSPOTS:
       return { ...state, isVisible: true };

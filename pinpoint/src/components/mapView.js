@@ -122,7 +122,6 @@ export default class Map extends Component {
 
   renderHotSpots(){
     return this.props.hotspots.data.map((hotSpots) => {
-      console.log('Hotspots are:', hotSpots)
       return (
         <MapView.Circle 
           center={hotSpots}
