@@ -7,7 +7,7 @@ import React, {
   Component,
 } from 'react-native';
 
-import styles from '../styles/styles';
+import styles from '../assets/styles/styles';
 
 const Button = (props)=> {
     return (

@@ -2,6 +2,7 @@
 import React, { Component, StyleSheet, TabBarIOS, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import styles from '../assets/styles/styles';
 import Settings from '../containers/settings-container';
 import Stats from '../containers/stats-container';
 import MapView from '../containers/map-container';
@@ -88,14 +89,3 @@ export default class TabBar extends Component {
   }
 
 }
-
-var styles = StyleSheet.create({
-  tabContent: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  tabText: {
-    color: 'white',
-    margin: 50,
-  },
-});

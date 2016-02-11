@@ -106,5 +106,15 @@ export default StyleSheet.create({
   errorMessage: {
     marginTop:5,
     color:'white'
+  },
+
+  // TabBar
+  tabContent: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  tabText: {
+    color: 'white',
+    margin: 50,
   }
 });

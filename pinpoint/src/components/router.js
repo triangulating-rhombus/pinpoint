@@ -2,7 +2,7 @@ import React, {
   Component,
   Navigator
 } from 'react-native';
-import styles from '../styles/styles';
+import styles from '../assets/styles/styles';
 
 import Login from '../containers/login-container.js';
 import Signup from '../containers/signup-container.js';

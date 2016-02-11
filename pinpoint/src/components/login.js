@@ -1,5 +1,5 @@
 import React, { Component, View, Text, TextInput, Image } from 'react-native';
-import styles from '../styles/styles';
+import styles from '../assets/styles/styles';
 import Button from "./button.js";
 import logo from '../assets/images/pinpointlogo.png'
 import backgroundPic from '../assets/images/backgroundImage.png'

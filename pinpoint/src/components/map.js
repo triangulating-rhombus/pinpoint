@@ -20,7 +20,7 @@ import StatsModal from '../containers/stats-container';
 var {height, width} = Dimensions.get('window');
 
 
-// import styles from '../styles/styles';
+// import styles from '../assets/styles/styles';
 import MapView from 'react-native-maps';
 var ListPopover = require('react-native-list-overlay');
 
