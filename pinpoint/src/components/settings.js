@@ -42,10 +42,11 @@ export default class Settings extends Component {
     this.props.updateSettings(
       settingsToSend,
       this.props.user.token,
-      () => this.temporarilyShowSuccessMessage(),
-      this.props,
-      this.props.navigator 
+      () => this.temporarilyShowSuccessMessage()
     );
+    if (this.props.hotSpotVisibility) {
+      this.props.updateHotspots(this.props.tag);
+    }
   }
 
   logout() {

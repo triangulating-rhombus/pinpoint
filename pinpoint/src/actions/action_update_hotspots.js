@@ -14,12 +14,13 @@ export default function getHotspots(tag) {
     .then(
       response => {
         const hotspots = JSON.parse(response._bodyText);
+        console.log('hotspots response:', hotspots);
         if (response.status === 200) {
           dispatch(updateHotspots(hotspots));
         }
       },
       error => {
-
+        console.log(error);
       }
     );
   };
