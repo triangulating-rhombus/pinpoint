@@ -1,4 +1,4 @@
-import { UPDATE_MARKERS } from '../constants/actionTypes';
+import { UPDATE_MARKERS } from './constants';
 
 export default function(currSnapshots) {
   return {

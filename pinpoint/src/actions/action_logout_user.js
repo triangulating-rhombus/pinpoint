@@ -1,4 +1,4 @@
-import { LOGOUT_USER } from '../constants/actionTypes';
+import { LOGOUT_USER } from './constants';
 
 import removeSocket from './action_remove_socket';
 import clearSettings from './action_clear_settings';

@@ -1,4 +1,4 @@
-import { UPDATE_SETTINGS } from '../constants/actionTypes';
+import { UPDATE_SETTINGS } from './constants';
 import { sendRequest } from './utils';
 import updateHotspots from './action_update_hotspots';
 

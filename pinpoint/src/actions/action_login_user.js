@@ -1,4 +1,4 @@
-import { LOGIN_USER } from '../constants/actionTypes';
+import { LOGIN_USER } from './constants';
 import { sendRequest } from './utils';
 
 import addSocket from './action_add_socket';
@@ -24,7 +24,6 @@ export default (user, navigator, geoNavigator) => {
           body.username = user.username;
           dispatch(addSocket(body.token, geoNavigator));
           dispatch(getSettings(body.token));
-          console.log('hi', response.status);
           navigator.immediatelyResetRouteStack([{ name: 'TabBar' }]);
         }
         dispatch(loginUser(body));

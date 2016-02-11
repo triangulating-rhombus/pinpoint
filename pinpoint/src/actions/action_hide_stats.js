@@ -1,4 +1,4 @@
-import { HIDE_STATS } from '../constants/actionTypes';
+import { HIDE_STATS } from './constants';
 
 export default function hideStats() {
   return {

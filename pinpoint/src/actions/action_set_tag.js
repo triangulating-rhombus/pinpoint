@@ -1,4 +1,4 @@
-import { SET_TAG } from '../constants/actionTypes';
+import { SET_TAG } from './constants';
 
 import updateHotspots from './action_update_hotspots';
 

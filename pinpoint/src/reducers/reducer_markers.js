@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import { UPDATE_MARKERS } from '../constants/actionTypes';
+import { UPDATE_MARKERS } from '../actions/constants';
 
 import React, {
   PropTypes,

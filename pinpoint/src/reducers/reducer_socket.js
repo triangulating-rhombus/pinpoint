@@ -1,4 +1,4 @@
-import { ADD_SOCKET, REMOVE_SOCKET } from '../constants/actionTypes';
+import { ADD_SOCKET, REMOVE_SOCKET } from '../actions/constants';
 
 const INITIAL_STATE = {
   connection: null,

@@ -1,6 +1,6 @@
 import React, { Component, View, TextInput, Text, Switch, TouchableHighlight, StatusBar } from 'react-native';
 import Button from './button';
-import styles from '../styles/styles';
+import styles from '../assets/styles/styles';
 
 export default class Settings extends Component {
   constructor(props) {

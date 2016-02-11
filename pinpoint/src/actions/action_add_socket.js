@@ -1,4 +1,4 @@
-import { ADD_SOCKET } from '../constants/actionTypes';
+import { ADD_SOCKET } from './constants';
 import { createSocketConnection } from './utils';
 
 import updateAction from './action_update_markers';
@@ -69,10 +69,8 @@ function addEmitters(dispatch, socketConnection, token, geoNavigator, socketID )
 
   // Sends initial snapshot to server
   geoNavigator.geolocation.getCurrentPosition(gpsData => emitSnapshot(gpsData, true), logError);
-  console.log("add emitters being called")
   // Sends periodic snapshots to server
   const updater = setInterval(function() {
-    console.log('Updating the geonavigator')
     geoNavigator.geolocation.getCurrentPosition(gpsData => emitSnapshot(gpsData, false), logError)  
   }, 1000);
 

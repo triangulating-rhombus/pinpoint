@@ -1,6 +1,6 @@
 import React, { Component, View, Text, StyleSheet, Modal } from 'react-native';
 import RNChart from 'react-native-chart';
-// import styles from '../styles/styles';
+// import styles from '../assets/styles/styles';
 
 import Button from './button';
 
@@ -29,10 +29,6 @@ export default class Stats extends Component {
         data: values
       }
     ];
-  }
-
-  _setModalVisible(visible) {
-    this.setState({modalVisible: visible});
   }
 
   roundToNearestThousandth(float) {

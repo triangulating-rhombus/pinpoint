@@ -1,4 +1,4 @@
-import { GET_SETTINGS, UPDATE_SETTINGS, CLEAR_SETTINGS } from '../constants/actionTypes';
+import { GET_SETTINGS, UPDATE_SETTINGS, CLEAR_SETTINGS } from '../actions/constants';
 
 const INITIAL_STATE = {
   tag1: '',

@@ -1,4 +1,4 @@
-import { UPDATE_STATS } from '../constants/actionTypes';
+import { UPDATE_STATS } from './constants';
 import { sendRequest } from './utils';
 
 import showStats from './action_show_stats';
@@ -19,7 +19,7 @@ export default function getStats(latitude, longitude, tag) {
     const poi = { latitude, longitude };
     
     // First update state to indicate that stats are loading
-    dispatch(updateStats({ poi, error: 'NOT_LOADED' }));
+    dispatch(updateStats({ poi, error: null, warning: 'NOT_LOADED' }));
     dispatch(showStats());
 
     // Upon request completion, update state with response
@@ -30,11 +30,9 @@ export default function getStats(latitude, longitude, tag) {
         // console.log('response from stats:', responseBody);
         const { visitsByDay, address, error, warning } = responseBody;
         dispatch(updateStats({ address, visitsByDay, error, warning }));
-        dispatch(showStats());
       },
       error => {
-        dispatch(updateStats({ error }));
-        dispatch(showStats());
+        dispatch(updateStats({ error, warning: null }));
       }
     );
   }

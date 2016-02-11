@@ -1,4 +1,4 @@
-import { UPDATE_HOTSPOTS } from '../constants/actionTypes';
+import { UPDATE_HOTSPOTS } from './constants';
 import { sendRequest } from './utils';
 
 function updateHotspots(hotspotsInfo) {

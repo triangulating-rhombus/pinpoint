@@ -2,11 +2,12 @@
 import React, { Component, StyleSheet, TabBarIOS, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import Settings from '../containers/settings-container';
-import Stats from '../containers/stats-container';
-import MapView from '../containers/map-container';
+import styles from '../assets/styles/styles';
+import Settings from '../containers/container_settings';
+import Stats from '../containers/container_stats';
+import Map from '../containers/container_map';
 
-const ROUTES = { Settings, Stats, MapView };
+const ROUTES = { Settings, Stats, Map };
 
 export default class TabBar extends Component {
   constructor(props) {
@@ -73,7 +74,7 @@ export default class TabBar extends Component {
               notifCount: this.state.notifCount + 1,
             });
           }}>
-          {this.renderScene('MapView')}
+          {this.renderScene('Map')}
         </Icon.TabBarItem>
         <Icon.TabBarItem
           title="Settings"
@@ -88,14 +89,3 @@ export default class TabBar extends Component {
   }
 
 }
-
-var styles = StyleSheet.create({
-  tabContent: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  tabText: {
-    color: 'white',
-    margin: 50,
-  },
-});

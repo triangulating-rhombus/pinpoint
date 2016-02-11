@@ -15,12 +15,12 @@ import React, {
 import image from '../assets/images/greenDot-small-whiteBorder.png';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomCallout from './customCallout';
-import StatsModal from '../containers/stats-container';
+import Stats from '../containers/container_stats';
 
 var {height, width} = Dimensions.get('window');
 
 
-// import styles from '../styles/styles';
+// import styles from '../assets/styles/styles';
 import MapView from 'react-native-maps';
 var ListPopover = require('react-native-list-overlay');
 
@@ -122,7 +122,6 @@ export default class Map extends Component {
 
   renderHotSpots(){
     return this.props.hotspots.data.map((hotSpots) => {
-      console.log('Hotspots are:', hotSpots)
       return (
         <MapView.Circle 
           center={hotSpots}
@@ -236,7 +235,7 @@ export default class Map extends Component {
 
         { this.props.socket.connection && this.props.settings ? this.renderFilterBar.call(this) : void 0 }
 
-        <StatsModal />
+        <Stats />
 
       </View>
     );

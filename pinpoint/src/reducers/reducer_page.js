@@ -1,4 +1,4 @@
-import { REDIRECT_PAGE } from '../constants/actionTypes';
+import { REDIRECT_PAGE } from '../actions/constants';
 
 export default (state = null, action) => {
   switch(action.type) {
