@@ -42,7 +42,7 @@ export default class Stats extends Component {
   renderContent() {
     const { explanation } = this.props.stats;
     if (explanation) {
-      return (<Text>{explanation}</Text>);
+      return (<Text style={styles.explanation}>{explanation}</Text>);
     } else {
       const { latitude, longitude } = this.props.stats.poi;
       return (
@@ -105,6 +105,10 @@ const styles = StyleSheet.create({
     left: 4, 
     bottom: 30,
     right: 16,
+  },
+  explanation: {
+    // position: 'absolute',
+    top: 100
   }
 });
 
