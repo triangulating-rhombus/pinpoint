@@ -1,4 +1,4 @@
-import React, { Component, View, TextInput, Text, Switch, TouchableHighlight } from 'react-native';
+import React, { Component, View, TextInput, Text, Switch, TouchableHighlight, StatusBar } from 'react-native';
 import Button from './button';
 import styles from '../styles/styles';
 
@@ -54,9 +54,9 @@ export default class Settings extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.formContainer}>
 
-        <Text style={styles.formLabel}>Tags</Text>
+        <Text style={{fontSize: 30, color:'white', marginBottom:8}}>Tags</Text>
         <TextInput 
           style={styles.settingsInput} 
           value={this.state.tempTag1}
