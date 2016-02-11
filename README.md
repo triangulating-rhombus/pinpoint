@@ -44,7 +44,9 @@ $ \q
 ```
   4. Make sure you are in the root directory of the repo and then start the server: `nodemon server.js`
 
-#### Resetting database tables
+## Useful commands
+
+### Resetting database tables
 
   If your database tables are not up to date to the latest schemas, you need to drop all tables:
 ```
@@ -54,3 +56,40 @@ $ \q
   $ \q
 ```
   Then restart the server by running `rs` in the server's terminal tab, if the server is already running, or else `npm start` from the root directory.
+
+### Starting your psql database
+
+```
+  > pg_ctl -D pinpointdb -l logfile start
+```
+
+### Accessing/Updating your local database in the terminal
+
+```
+  > psql pinpointdb
+```
+
+### Accessing/Updating your Heroku database in the terminal
+
+```
+  > heroku pg:psql
+```
+
+### Deploying your server on Heroku
+
+  We've deployed our server [here](http://tr-pinpoint-server.herokuapp.com), but if you make edits and want to deploy your own version, Heroku makes the process very quick and easy. The free plan has its limitations, but it will be sufficient for simple testing.
+
+  1. Create an app on heroku.com. The name you choose will determine the URL of your server.
+
+  2. From the Heroku dashboard for your app, go to Resources and provision a "Heroku Postgres Add-on". Start with the Hobby Dev plan, which is free.
+
+  3. Cd to your repo's root directory in terminal and add the Heroku remote:
+```
+> heroku git:remote -a tr-pinpoint-server
+```
+  
+  4. To deploy code to the server, simply push to the Heroku remote as normal:
+```
+> git push heroku master
+```
+  (If you want to push a non-master branch, you can use `git push heroku your-branch-name:master`. This is not good form for a real production server, but it can be handy for testing purposes.)
