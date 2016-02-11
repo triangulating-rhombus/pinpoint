@@ -69,7 +69,8 @@ var getHotSpots = function (tag, callback) {
     include: [ model.Visits ]
   }).then(function(locations) {
     if (locations.length === 0){
-      callback("no results")
+      callback({ warning: 'NO_HOTSPOTS' });
+      return;
     }
 
     var visits = locations[0].dataValues.Visits;
@@ -96,7 +97,7 @@ var getHotSpots = function (tag, callback) {
       return {longitude: location[0].longitude, latitude: location[0].latitude};
     })
 
-    callback(result);
+    callback({ data: result });
   });
   })
 };

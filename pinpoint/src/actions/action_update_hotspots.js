@@ -1,23 +1,22 @@
 import { UPDATE_HOTSPOTS } from '../constants/actionTypes';
 import { sendRequest } from './utils';
 
-function updateHotspots(hotspots) {
+function updateHotspots(hotspotsInfo) {
   return {
     type: UPDATE_HOTSPOTS,
-    payload: hotspots
+    payload: hotspotsInfo
   }
 }
 
 export default function getHotspots(tag) {
   return (dispatch) => {
-    sendRequest('GET', '/hotspot', null, { tag })
+    sendRequest('GET', '/hotspots', null, { tag })
     .then(
       response => {
         const hotspots = JSON.parse(response._bodyText);
         console.log('hotspots response:', hotspots);
-        if (response.status === 200) {
-          dispatch(updateHotspots(hotspots));
-        }
+        const { warning, data } = hotspots;
+        dispatch(updateHotspots({ warning, data }));
       },
       error => {
         console.log(error);
