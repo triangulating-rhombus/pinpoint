@@ -1,4 +1,4 @@
-import { UPDATE_HOTSPOTS } from '../constants/actionTypes';
+import { UPDATE_HOTSPOTS, SHOW_HOTSPOTS, HIDE_HOTSPOTS } from '../constants/actionTypes';
 
 const INITIAL_STATE = {
   data: [],
@@ -9,8 +9,11 @@ const INITIAL_STATE = {
 export default function(state = INITIAL_STATE, action) {
   switch(action.type) {
     case UPDATE_HOTSPOTS:
-      console.log(action.payload);
       return { ...state, ...action.payload };
+    case SHOW_HOTSPOTS:
+      return { ...state, isVisible: true };
+    case HIDE_HOTSPOTS:
+     return { ...state, isVisible: false };
     default:
       return state;
   }

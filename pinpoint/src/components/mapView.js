@@ -121,7 +121,7 @@ export default class Map extends Component {
   }
 
   renderHotSpots(){
-    return this.props.hotSpotPins.data.map((hotSpots) => {
+    return this.props.hotspots.data.map((hotSpots) => {
       console.log('Hotspots are:', hotSpots)
       return (
         <MapView.Circle 
@@ -228,7 +228,7 @@ export default class Map extends Component {
           onPress={(e) => this.onPress(e)}
         >
 
-        { this.props.hotSpotVisibility && !this.props.hotSpotPins.warning ? this.renderHotSpots.call(this) : void 0 }
+        { this.props.hotspots.isVisible && !this.props.hotspots.warning ? this.renderHotSpots.call(this) : void 0 }
         { Object.keys(this.props.markers).length !== 0 ? this.renderMarkers.call(this) : void 0 }
         { Object.keys(this.props.markers).length !== 0 ? this.animateMarkers.call(this) : void 0 }
         

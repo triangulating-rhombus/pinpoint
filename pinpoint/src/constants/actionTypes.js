@@ -16,7 +16,9 @@ export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';
 export const CLEAR_SETTINGS = 'CLEAR_SETTINGS';
 
 // HotSpots
-export const TOGGLE_HOTSPOT = 'TOGGLE_HOTSPOT';
+export const SHOW_HOTSPOTS = 'SHOW_HOTSPOTS';
+export const HIDE_HOTSPOTS = 'HIDE_HOTSPOTS';
+export const UPDATE_HOTSPOTS = 'UPDATE_HOTSPOTS';
 
 // Stats
 export const UPDATE_STATS = 'UPDATE_STATS';
@@ -25,7 +27,3 @@ export const HIDE_STATS = 'HIDE_STATS';
 
 // Active Tag
 export const SET_TAG = 'SET_TAG';
-
-// Hotspot Filtering
-export const UPDATE_HOTSPOTS = 'UPDATE_HOTSPOTS';
-
