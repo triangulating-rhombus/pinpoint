@@ -78,48 +78,6 @@ export default class Map extends Component {
     });
   } 
 
-  getRegion(){
-    var socketID = this.props.socket.id;
-    var currentUser = this.props.markers[socketID];
-
-    if (currentUser && currentUser.pastNewPins.length === 2){
-      return {
-          latitude: currentUser.pastNewPins[1].latitude._value,
-          longitude: currentUser.pastNewPins[1].longitude._value
-        };
-      //return currentUser.pastNewPins[0].setValue(newRegion);
-    }
-  }
-
-  adjustMapScale(data){
-    var lat = data.latitudeDelta;
-
-    if(lat > 2){
-      radius = 100000;
-      console.log('I at n > 2');
-    }
-    if(lat > 1 && lat < 2){
-      radius = 3000;
-      console.log('I at 1 - 2');
-    }
-    if( lat > .1 && lat < 1) {
-      console.log("I at .1 - 1");
-      radius = 1000;
-    }
-    if(lat > 0.04 && lat < .1){
-      console.log('I at .04 - .1');
-      radius = 10000;
-    } 
-    if(lat < 0.04){
-      console.log('I at .04 > n');
-      radius=200;
-    }
-
-    // console.log('latitudeDelta', data.latitudeDelta);
-    // console.log('Radius', radius);
-    this.setState({radius:radius})
-  }
-
   renderHotSpots(){
     return this.props.hotspots.data.map((hotSpots) => {
       return (
@@ -132,7 +90,6 @@ export default class Map extends Component {
       );
     });
   }
-
 
   onPress(e) {
     // If you click on a marker (and possibly some other cases), Map doesn't return position data
@@ -196,9 +153,7 @@ export default class Map extends Component {
 
     return filterOptions;
   }
-        // <TouchableHighlight style={styles.button} onPress={this.showPopover.bind(this)}>
-        //   <Text style={styles.text}>Filter</Text>
-        // </TouchableHighlight>
+
   renderFilterBar(){
     return (
       <View style={styles.overlay}>
@@ -222,6 +177,7 @@ export default class Map extends Component {
       <View style={styles.container}>
         <MapView.Animated
           style={styles.map}
+          region={{longitudeDelta: 0.05000044296161832, latitude: 37.77644419981398, longitude: -122.4142810713981, latitudeDelta: 0.0636722351829988}}
           showsUserLocation={true}
           followUserLocation={true}
           onPress={(e) => this.onPress(e)}

@@ -1,8 +1,8 @@
 import io from '../../node_modules/socket.io-client/socket.io';
 
-const SERVER_ROOT = 'http://localhost:3000';
+// const SERVER_ROOT = 'http://localhost:3000';
 // const SERVER_ROOT = 'http://10.8.30.231:3000';
-//const SERVER_ROOT = 'http://tr-pinpoint-server.herokuapp.com';
+const SERVER_ROOT = 'http://tr-pinpoint-server.herokuapp.com';
 
 // Sends AJAX request and returns promise
 export function sendRequest(method, endpoint, bodyObj, additionalHeaders = {}) {

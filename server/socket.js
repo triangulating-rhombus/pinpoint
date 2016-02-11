@@ -103,7 +103,7 @@ var connectHandler = function(snapshot) {
         var everybodyExceptMe = _.extend({}, currPositions );
         delete everybodyExceptMe[snapshot.socketID];
 
-        // console.log("Every body except me", everybodyExceptMe);
+       // console.log("Every body except me", everybodyExceptMe);
        // console.log('Snapshots', snapshot.socketClient);
        // console.log('My serverID',snapshot.socketID);
        // console.log('Everybody except me', everybodyExceptMe);
