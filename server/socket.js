@@ -75,8 +75,8 @@ module.exports = function(server, includeFakeUsers) {
 
   serverSocket = SocketIO.listen(server);
   serverSocket.on('connection', function(clientSocket) {
-    clientSocket.on('connected', connectHandler);
-    clientSocket.on('update', updateHandler);
+    clientSocket.on('connected', connectHandler.bind(clientSocket));
+    clientSocket.on('update', updateHandler.bind(clientSocket));
     clientSocket.on('changeFilterTag', changeFilterTagHandler);
     clientSocket.on('disconnected', disconnectHandler);
   });
@@ -84,8 +84,10 @@ module.exports = function(server, includeFakeUsers) {
 }
 
 var connectHandler = function(snapshot) {
+  var self = this;
   // Snapshots usually just contain socketID and position/time
   // On connection, the snapshot also includes the user's JWT token to authenticate them
+  console.log("Client connected with socketID: ", snapshot.socketID)
   var username = JWT.decode(snapshot.token, 'secret');
   controller.findUser({ username: username })
   .then(function(user) {
@@ -101,7 +103,13 @@ var connectHandler = function(snapshot) {
         var everybodyExceptMe = _.extend({}, currPositions );
         delete everybodyExceptMe[snapshot.socketID];
 
-        serverSocket.emit('refreshEvent', everybodyExceptMe);
+        // console.log("Every body except me", everybodyExceptMe);
+       // console.log('Snapshots', snapshot.socketClient);
+       // console.log('My serverID',snapshot.socketID);
+       // console.log('Everybody except me', everybodyExceptMe);
+       
+       self.emit('refreshEvent', everybodyExceptMe);
+
       });
     } else {
       serverSocket.emit('error', 'username not found');
@@ -110,6 +118,7 @@ var connectHandler = function(snapshot) {
 };
 
 var updateHandler = function(snapshot) {
+  var self = this;
   // Ignore unauthenticated socketIDs
   if (!visitStarts[snapshot.socketID]) {
     console.log('Received update from unauthenticated socketID...');
@@ -141,9 +150,17 @@ var updateHandler = function(snapshot) {
         return snapshot.socketID !== senderSocketID;
       });
     }
-    // console.log('sending back', filteredUsers.length, 'users');
-    // Send current positions of all users back to clientSocket
-    serverSocket.emit('refreshEvent', filteredUsers); 
+    
+    //currentUser.emit('refreshEvent', filteredUsers); 
+    // filteredUsers.forEach(function(socket){
+    //   console.log("Filtered users are ", socket.socketID );
+    //   console.log('Data getting sent back to user',filteredUsers);
+    // });
+    // console.log("I expect an empty array", filteredUsers)
+
+    //serverSocket.sockets.socket.emit('refreshEvent', filteredUsers);
+    self.emit('refreshEvent', filteredUsers);
+    // serverSocket.emit('refreshEvent', filteredUsers); 
   });
   
   var prevSnapshot = visitStarts[snapshot.socketID];

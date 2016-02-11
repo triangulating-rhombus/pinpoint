@@ -109,7 +109,7 @@ var addVisit = function (visit) {
       startTime: visit.time, endTime: visit.endTime}})
   })
     .catch(function(error) {
-      //console.log("addVisit error:", error.message);
+      //h.log("addVisit error:", error.message);
     });
 
 };
@@ -232,7 +232,7 @@ var visitStats = function(latitude, longitude, tag){
       } else if (error.message.indexOf('ZERO_RESULTS') > -1) {
         errorMessage = 'ZERO_RESULTS';
       }
-      console.log(error.message);
+      h.log(error.message);
       return { error: errorMessage };
     });
 };

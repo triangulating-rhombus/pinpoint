@@ -17,9 +17,9 @@ function createAction(connection, id, updater) {
 }
 
 export default function(token, geoNavigator) {
+  // console.log("It seems like the action file isnt even being called!!!")
   return (dispatch) => {
     const socketConnection = createSocketConnection();
-
     // Add socket listeners and emitters
     addListeners(dispatch, socketConnection, (socketID) => {
       addEmitters(dispatch, socketConnection, token, geoNavigator, socketID);
@@ -36,7 +36,6 @@ function addListeners(dispatch, socketConnection, callback) {
   });
 
   socketConnection.on('refreshEvent', (data) => {
-    // console.log("Data received from the backend update: ", data)
     dispatch(updateAction(data));    
   });
 
@@ -45,8 +44,10 @@ function addListeners(dispatch, socketConnection, callback) {
   });
 }
 
-function addEmitters(dispatch, socketConnection, token, geoNavigator, socketID) {
+function addEmitters(dispatch, socketConnection, token, geoNavigator, socketID ) {
+
   function emitSnapshot(gpsData, isInitialSnapshot) {
+
     var socketData = {
       socketID,
       time: gpsData.timestamp,
@@ -67,11 +68,12 @@ function addEmitters(dispatch, socketConnection, token, geoNavigator, socketID) 
   };
 
   // Sends initial snapshot to server
-  navigator.geolocation.getCurrentPosition(gpsData => emitSnapshot(gpsData, true), logError);
-
+  geoNavigator.geolocation.getCurrentPosition(gpsData => emitSnapshot(gpsData, true), logError);
+  console.log("add emitters being called")
   // Sends periodic snapshots to server
   const updater = setInterval(function() {
-    navigator.geolocation.getCurrentPosition(gpsData => emitSnapshot(gpsData, false), logError)  
+    console.log('Updating the geonavigator')
+    geoNavigator.geolocation.getCurrentPosition(gpsData => emitSnapshot(gpsData, false), logError)  
   }, 1000);
 
   dispatch(createAction(socketConnection, socketID, updater));
