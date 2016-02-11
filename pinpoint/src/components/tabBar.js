@@ -3,9 +3,9 @@ import React, { Component, StyleSheet, TabBarIOS, Text, View } from 'react-nativ
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import styles from '../assets/styles/styles';
-import Settings from '../containers/settings-container';
-import Stats from '../containers/stats-container';
-import MapView from '../containers/map-container';
+import Settings from '../containers/container_settings';
+import Stats from '../containers/container_stats';
+import MapView from '../containers/container_map';
 
 const ROUTES = { Settings, Stats, MapView };
 

@@ -15,7 +15,7 @@ import React, {
 import image from '../assets/images/greenDot-small-whiteBorder.png';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomCallout from './customCallout';
-import StatsModal from '../containers/stats-container';
+import Stats from '../containers/container_stats';
 
 var {height, width} = Dimensions.get('window');
 
@@ -235,7 +235,7 @@ export default class Map extends Component {
 
         { this.props.socket.connection && this.props.settings ? this.renderFilterBar.call(this) : void 0 }
 
-        <StatsModal />
+        <Stats />
 
       </View>
     );

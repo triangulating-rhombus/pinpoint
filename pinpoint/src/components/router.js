@@ -4,12 +4,12 @@ import React, {
 } from 'react-native';
 import styles from '../assets/styles/styles';
 
-import Login from '../containers/login-container.js';
-import Signup from '../containers/signup-container.js';
-import Settings from '../containers/settings-container.js';
-import Stats from '../containers/stats-container.js';
-import Map from '../containers/map-container.js';
-import TabBar from '../containers/tabBar-container.js';
+import Login from '../containers/container_login';
+import Signup from '../containers/container_signup';
+import Settings from '../containers/container_settings';
+import Stats from '../containers/container_stats';
+import Map from '../containers/container_map';
+import TabBar from '../containers/container_tabBar';
 
 const ROUTES = { Login, Signup, Settings, Stats, Map, TabBar };
 

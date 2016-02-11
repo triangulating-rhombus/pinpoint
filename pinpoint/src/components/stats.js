@@ -31,10 +31,6 @@ export default class Stats extends Component {
     ];
   }
 
-  _setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
-
   roundToNearestThousandth(float) {
     return Math.round(float * 1000) / 1000;
   }
