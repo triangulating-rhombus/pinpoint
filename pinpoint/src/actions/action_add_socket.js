@@ -72,7 +72,7 @@ function addEmitters(dispatch, socketConnection, token, geoNavigator, socketID )
   // Sends periodic snapshots to server
   const updater = setInterval(function() {
     geoNavigator.geolocation.getCurrentPosition(gpsData => emitSnapshot(gpsData, false), logError)  
-  }, 1000);
+  }, 500);
 
   dispatch(createAction(socketConnection, socketID, updater));
 }
