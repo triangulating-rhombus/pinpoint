@@ -8,12 +8,14 @@ import React, {
   TouchableOpacity,
   TouchableHighlight,
   Animated,
-  Platform, 
+  Platform,
+  Modal
 } from 'react-native';
 
 import image from '../assets/images/greenDot-small-whiteBorder.png';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomCallout from './customCallout';
+import StatsModal from '../containers/stats-container';
 
 var {height, width} = Dimensions.get('window');
 
@@ -140,14 +142,13 @@ export default class Map extends Component {
     }
     
     const { latitude, longitude } = e.nativeEvent.coordinate;
+    const tag = (this.props.tag === 'Show All') ? null : this.props.tag;
     console.log('pressed map:', latitude, longitude);
-
-    this.props.setPoi(latitude, longitude, this.props.settings.tag1);
-
+    this.props.updateStats(latitude, longitude, tag);
 
     // For some reason, TabBarIOS counts a press on the map as a press on the map icon
     // This sets the displayed tab to mapTab again, so we have to delay the change to statsTab
-    setTimeout(()=>this.props.changeTab('statsTab'), 0);
+    // setTimeout(()=>this.props.changeTab('statsTab'), 0);
   }
 
   showPopover() {
@@ -161,7 +162,7 @@ export default class Map extends Component {
   setItem(tag){
     const { connection, id } = this.props.socket;
     connection.emit('changeFilterTag', { socketID: id, filterTag: tag });
-
+    this.props.setTag(tag);
     // ---- Copied from action_add_socket as a quick fix ----
     function emitSnapshot(gpsData) {
       var socketData = {
@@ -235,7 +236,7 @@ export default class Map extends Component {
 
         { this.props.socket.connection && this.props.settings ? this.renderFilterBar.call(this) : void 0 }
 
-
+        <StatsModal />
 
       </View>
     );

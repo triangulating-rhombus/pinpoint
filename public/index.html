@@ -83,9 +83,9 @@
           <tr>
             <td rowspan="2">POST</td>
             <td rowspan="2">/stats</td>
-            <td rowspan="2">{ lat: Number, lon: Number, tag: String }</td>
+            <td rowspan="2">{<br>&nbsp;&nbsp;latitude: Number,<br>&nbsp;&nbsp;longitude: Number,<br>&nbsp;&nbsp;[tag: String]<br>}</td>
             <td class="success">200</td>
-            <td class="success">{ Sun: Number, Mon: Number, etc. }<br>OR<br>{ warning: String }</td>
+            <td class="success">{<br>&nbsp;&nbsp;address: String (or null),<br>&nbsp;&nbsp;visitsByDay: Object (or undefined),<br>&nbsp;&nbsp;warning: String (or undefined)<br>}</td>
           </tr>
           <tr>
             <td class="danger">401</td>

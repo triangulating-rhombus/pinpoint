@@ -145,11 +145,11 @@ app.get('/hotspot', function (req, res) {
 // This is really more of a GET request, but we use POST to send parameters
 app.post('/stats', function(req, res){
 
-	var lat = req.body.lat;
-	var lon = req.body.lon;
+	var latitude = req.body.latitude;
+	var longitude = req.body.longitude;
 	var tag = req.body.tag;
 	
-	controller.visitStats(lat, lon, tag) // returns the object to send to client
+	controller.visitStats(latitude, longitude, tag) // returns the object to send to client
 	.then(function(responseBody) {
 		if (responseBody.error) {
 			respondWithError(res, responseBody.error);

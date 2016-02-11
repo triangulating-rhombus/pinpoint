@@ -18,8 +18,13 @@ export const CLEAR_SETTINGS = 'CLEAR_SETTINGS';
 // HotSpots
 export const TOGGLE_HOTSPOT = 'TOGGLE_HOTSPOT';
 
-// POI (Point of Interest)
-export const SET_POI = 'SET_POI';
+// Stats
+export const UPDATE_STATS = 'UPDATE_STATS';
+export const SHOW_STATS = 'SHOW_STATS';
+export const HIDE_STATS = 'HIDE_STATS';
+
+// Active Tag
+export const SET_TAG = 'SET_TAG';
 
 // Hotspot Filtering
 export const DISPLAY_HOTSPOTS = 'DISPLAY_HOTSPOTS';
