@@ -1,9 +1,8 @@
-// Signup
+// User
 export const SIGNUP_USER = 'SIGNUP_USER';
-
-// Login/Logout
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
+export const CLEAR_USER_ERROR = 'CLEAR_USER_ERROR';
 
 // Sockets
 export const ADD_SOCKET = 'ADD_SOCKET';

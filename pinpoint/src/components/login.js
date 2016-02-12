@@ -21,8 +21,9 @@ export default class Login extends Component {
     );
   }
 
-  redirectTo(routeName) {
-    this.props.navigator.push({ name: routeName });
+  pushToSignup() {
+    this.props.clearUserError();
+    this.props.navigator.push({ name: 'Signup' });
   }
 
   showError() {
@@ -61,7 +62,7 @@ export default class Login extends Component {
           <View style={styles.loginButtons}>
             <Button text="Login" clickAction={this.onSubmit.bind(this)} />
             <Text style={styles.buttonLabel}>Don't have an account?</Text>
-            <Button text="Signup" clickAction={() => this.redirectTo('Signup') } />
+            <Button text="Signup" clickAction={() => this.pushToSignup() } />
           </View>
 
           <Text style={styles.errorMessage}>{this.showError.call(this)}</Text>
