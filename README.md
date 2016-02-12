@@ -18,13 +18,13 @@
 
 ### Database
 
-  ![Database schemas](http://s17.postimg.org/q8y1mnpp9/schemas.png)
+![Database schemas](http://i.imgur.com/oxvTk9f.png)
 
   There are three main entities in the database: **users**, **tags**, and **visits**. We value your privacy, so **we do not save any identifying information with where you've been**. Join tables help attach a user's tags to each of their visits, but no visit is ever identified specifically with any user.
 
 ### System Architecture
 
-  ![System architecture](http://s18.postimg.org/v8xu15vnd/Screen_Shot_2016_02_11_at_8_18_14_PM.png)
+![System architecture](http://s18.postimg.org/v8xu15vnd/Screen_Shot_2016_02_11_at_8_18_14_PM.png)
 
 ## Set-Up
 
