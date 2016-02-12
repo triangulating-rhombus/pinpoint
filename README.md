@@ -97,5 +97,5 @@
 
 
   ### PinPoint Architecture
-  ![PinPoint Logo]('http://s18.postimg.org/ftop3t5kp/Screen_Shot_2016_02_11_at_7_21_46_PM.png')
+  ![PinPoint Logo](http://s18.postimg.org/ftop3t5kp/Screen_Shot_2016_02_11_at_7_21_46_PM.png)
 
