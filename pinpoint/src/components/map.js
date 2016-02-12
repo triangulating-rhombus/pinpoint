@@ -81,7 +81,8 @@ export default class Map extends Component {
   renderHotSpots(){
     return this.props.hotspots.data.map((hotSpots) => {
       return (
-        <MapView.Circle 
+        <MapView.Circle
+          key={hotSpots.latitude} 
           center={hotSpots}
           radius={40}
           strokeColor='rgba(200, 0, 0, 0.5)'
