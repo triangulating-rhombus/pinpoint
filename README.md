@@ -4,13 +4,13 @@
 
 ## Features
 
-  * Live map of where people with tags in common with you are currently located
-  * Filtered display of users based on any specific tag
-  * Hotspot locations for any specific tag, based on how frequently people have visited them
-  * Statistics for visits to any location on the globe, grouped by day of the week
-  * Display of tags for each live user, to see what they're interested in
-
   Log in and immediately see where people are!
+  
+* **Live map** of where people with tags in common with you are currently located
+* **Filtered display** of users based on any specific tag
+* **Hotspot locations** for any specific tag, based on how frequently people have visited them
+* **Visit statistics** for any location on the globe, grouped by day of the week
+* **Viewable tags** for each live user, to see what they're interested in
 
 ![Login and filtering](https://giant.gfycat.com/MisguidedFrightenedAsiaticgreaterfreshwaterclam.gif) ![Showcasing hotspots visit statistics](https://fat.gfycat.com/AdmiredLargeJumpingbean.gif)
 
