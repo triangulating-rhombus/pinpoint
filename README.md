@@ -2,11 +2,22 @@
 
   Displays and predicts where people like you tend to hang out. Use it to find the local hotspots in real-time.
 
-### Live GIF Demo 
+## Features
+
 ![Login and filtering](https://giant.gfycat.com/MisguidedFrightenedAsiaticgreaterfreshwaterclam.gif) ![Showcasing hotspots visit statistics](https://fat.gfycat.com/AdmiredLargeJumpingbean.gif)
 
+## Architecture Overview
+
+### Database
+
+  ![Database schemas](http://s17.postimg.org/q8y1mnpp9/schemas.png)
+
+### System Architecture
+  ![System architecture](http://s18.postimg.org/v8xu15vnd/Screen_Shot_2016_02_11_at_8_18_14_PM.png)
 
 ## Set-Up
+
+  If you'd like to contribute to the repo, here are all the steps you need to get started.
 
 ### Front-End
   
