@@ -90,9 +90,12 @@ app.post('/settings', function (req, res) {
 			var tagIDs = results.map(function(tag) {
 				return tag[0].dataValues.id;
 			});
+			var updatedTagNames = results.map(function(tag) {
+				return tag[0].dataValues.name;
+			});
 			controller.addTagsUsers(tagIDs, userID).then(function(){
-				res.status(201).json({ success: 'Updated tags: ' + tagNames.join(', ') });
-			}); // this doesn't return a promise
+				res.status(201).json({ tags: updatedTagNames });
+			});
 			
 		})
 		.catch(function(error) {
