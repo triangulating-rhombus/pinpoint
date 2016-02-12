@@ -93,3 +93,9 @@
         > git push heroku master
 
   (If you want to push a non-master branch, you can do so with `git push heroku your-branch-name:master`. This is not good form for a real production server, but it can be handy for testing purposes.)
+
+
+
+  ### PinPoint Architecture
+  ![PinPoint Logo]('http://s18.postimg.org/ftop3t5kp/Screen_Shot_2016_02_11_at_7_21_46_PM.png')
+
