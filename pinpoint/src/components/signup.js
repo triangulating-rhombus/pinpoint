@@ -28,6 +28,7 @@ export default class Signup extends Component {
   }
 
   backToLogin() {
+    this.props.clearUserError();
     this.props.navigator.pop();
   }
 
