@@ -1,8 +1,16 @@
 # Pinpoint
 
-  Displays and predicts where people like you tend to hang out. Use it to find the local hotspots in real-time.
+  A mobile app that shows real-time geolocation of people with interests in common with you, and shows you the most popular hangout spots.
 
 ## Features
+
+  * Live map of where people with tags in common with you are currently located
+  * Filtered display of users based on any specific tag
+  * Hotspot locations for any specific tag, based on how frequently people have visited them
+  * Statistics for visits to any location on the globe, grouped by day of the week
+  * Display of tags for each live user, to see what they're interested in
+
+  Log in and immediately see where people are!
 
 ![Login and filtering](https://giant.gfycat.com/MisguidedFrightenedAsiaticgreaterfreshwaterclam.gif) ![Showcasing hotspots visit statistics](https://fat.gfycat.com/AdmiredLargeJumpingbean.gif)
 
@@ -12,7 +20,10 @@
 
   ![Database schemas](http://s17.postimg.org/q8y1mnpp9/schemas.png)
 
+  There are three main entities in the database: **users**, **tags**, and **visits**. We value your privacy, so **we do not save any identifying information with where you've been**. Join tables help attach a user's tags to each of their visits, but no visit is ever identified specifically with any user.
+
 ### System Architecture
+
   ![System architecture](http://s18.postimg.org/v8xu15vnd/Screen_Shot_2016_02_11_at_8_18_14_PM.png)
 
 ## Set-Up
