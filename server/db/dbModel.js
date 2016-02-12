@@ -1,15 +1,15 @@
 var Sequelize = require('sequelize');
 
-var sequelize = process.env.DATABASE_URL ?
-  new Sequelize(process.env.DATABASE_URL) :
-  new Sequelize(process.env.ENV_DB || 'pinpointdb', 'postgres', '', { dialect: 'postgres', logging: false });
+// var sequelize = process.env.DATABASE_URL ?
+//   new Sequelize(process.env.DATABASE_URL) :
+//   new Sequelize(process.env.ENV_DB || 'pinpointdb', 'postgres', '', { dialect: 'postgres', logging: false });
 
-// var sequelize = new Sequelize("postgres://xcjdlmsnudlseg:6V2Hd0n_ICoe-ZhVlYx2jCSDk5@ec2-54-225-199-245.compute-1.amazonaws.com:5432/df5pdun0nqbaat", {
-//   dialect: 'postgres',
-//   dialectOptions: {
-//     ssl: true
-//   }
-// });
+var sequelize = new Sequelize("postgres://xcjdlmsnudlseg:6V2Hd0n_ICoe-ZhVlYx2jCSDk5@ec2-54-225-199-245.compute-1.amazonaws.com:5432/df5pdun0nqbaat", {
+  dialect: 'postgres',
+  dialectOptions: {
+    ssl: true
+  }
+});
 
 var Visits = sequelize.define('Visits', {
   id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },

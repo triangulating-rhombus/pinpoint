@@ -2,6 +2,10 @@
 
   Displays and predicts where people like you tend to hang out. Use it to find the local hotspots in real-time.
 
+### Live GIF Demo 
+![Login and filtering](https://giant.gfycat.com/MisguidedFrightenedAsiaticgreaterfreshwaterclam.gif) ![Showcasing hotspots visit statistics](https://fat.gfycat.com/AdmiredLargeJumpingbean.gif)
+
+
 ## Set-Up
 
 ### Front-End
@@ -93,3 +97,7 @@
         > git push heroku master
 
   (If you want to push a non-master branch, you can do so with `git push heroku your-branch-name:master`. This is not good form for a real production server, but it can be handy for testing purposes.)
+
+### Download/Provision to your Apple device
+
+  1. In Xcode's AppDelegate.m file, comment out the `jsCodeLocation` line in Option 1 and uncomment `jsCodeLocation` in Option 2. To revert back for XCode Simulator rendering, do the opposite.
