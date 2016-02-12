@@ -15,7 +15,7 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center', // vertical align
     alignItems: 'center', // horizontal align
-    backgroundColor:'#464646'
+    backgroundColor:'#EEE'
   },
   logo:{
     width:150,
@@ -45,8 +45,9 @@ export default StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 14,
     width: 300,
-    color: 'white',
-    borderColor:'white',
+    color: 'black',
+    borderColor:'black',
+    borderRadius:5,
     borderWidth:1.5,
   },
   backgroundImage: {
@@ -62,7 +63,7 @@ export default StyleSheet.create({
   },
   formLabel: {
     fontSize: 20,
-    color:'white',
+    color:'black',
     marginBottom:5
   },
   buttonLabel: {

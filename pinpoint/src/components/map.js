@@ -69,7 +69,7 @@ export default class Map extends Component {
         >
           <MapView.Callout tooltip>
             <CustomCallout>
-              <Text style={{ color: 'white' }}>{tags}</Text>
+              <Text style={{ color: 'white', alignSelf:'center', fontSize:15 }}>{tags}</Text>
             </CustomCallout>
           </MapView.Callout>
 

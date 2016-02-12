@@ -65,7 +65,7 @@ export default class Settings extends Component {
     return (
       <View style={styles.formContainer}>
 
-        <Text style={{fontSize: 30, color:'white', marginBottom:8}}>Tags</Text>
+        <Text style={{fontSize: 30, color:'black', marginBottom:8}}>Tags</Text>
         <TextInput 
           style={styles.settingsInput} 
           value={this.state.tempTag1}
