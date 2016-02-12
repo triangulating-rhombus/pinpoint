@@ -21,7 +21,13 @@ export default function submitSettings(settings, token, successCallback) {
       response => {
         const body = JSON.parse(response._bodyText);
         if (response.status === 201) {
-          dispatch(updateSettings(settings));
+          var updatedSettings = {
+            tag1: body.tags[0] || '',
+            tag2: body.tags[1] || '',
+            tag3: body.tags[2] || '',
+            isBroadcasting: settings.isBroadcasting
+          }
+          dispatch(updateSettings(updatedSettings));
           successCallback();
         }
       }
