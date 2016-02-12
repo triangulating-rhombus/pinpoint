@@ -100,4 +100,4 @@
 
 ### Download/Provision to your Apple device
 
-  1. In Xcode's AppDelegate.m file, comment out the `jsCodeLocation` line in Option 1 and uncomment `jsCodeLocation` in Option 2. To revert back for XCode Simulator rendering, do the opposite.  
+  1. In Xcode's AppDelegate.m file, comment out the `jsCodeLocation` line in Option 1 and uncomment `jsCodeLocation` in Option 2. To revert back for XCode Simulator rendering, do the opposite.
