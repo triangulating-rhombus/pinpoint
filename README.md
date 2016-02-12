@@ -3,9 +3,9 @@
   Displays and predicts where people like you tend to hang out. Use it to find the local hotspots in real-time.
 
 ### Live GIF Demo 
-![Login and filtering](https://giant.gfycat.com/GraySphericalIndianringneckparakeet.gif)
+![Login and filtering](http://i.giphy.com/3o6gaPo0kaWCcxo4ne.gif)
 
-![Showcasing hotspots visit statistics](http://i.giphy.com/3o6gb4Twpoh2DhCjfi.gif)
+![Showcasing hotspots visit statistics](http://i.giphy.com/xT0BKAWmORMLgGAUso.gif)
 
 
 ## Set-Up
@@ -102,4 +102,4 @@
 
 ### Download/Provision to your Apple device
 
-  1. In Xcode's AppDelegate.m file, comment out `jsCodeLocation` in Option 1 and uncomment `jsCodeLocation` in Option 2. For XCode Simulator rendering, do the opposite.  
+  1. In Xcode's AppDelegate.m file, comment out the `jsCodeLocation` line in Option 1 and uncomment `jsCodeLocation` in Option 2. To revert back for XCode Simulator rendering, do the opposite.  
