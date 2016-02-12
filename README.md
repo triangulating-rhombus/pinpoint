@@ -1,6 +1,6 @@
 # Pinpoint
 
-  A mobile app that shows real-time geolocation of people with interests in common with you, and shows you the most popular hangout spots.
+  A mobile app that shows real-time geolocation of people with interests in common with you, and shows you their most popular hangout spots.
 
 ## Features
 
@@ -12,19 +12,23 @@
 * **Visit statistics** for any location on the globe, grouped by day of the week
 * **Viewable tags** for each live user, to see what they're interested in
 
-![Login and filtering](https://giant.gfycat.com/MisguidedFrightenedAsiaticgreaterfreshwaterclam.gif) ![Showcasing hotspots visit statistics](https://fat.gfycat.com/AdmiredLargeJumpingbean.gif)
+![Live map, viewable tags, and filtered display](https://giant.gfycat.com/MisguidedFrightenedAsiaticgreaterfreshwaterclam.gif) ![Hotspot locations and visit statistics](https://fat.gfycat.com/AdmiredLargeJumpingbean.gif)
 
 ## Architecture Overview
 
-### Database
-
-![Database schemas](http://i.imgur.com/oxvTk9f.png)
-
-  There are three main entities in the database: **users**, **tags**, and **visits**. We value your privacy, so **we do not save any identifying information with where you've been**. Join tables help attach a user's tags to each of their visits, but no visit is ever identified specifically with any user.
+### Tech Stack
+  
+  The front-end is written in React Native and Redux, and the back-end uses Node/Express and a PostgreSQL database, with Sequelize as the ORM. Socket.IO is also used extensively to pass location updates between the client and server.
 
 ### System Architecture
 
 ![System architecture](http://s18.postimg.org/v8xu15vnd/Screen_Shot_2016_02_11_at_8_18_14_PM.png)
+
+### Database Schemas
+
+![Database schemas](http://i.imgur.com/oxvTk9f.png)
+
+  There are three main entities in the database: **users**, **tags**, and **visits**. We value your privacy, so **we do not save any identifying information with where you've been**. Join tables help attach a user's tags to each of their visits, but no visit is ever identified specifically with any user.
 
 ## Set-Up
 
