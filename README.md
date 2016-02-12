@@ -3,9 +3,7 @@
   Displays and predicts where people like you tend to hang out. Use it to find the local hotspots in real-time.
 
 ### Live GIF Demo 
-![Login and filtering](http://i.giphy.com/3o6gaPo0kaWCcxo4ne.gif)
-
-![Showcasing hotspots visit statistics](http://i.giphy.com/xT0BKAWmORMLgGAUso.gif)
+![Login and filtering](http://i.giphy.com/xT0BKpCIVfUkJHKdlm.gif) ![Showcasing hotspots visit statistics](http://i.giphy.com/xT0BKktlVdWDjPdB5e.gif)
 
 
 ## Set-Up
