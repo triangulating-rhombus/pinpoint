@@ -1,19 +1,34 @@
 # Pinpoint
 
-  Displays and predicts where people like you tend to hang out. Use it to find the local hotspots in real-time.
+  A mobile app that shows real-time geolocation of people with interests in common with you, and shows you their most popular hangout spots.
 
 ## Features
 
-![Login and filtering](https://giant.gfycat.com/MisguidedFrightenedAsiaticgreaterfreshwaterclam.gif) ![Showcasing hotspots visit statistics](https://fat.gfycat.com/AdmiredLargeJumpingbean.gif)
+  Log in and immediately see where people are!
+
+* **Live map** of where people with tags in common with you are currently located
+* **Filtered display** of users based on any specific tag
+* **Hotspot locations** for any specific tag, based on how frequently people have visited them
+* **Visit statistics** for any location on the globe, grouped by day of the week
+* **Viewable tags** for each live user, to see what they're interested in
+
+![Live map, viewable tags, and filtered display](https://giant.gfycat.com/MisguidedFrightenedAsiaticgreaterfreshwaterclam.gif) ![Hotspot locations and visit statistics](https://fat.gfycat.com/AdmiredLargeJumpingbean.gif)
 
 ## Architecture Overview
 
-### Database
-
-  ![Database schemas](http://s17.postimg.org/q8y1mnpp9/schemas.png)
+### Tech Stack
+  
+  The front-end is written in React Native and Redux, and the back-end uses Node/Express and a PostgreSQL database, with Sequelize as the ORM. Socket.IO is also used extensively to pass location updates between the client and server.
 
 ### System Architecture
-  ![System architecture](http://s18.postimg.org/v8xu15vnd/Screen_Shot_2016_02_11_at_8_18_14_PM.png)
+
+![System architecture](http://s18.postimg.org/v8xu15vnd/Screen_Shot_2016_02_11_at_8_18_14_PM.png)
+
+### Database Schemas
+
+![Database schemas](http://i.imgur.com/oxvTk9f.png)
+
+  There are three main entities in the database: **users**, **tags**, and **visits**. We value your privacy, so **we do not save any identifying information with where you've been**. Join tables help attach a user's tags to each of their visits, but no visit is ever identified specifically with any user.
 
 ## Set-Up
 
@@ -24,23 +39,15 @@
   1. If you don't already have it, download and install [XCode 7.2](https://itunes.apple.com/us/app/xcode/id497799835). This is a large (4GB+) program available free from the App Store, used to run the simulator for React Native.
     * Make sure you have Mac OSX 10.10.5 or later.
     * Different XCode versions may also work, but download at your own discretion.
-  2. Install global dependencies for React Native: `sudo npm install -g react-native react-native-cli`
+  2. Install global dependencies for React Native: `sudo npm install -g react-native react-native-cli rnpm`
   3. Clone this repo: `git clone https://github.com/triangulating-rhombus/pinpoint.git`
-  4. Move into the repo directory: `cd pinpoint`
-  5. Install general dependencies: `npm install`
-  6. Move into the client directory (which is also named pinpoint): `cd pinpoint`
-  7. Install client dependencies: `npm install`
-  8. Install React Native Package Manager: `npm install -g rnpm`
-  9. Link React Native dependencies: `rnpm link`
-  10. Replace the file located at node_modules/react-native/Libraries/Animated/src/AnimatedImplementation.js with the code [here](https://gist.githubusercontent.com/lelandrichardson/c0d938e02301f9294465/raw/5053cebc66989d27697bbb08450f360555309b0c/AnimatedImplementation.js).
-  11. Open the project in XCode: `open ios/pinpoint.xcodeproj`
-    * This will automatically try to build the project, which may take a minute or two.
-    * Assuming all went well, "Build Succeeded" should appear.
-  12. When complete, click the Play button at the top left of the XCode window.
-    * XCode will automatically start a server, which will appear in a terminal window.
-    * When the server is ready, another "Build Succeeded" notification should appear in the main window.
-    * XCode will then automatically open a simulator window. The simulator may take a minute or two to render fully.
-  
+  4. Install general dependencies: `cd pinpoint` and `npm install`
+  5. Install client dependencies: `cd pinpoint` (again) and `npm install` (again)
+  6. Link React Native dependencies: `rnpm link`
+  7. Replace the file located at node_modules/react-native/Libraries/Animated/src/AnimatedImplementation.js with the code [here](https://gist.githubusercontent.com/lelandrichardson/c0d938e02301f9294465/raw/5053cebc66989d27697bbb08450f360555309b0c/AnimatedImplementation.js).
+  8. Open the project in XCode: `open ios/pinpoint.xcodeproj`. This will automatically build the project, which may take a minute or two.
+  9. When you see 'Build Succeeded', click the Play button at the top left of the XCode window. This will automatically run a server, which will appear in a terminal window, and (after a minute or so) the iPhone simulator.
+  10. *(Optional: running the project on your iPhone)* You can also provision the project to run on your iPhone. From the XCode window, locate the AppDelegate.m file in the pinpoint file directory. Comment out the `jsCodeLocation` line in Option 1 and uncomment `jsCodeLocation` in Option 2, and then save the file. Remember to change this back if you want to use the XCode simulator again!
 
 ### Back-End
   
@@ -108,7 +115,3 @@
         > git push heroku master
 
   (If you want to push a non-master branch, you can do so with `git push heroku your-branch-name:master`. This is not good form for a real production server, but it can be handy for testing purposes.)
-
-### Download/Provision to your Apple device
-
-  1. In Xcode's AppDelegate.m file, comment out the `jsCodeLocation` line in Option 1 and uncomment `jsCodeLocation` in Option 2. To revert back for XCode Simulator rendering, do the opposite.
