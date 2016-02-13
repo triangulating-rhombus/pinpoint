@@ -1,3 +1,5 @@
+// Exports a function that creates and returns an object of Sequelize models
+// sequelize = a Sequelize connection to a database
 module.exports = function(sequelize) {
   var Users = sequelize.define('Users', {
     id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
