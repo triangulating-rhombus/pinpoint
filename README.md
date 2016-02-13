@@ -2,15 +2,34 @@
 
   A mobile app that shows real-time geolocation of people with interests in common with you, and shows you their most popular hangout spots.
 
+## Development Team
+
+  * [Justin Shaw](https://github.com/jshaw22)
+  * [Ahad Wasim](https://github.com/Ahad-Wasim)
+  * [Gloria Ma](https://github.com/gloriama) (Scrum Master)
+  * [Wayne Chaw](https://github.com/waynechaw) (Product Owner)
+
+## Table of Contents
+
+  1. [Features](#features)
+  2. [Architecture Overview](#architecture-overview)
+    1. [Tech Stack](#tech-stack)
+    2. [System Architecture](#system-architecture)
+    3. [Database Schemas](#database-schemas)
+  3. [Contributing](#contributing)
+    1. [Setting up XCode](#setting-up-xcode)
+    2. [Setting up Postgres](#setting-up-postgres)
+  4. [Useful Commands](#useful-commands)
+
 ## Features
 
   Log in and immediately see where people are!
 
-* **Live map** of where people with tags in common with you are currently located
-* **Filtered display** of users based on any specific tag
-* **Hotspot locations** for any specific tag, based on how frequently people have visited them
-* **Visit statistics** for any location on the globe, grouped by day of the week
-* **Viewable tags** for each live user, to see what they're interested in
+  * **Live map** of where people with tags in common with you are currently located
+  * **Filtered display** of users based on any specific tag
+  * **Hotspot locations** for any specific tag, based on how frequently people have visited them
+  * **Visit statistics** for any location on the globe, grouped by day of the week
+  * **Viewable tags** for each live user, to see what they're interested in
 
 ![Live map, viewable tags, and filtered display](https://giant.gfycat.com/MisguidedFrightenedAsiaticgreaterfreshwaterclam.gif) ![Hotspot locations and visit statistics](https://fat.gfycat.com/AdmiredLargeJumpingbean.gif)
 
@@ -30,11 +49,13 @@
 
   There are three main entities in the database: **users**, **tags**, and **visits**. We value your privacy, so **we do not save any identifying information with where you've been**. Join tables help attach a user's tags to each of their visits, but no visit is ever identified specifically with any user.
 
-## Set-Up
+## Contributing
 
   If you'd like to contribute to the repo, here are all the steps you need to get started.
 
-### Front-End
+### Setting up XCode
+
+  This will allow you to render the front-end on your computer or iPhone.
   
   1. If you don't already have it, download and install [XCode 7.2](https://itunes.apple.com/us/app/xcode/id497799835). This is a large (4GB+) program available free from the App Store, used to run the simulator for React Native.
     * Make sure you have Mac OSX 10.10.5 or later.
@@ -49,7 +70,7 @@
   9. When you see 'Build Succeeded', click the Play button at the top left of the XCode window. This will automatically run a server, which will appear in a terminal window, and (after a minute or so) the iPhone simulator.
   10. *(Optional: running the project on your iPhone)* You can also provision the project to run on your iPhone. From the XCode window, locate the AppDelegate.m file in the pinpoint file directory. Comment out the `jsCodeLocation` line in Option 1 and uncomment `jsCodeLocation` in Option 2, and then save the file. Remember to change this back if you want to use the XCode simulator again!
 
-### Back-End
+### Setting up Postgres
   
   1. If you don't already have Postgres, install it: `brew install postgres`
   2. In the terminal, run:
@@ -68,6 +89,8 @@
   4. Make sure you are in the root directory of the repo and then start the server: `npm start`
 
 ## Useful Commands
+
+  We've compiled a list of helpful commands to help beginning developers learn their way around Postgres and Heroku.
 
 ### Drop all database tables
 
