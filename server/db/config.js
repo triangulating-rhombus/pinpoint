@@ -1,5 +1,5 @@
 // Exports a function that returns a Sequelize connection
-// to a specific database (local or deployed), as designated by dbEnv
+// to a specific database (local or deployed), as designated by DB_ENV
 
 // Set the DB_ENV:
 //   'automatic': use whichever db the server is running from
@@ -22,12 +22,12 @@ var logStatus = function(dbUrlOrName) {
   console.log('Database will connect to:', dbUrlOrName);
 };
 
-// Sequelize = the Sequelize npm module
+// Sequelize = the npm module
 module.exports = function(Sequelize) { 
-  if (dbEnv === 'automatic' && process.env.DATABASE_URL) {
+  if (DB_ENV === 'automatic' && process.env.DATABASE_URL) {
     logStatus(process.env.DATABASE_URL);
     return new Sequelize(process.env.DATABASE_URL);
-  } else if (dbEnv === 'production') {
+  } else if (DB_ENV === 'production') {
     logStatus(DEPLOYED_DB.url);
     return new Sequelize(DEPLOYED_DB.url, DEPLOYED_DB.options);
   } else {

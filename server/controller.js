@@ -7,7 +7,7 @@ var http = require('http');
 var async = require('async');
 
 // Models in database
-var User = models.User;
+var Users = models.Users;
 var Visits = models.Visits;
 var Tags = models.Tags;
 var tags_users = models.tags_users;
@@ -274,9 +274,6 @@ var findSettings = function (username) {
 
   })
 };
-
-
-
 
 module.exports = {
   addUser: addUser,

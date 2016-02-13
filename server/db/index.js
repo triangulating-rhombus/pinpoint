@@ -4,7 +4,7 @@ var Sequelize = require('sequelize');
 var sequelize = require('./config')(Sequelize);
 
 // (If nonexistent, create and) return database tables as Sequelize models
-var models = require('./schemas')(sequelize);
+var models = require('./schemas')(Sequelize, sequelize);
 
 sequelize.sync();
 
