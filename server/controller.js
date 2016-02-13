@@ -1,15 +1,20 @@
-var model = require('./db/dbModel');
+var _ = require('underscore');
+var models = require('./db/index');
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
 var geocoder = require('node-geocoder');
 var http = require('http');
-var _ = require('underscore');
 var async = require('async');
 
-
+// Models in database
+var User = models.User;
+var Visits = models.Visits;
+var Tags = models.Tags;
+var tags_users = models.tags_users;
+var tags_visits = models.tags_visits;
 
 var authenticateUser = function(username, attemptedPassword, callback){
-  model.Users.findOne({where: {username: username}}).then(function(user) {
+  Users.findOne({where: {username: username}}).then(function(user) {
     if (!user) {
       callback('User not found', null);
       return;
@@ -28,7 +33,7 @@ var hashPassword = function(password){
 
 var addUser = function (user) {
   return hashPassword(user.password).then(function(hashed){
-    return model.Users
+    return Users
         .findOrCreate({where: {id: user.userID, username: user.username, password: hashed}})
 
   });
@@ -36,12 +41,12 @@ var addUser = function (user) {
 
 // finduser to find if a user already exists 
 var findUser = function(user){
-  return model.Users.findOne({where: {username: user.username}})
+  return Users.findOne({where: {username: user.username}})
 };
 
 
 var setBroadcast = function(user, status){
-  model.Users.findOne({where: {username: user}})
+  Users.findOne({where: {username: user}})
   .then(function(user){
     user.updateAttributes({
       broadcast: status
@@ -63,11 +68,11 @@ var extra = {
 geocoder = geocoder(geocoderProvider, httpAdapter, extra);
 
 var getHotSpots = function (tag, callback) {
-  return model.Tags.findAll({ 
+  return Tags.findAll({ 
     where: {
       name: tag
     },
-    include: [ model.Visits ]
+    include: [ Visits ]
   }).then(function(locations) {
     if (locations.length === 0){
       callback({ warning: 'NO_HOTSPOTS' });
@@ -106,7 +111,7 @@ var getHotSpots = function (tag, callback) {
 var addVisit = function (visit) {
   return geocoder.reverse({lat:visit.latitude, lon:visit.longitude})
     .then(function(loc){
-  return model.Visits
+  return Visits
     .findOrCreate({where: {latitude: visit.latitude, longitude: visit.longitude, address: loc[0].formattedAddress, 
       startTime: visit.time, endTime: visit.endTime}})
   })
@@ -124,7 +129,7 @@ var tags = _.map(_.filter(tags, function(tag){return tag !== "";}), function(tag
 
 return Promise.map(tags, function(tag) {
     // Promise.map awaits for returned promises as well.
-    return model.Tags.findOrCreate({where: {name: tag}})
+    return Tags.findOrCreate({where: {name: tag}})
 })
 
 
@@ -136,11 +141,11 @@ var addTagsVisits = function(userID, visitID){
 
   console.log("addTagsVisits ", userID, " ", visitID);
 
-  return model.Users.findAll({ 
+  return Users.findAll({ 
     where: {
       id: userID
     },
-    include: [ model.Tags ]
+    include: [ Tags ]
   }).then(function(tags) {
     console.log(tags);
     var tagIDs = tags[0].Tags.map(function(obj){return obj.dataValues.id});
@@ -148,7 +153,7 @@ var addTagsVisits = function(userID, visitID){
 
   return Promise.map(tagIDs, function(tag) {
       // Promise.map awaits for returned promises as well.
-      return model.tags_visits.findOrCreate({where: {tag_id: tag, visit_id: visitID}})
+      return tags_visits.findOrCreate({where: {tag_id: tag, visit_id: visitID}})
   })
 
   })
@@ -157,7 +162,7 @@ var addTagsVisits = function(userID, visitID){
 
 var addTagsUsers = function(tags, userID) {
   console.log("addTagsUsers ", tags, userID);
-  model.tags_users.destroy({
+  tags_users.destroy({
     where: { user_id: userID }
   });
 
@@ -165,7 +170,7 @@ var addTagsUsers = function(tags, userID) {
 
   for (var i = 0; i < tags.length; i++){
     var tagID = tags[i];
-      promiseArr.push(model.tags_users.findOrCreate({where: {tag_id: tagID,user_id: userID}}));
+      promiseArr.push(tags_users.findOrCreate({where: {tag_id: tagID,user_id: userID}}));
   }
 
   return Promise.all(promiseArr);
@@ -175,11 +180,11 @@ var addTagsUsers = function(tags, userID) {
 
 // TODO 
 var findUserTags = function (userID) {
-  return model.Users.findAll({ 
+  return Users.findAll({ 
     where: {
       id: userID
     },
-    include: [ model.Tags ]
+    include: [ Tags ]
   }).then(function(tags) {
       return (tags[0].dataValues.Tags.map(function(tag){
         return tag.dataValues.name;
@@ -196,17 +201,17 @@ var visitStats = function(latitude, longitude, tag){
     .then(function(loc) {
       address = loc[0].formattedAddress;
       if (!tag) {
-        return model.Visits.findAll({ 
+        return Visits.findAll({ 
           where: { address: address },
           include: [{
-            model: model.Tags
+            model: Tags
           }]
         });
       } else {
-        return model.Visits.findAll({ 
+        return Visits.findAll({ 
           where: { address: address },
           include: [{
-            model: model.Tags,
+            model: Tags,
             where: { name: tag }
           }]
         });
@@ -246,11 +251,11 @@ var visitStats = function(latitude, longitude, tag){
 
 var findSettings = function (username) {
 
-  return model.Users.findAll({ 
+  return Users.findAll({ 
     where: {
       username: username
     },
-    include: [ model.Tags ]
+    include: [ Tags ]
   }).then(function(tags) {
 
 

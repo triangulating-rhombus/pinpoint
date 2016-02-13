@@ -3,7 +3,6 @@ require('newrelic');
 var express = require('express');
 var bodyParser = require('body-parser');
 var jwt = require('jwt-simple');
-var db = require('./db/dbModel');
 var controller = require('./controller');
 var _ = require('underscore');
 
@@ -17,8 +16,6 @@ app.use(express.static('./public'));
 var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
 });
-
-db.init();
 
 // Helper to send AJAX response with errorMessage
 var respondWithError = function(res, errorMessage) {
